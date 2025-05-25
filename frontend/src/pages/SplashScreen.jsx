@@ -14,7 +14,7 @@ const SplashScreen = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  if (!showSplash) return alert("to login page or to home page if logged in");
+  if (!showSplash) return alert("direct to login page or to home page if logged in");
 
   return (
     <div className="h-screen w-full bg-gradient-to-br from-purple-600 via-pink-500 to-yellow-400 flex items-center justify-center">
