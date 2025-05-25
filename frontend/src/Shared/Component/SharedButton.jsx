@@ -1,11 +1,11 @@
 import { Button } from "@/components/ui/button"
-
-const SharedButton = ({label, className}) => {
+import {motion} from "framer-motion"
+const SharedButton = ({label, className, whileTap}) => {
   return (
     <>
-      <Button className={className}>
+      <motion.Button className={className} whileTap={whileTap}>
         {label}
-      </Button>
+      </motion.Button>
     </>
   )
 }

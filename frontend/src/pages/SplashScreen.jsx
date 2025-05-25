@@ -11,7 +11,7 @@ const SplashScreen = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowSplash(false);
-    }, 3500);
+    }, 5000);
 
     return () => clearTimeout(timer);
   }, []);

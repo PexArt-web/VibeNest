@@ -2,6 +2,7 @@ import { FaHeart, FaRetweet, FaComment } from "react-icons/fa";
 import { motion } from "framer-motion";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
+import SharedButton from "../Shared/Component/SharedButton";
 
 const dummyPosts = [
   {
@@ -23,8 +24,6 @@ const dummyPosts = [
 const HomePage = () => {
   return (
     <>
-      <Header />
-
       <div
         className="min-h-screen bg-gradient-to-br from-[#0f2027] via-[#203a43] to-[#2c5364] 
     text-white p-18 "
@@ -47,22 +46,45 @@ const HomePage = () => {
                   <div className="text-sm text-white/60">{post.username}</div>
                   <p className="mt-2 text-white/90">{post.content}</p>
                   <div className="flex gap-6 mt-3 text-white/70 text-sm">
-                    <motion.button className="hover:text-pink-400 transition-colors duration-200 flex items-center gap-1" whileTap={{scale: 1.2}}>
-                      <FaHeart /> 12
-                    </motion.button>
-                    <button className="hover:text-green-400 transition-colors duration-200 flex items-center gap-1">
-                      <FaRetweet /> 5
-                    </button>
-                    <button className="hover:text-blue-400 transition-colors duration-200 flex items-center gap-1">
-                      <FaComment /> 3
-                    </button>
+                    <SharedButton
+                      className={
+                        "hover:text-pink-400 transition-colors duration-200 flex items-center gap-1"
+                      }
+                      label={
+                        <>
+                          <FaHeart /> 12
+                        </>
+                      }
+                      whileTap={{ scale: 1.2 }}
+                    />
+                    <SharedButton
+                      className={
+                        "hover:text-green-400 transition-colors duration-200 flex items-center gap-1"
+                      }
+                      label={
+                        <>
+                          <FaRetweet /> 5
+                        </>
+                      }
+                      whileTap={{ scale: 1.2 }}
+                    />
+                    <SharedButton
+                      className={
+                        "hover:text-blue-400 transition-colors duration-200 flex items-center gap-1"
+                      }
+                      label={
+                        <>
+                          <FaComment /> 3
+                        </>
+                      }
+                      whileTap={{ scale: 1.2 }}
+                    />
                   </div>
                 </div>
               </div>
             </motion.div>
           ))}
         </div>
-        <Footer />
       </div>
     </>
   );
