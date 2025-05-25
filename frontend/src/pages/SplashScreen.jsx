@@ -2,9 +2,11 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { SparklesIcon } from "lucide-react";
 import SharedButton from "../Shared/Component/SharedButton";
+import { useNavigate } from "react-router-dom";
 
 const SplashScreen = () => {
   const [showSplash, setShowSplash] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -14,7 +16,10 @@ const SplashScreen = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  if (!showSplash) return alert("direct to login page or to home page if logged in");
+  if (!showSplash) {
+    navigate("/home", { replace: true });
+    return null; 
+  }
 
   return (
     <div className="h-screen w-full bg-gradient-to-br from-purple-600 via-pink-500 to-yellow-400 flex items-center justify-center">
