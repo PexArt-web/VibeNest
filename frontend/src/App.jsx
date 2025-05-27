@@ -12,12 +12,16 @@ import Profile from "./pages/Profile";
 import NotFound from "./pages/errors/NotFound";
 import VibeLayOut from "./layout/VibeLayOut";
 import PageLoadError from "./pages/errors/PageLoadError";
+import SignUp from "./pages/auth/SignUp";
+import Login from "./pages/auth/Login";
 function App() {
   const router = createBrowserRouter(
     createRoutesFromElements(
-      <Route path="/" errorElement={<PageLoadError/>}>
+      <Route path="/" errorElement={<PageLoadError />}>
         <Route index element={<SplashScreen />} />
-        <Route element={<VibeLayOut/>}>
+        <Route path="signup" element={<SignUp />} />
+        <Route path="login" element={<Login />} />
+        <Route element={<VibeLayOut />}>
           <Route path="home" element={<HomePage />} />
           <Route path="notification" element={<Notification />} />
           <Route path="trending" element={<Trending />} />
