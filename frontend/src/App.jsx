@@ -9,11 +9,11 @@ import HomePage from "./pages/HomePage";
 import Notification from "./pages/Notification";
 import Trending from "./pages/Trending";
 import Profile from "./pages/Profile";
-import NotFound from "./pages/errors/NotFound";
-import VibeLayOut from "./layout/VibeLayOut";
-import PageLoadError from "./pages/errors/PageLoadError";
-import SignUp from "./pages/auth/SignUp";
-import Login from "./pages/auth/Login";
+import NotFound from "./pages/Errors/NotFound";
+import VibeLayOut from "./Layout/VibeLayOut";
+import PageLoadError from "./pages/Errors/PageLoadError";
+import SignUp from "./pages/Auth/SignUp";
+import Login from "./pages/Auth/Login";
 function App() {
   const router = createBrowserRouter(
     createRoutesFromElements(

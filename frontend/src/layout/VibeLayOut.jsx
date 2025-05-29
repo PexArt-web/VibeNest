@@ -1,5 +1,5 @@
-import Header from "../pages/components/Header";
-import Footer from "../pages/components/Footer";
+import Header from "../pages/Components/Header";
+import Footer from "../pages/Components/Footer";
 import { Outlet } from "react-router-dom";
 
 const VibeLayOut = () => {

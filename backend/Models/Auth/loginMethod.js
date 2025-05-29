@@ -1,4 +1,5 @@
 const User = require("../BluePrint/userModel");
+const bcrypt = require("bcrypt");
 const MaxAttempts = 5;
 let MaxTrial = 0;
 const lockTimeOut = 30 * 60 * 1000; // 30 minutes lockOut
@@ -17,9 +18,36 @@ const login = async (identifier, password) => {
         if (MaxTrial >= MaxAttempts) {
             throw new Error("Too many login attempts. Please try again later.");
         }
+        MaxTrial++;
       throw new Error("Invalid credentials");
     }
+
+    //check if the user is locked out
+    if(existingUser.isLocked){
+        throw Error("Account is temporarily locked. Please try again later.");
+    }
+
+    const isPasswordValid = await bcrypt.compare(password, existingUser.password);
+
+    if(!isPasswordValid){
+        if(existingUser.loginAttempts >= MaxAttempts) {
+            existingUser.lockUntil = Date.now() + lockTimeOut;
+            throw new Error("Account is temporarily locked. Please try again later.");
+        }
+        existingUser.loginAttempts += 1;
+        await existingUser.save();
+        throw  Error("Invalid credentials");
+    }
+
+    // Reset login attempts on successful login
+    existingUser.loginAttempts = 0;
+    existingUser.lockUntil = null;
+    MaxTrial = 0;
+    await existingUser.save();
+    return existingUser;
   } catch (error) {
-    throw new Error("Login failed: " + error?.message);
+    throw Error("Login failed: " + error?.message);
   }
 };
+
+module.exports = login

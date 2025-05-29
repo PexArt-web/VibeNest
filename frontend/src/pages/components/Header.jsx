@@ -1,3 +1,4 @@
+import SharedInput from "../../Shared/Component/SharedInput";
 import { FaSearch } from "react-icons/fa";
 
 const Header = () => {
@@ -10,10 +11,11 @@ const Header = () => {
 
         <div className="flex items-center bg-gray-100 px-3 py-1 rounded-full w-64">
           <FaSearch className="text-gray-500 mr-2" />
-          <input
-            type="text"
-            placeholder="Search Vibes..."
-            className="bg-transparent focus:outline-none w-full text-sm"
+
+          <SharedInput
+            type={"text"}
+            placeholder={"Search Vibes..."}
+            className={"bg-transparent focus:outline-none w-full text-sm"}
           />
         </div>
       </div>

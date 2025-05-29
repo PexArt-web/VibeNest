@@ -1,7 +1,7 @@
 import { FaHeart, FaRetweet, FaComment } from "react-icons/fa";
 import { motion } from "framer-motion";
-import Footer from "./components/Footer";
-import Header from "./components/Header";
+import Footer from "./Components/Footer";
+import Header from "./Components/Header";
 import SharedButton from "../Shared/Component/SharedButton";
 
 const dummyPosts = [
@@ -26,7 +26,7 @@ const HomePage = () => {
     <>
       <div
         className="min-h-screen bg-gradient-to-br from-[#0f2027] via-[#203a43] to-[#2c5364] 
-    text-white p-18 "
+    text-white p-19 "
       >
         <div className="max-w-2xl mx-auto space-y-6">
           {dummyPosts.map((post) => (
