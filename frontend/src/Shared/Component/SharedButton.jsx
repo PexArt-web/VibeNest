@@ -1,9 +1,9 @@
 import { Button } from "@/components/ui/button"
 import {motion} from "framer-motion"
-const SharedButton = ({label, className, whileTap}) => {
+const SharedButton = ({type, label, className, whileTap, disabled}) => {
   return (
     <>
-      <motion.Button className={className} whileTap={whileTap}>
+      <motion.Button type ={type} className={className} whileTap={whileTap} disabled={disabled}>
         {label}
       </motion.Button>
     </>

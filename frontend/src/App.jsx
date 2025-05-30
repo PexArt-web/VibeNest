@@ -14,13 +14,15 @@ import VibeLayOut from "./Layout/VibeLayOut";
 import PageLoadError from "./pages/Errors/PageLoadError";
 import SignUp from "./pages/Auth/SignUp";
 import Login from "./pages/Auth/Login";
+import { signupAction } from "./Handlers/SignupAction";
+import { loginAction } from "./Handlers/LoginAction";
 function App() {
   const router = createBrowserRouter(
     createRoutesFromElements(
       <Route path="/" errorElement={<PageLoadError />}>
         <Route index element={<SplashScreen />} />
-        <Route path="signup" element={<SignUp />} />
-        <Route path="login" element={<Login />} />
+        <Route path="signup" element={<SignUp />} action={signupAction} />
+        <Route path="login" element={<Login />} action={loginAction} />
         <Route element={<VibeLayOut />}>
           <Route path="home" element={<HomePage />} />
           <Route path="notification" element={<Notification />} />

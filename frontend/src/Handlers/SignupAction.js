@@ -1,14 +1,32 @@
-export const signupAction = async ({request}) =>{
-    try {
-        const formData = await request.formData()
-        const displayName = formData.get("displayName")
-        const email = formData.get("email")
-        const username = formData.get("username")
-        const password = formData.get("password")
-        const confirmPassword = formData.get("confirmPassword")
+import { signupService } from "../Services/Auth/signUpService";
 
-        
-    } catch (error) {
-        return{error: error.message}
+export const signupAction = async ({ request }) => {
+  try {
+    const formData = await request.formData();
+    const displayName = formData.get("displayName");
+    const email = formData.get("email");
+    const username = formData.get("username");
+    const password = formData.get("password");
+    const confirmPassword = formData.get("confirmPassword");
+    if (!displayName || !email || !username || !password || !confirmPassword) {
+      throw new Error("All fields are required");
     }
-}
+    if (password !== confirmPassword) {
+      throw new Error("Passwords do not match");
+    }
+    if (password.length < 6) {
+      throw new Error("Password must be at least 6 characters long");
+    }
+    if (!email.includes("@") || !email.includes(".")) {
+      throw new Error("Invalid email format");
+    }
+    const data = await signupService(displayName, username, email, password);
+    if (data.error) {
+      throw new Error(data.error);
+    }
+
+    return { user: data };
+  } catch (error) {
+    return { error: error.message };
+  }
+};

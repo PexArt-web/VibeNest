@@ -1,6 +1,8 @@
+import { requireAuth } from "../Services/Middleware/requireAuth";
 import SharedButton from "../Shared/Component/SharedButton";
 
 const Profile = () => {
+  requireAuth()
   return (
     <div className="min-h-screen bg-gray-950 py-10 px-4 pt-14 mb-11">
       <div className="max-w-2xl mx-auto bg-white rounded-xl shadow-xl overflow-hidden">
