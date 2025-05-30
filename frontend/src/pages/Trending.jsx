@@ -1,4 +1,3 @@
-import { requireAuth } from "../Services/Middleware/requireAuth";
 
 const trendingTopics = [
   { id: 1, title: "#ReactDev", tweets: "120K" },
@@ -9,7 +8,6 @@ const trendingTopics = [
 ];
 
 const Trending = () => {
-  requireAuth()
   return (
     <div className="min-h-screen pt-14 bg-gray-950 text-white mb-14 scroll-smooth">
       <div className="p-4 max-w-xl mx-auto bg-gray-800 rounded-xl shadow-xl">

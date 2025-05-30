@@ -1,4 +1,3 @@
-import { requireAuth } from "../Services/Middleware/requireAuth";
 import { FaBell, FaHeart, FaComment, FaRetweet } from "react-icons/fa";
 
 const notifications = [
@@ -29,7 +28,6 @@ const notifications = [
 ];
 
 const Notification = () => {
-  requireAuth()
   return (
     <div className="min-h-screen pt-16 bg-gray-800 px-4 sm:px-8">
       <h2 className="text-2xl font-bold text-purple-600 mb-6">Notifications</h2>
