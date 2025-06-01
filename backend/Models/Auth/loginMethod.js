@@ -1,5 +1,5 @@
 const User = require("../BluePrint/userModel");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const MaxAttempts = 5;
 let MaxTrial = 0;
 const lockTimeOut = 30 * 60 * 1000; // 30 minutes lockOut
