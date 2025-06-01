@@ -20,6 +20,6 @@ connectDB((error) => {
     });
     return;
   } else {
-    log("Error connecting to the database:", error);
+    log(error);
   }
 });

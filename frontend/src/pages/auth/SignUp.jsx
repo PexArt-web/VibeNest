@@ -1,32 +1,18 @@
 import SharedInput from "../../Shared/Component/SharedInput";
 import SharedButton from "../../Shared/Component/SharedButton";
-import { useState } from "react";
 import { FaUser, FaAt, FaEnvelope, FaLock } from "react-icons/fa";
 import { Form, useActionData, useNavigation } from "react-router-dom";
 
 const SignUp = () => {
-  const [error, setError] = useState("");
+  // const [error, setError] = useState("");
   const actionData = useActionData();
   console.log("Action Data:", actionData);
-  if (actionData && actionData?.error) {
-    setError(actionData.error);
-  }
+  // if (actionData && actionData?.error) {
+  //   setError(actionData.error);
+  // }
   const navigation = useNavigation();
-  const [formData, setFormData] = useState({
-    displayName: "",
-    username: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-  });
-
-  const handleChange = (e) => {
-    setFormData((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }));
-    setError("");
-  };
+  
+  
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-600 via-pink-500 to-blue-500 px-4">
@@ -38,7 +24,7 @@ const SignUp = () => {
           Create Your VibeNest Account
         </h2>
 
-        {error && <p className="text-red-600 text-sm text-center">{error}</p>}
+        {actionData?.error && <p className="text-red-600 text-sm text-center">{actionData.error}</p>}
 
         <div className="flex items-center border-b-2 border-gray-300 py-2">
           <FaUser className="text-gray-500 mr-2" />
@@ -46,8 +32,6 @@ const SignUp = () => {
             type={"text"}
             name={"displayName"}
             placeholder={"Display Name"}
-            value={formData.displayName}
-            onChange={handleChange}
             className={"w-full outline-none bg-transparent"}
             required={true}
           />
@@ -59,8 +43,6 @@ const SignUp = () => {
             type={"text"}
             name={"username"}
             placeholder={"Username (e.g. @vibeninja"}
-            value={formData.username}
-            onChange={handleChange}
             className={"w-full outline-none bg-transparent"}
             required={true}
           />
@@ -72,8 +54,6 @@ const SignUp = () => {
             type={"email"}
             name={"email"}
             placeholder={"Email Address"}
-            value={formData.email}
-            onChange={handleChange}
             className={"w-full outline-none bg-transparent"}
             required={true}
           />
@@ -85,11 +65,8 @@ const SignUp = () => {
             type={"password"}
             name={"password"}
             placeholder={"Password"}
-            value={formData.password}
-            onChange={handleChange}
             className={"w-full outline-none bg-transparent"}
             required={true}
-            autoComplete={false}
           />
         </div>
 
@@ -99,11 +76,8 @@ const SignUp = () => {
             type={"password"}
             name={"confirmPassword"}
             placeholder={"Confirm Password"}
-            value={formData.confirmPassword}
-            onChange={handleChange}
             className={"w-full outline-none bg-transparent"}
             required={true}
-            autoComplete={false}
           />
         </div>
 
