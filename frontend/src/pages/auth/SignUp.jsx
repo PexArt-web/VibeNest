@@ -4,6 +4,7 @@ import { FaUser, FaAt, FaEnvelope, FaLock } from "react-icons/fa";
 import { Form, useActionData, useNavigation } from "react-router-dom";
 
 const SignUp = () => {
+  // remember to set action error to state error
   // const [error, setError] = useState("");
   const actionData = useActionData();
   console.log("Action Data:", actionData);
