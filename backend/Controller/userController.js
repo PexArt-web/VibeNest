@@ -2,10 +2,10 @@ const login = require("../Models/Auth/loginMethod");
 const signUp = require("../Models/Auth/signUpMethod");
 const jwt = require("jsonwebtoken");
 
-
-const createToken = (_id) =>{
- return jwt.sign({ _id }, process.env.JWT_SECRET, { expiresIn: "3d" });
-}
+const { log } = console;
+const createToken = (_id) => {
+  return jwt.sign({ _id }, process.env.JWT_SECRET, { expiresIn: "3d" });
+};
 const signupUser = async (req, res) => {
   try {
     const { displayName, username, email, password } = req.body;

@@ -16,7 +16,7 @@ const login = async (identifier, password) => {
     });
     if (!existingUser) {
         if (MaxTrial >= MaxAttempts) {
-            throw new Error("Too many login attempts. Please try again later.");
+            throw new Error("Too many login attempts. redirecting to signup page");
         }
         MaxTrial++;
       throw new Error("Invalid credentials");
@@ -46,7 +46,7 @@ const login = async (identifier, password) => {
     await existingUser.save();
     return existingUser;
   } catch (error) {
-    throw Error("Login failed: " + error?.message);
+    throw Error(error?.message);
   }
 };
 

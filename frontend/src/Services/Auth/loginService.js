@@ -1,4 +1,5 @@
 export const loginService = async(identifier, password) => {
+    console.log(identifier, password, 'from loginService');
     try {
         const response = await fetch('http://localhost:4000/api/user/login', {
             method: 'POST',

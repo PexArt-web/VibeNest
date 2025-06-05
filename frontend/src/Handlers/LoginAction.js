@@ -19,12 +19,8 @@ export const loginAction = async ({ request }) => {
   } catch (error) {
     return {
       error: error?.message
-        // error?.message ===
-        //   "Error: getaddrinfo ENOTFOUND ghostconnect-shard-00-00.hjfmo.mongodb.net" ||
-        // error?.message ===
-        //   "Error: querySrv ETIMEOUT _mongodb._tcp.ghostconnect.hjfmo.mongodb.net"
-        //   ? "Error connecting Please Retry"
-        //   : error?.message,
+        ? error.message
+        : "An unexpected error occurred. Please try again later.",
     };
   }
 };

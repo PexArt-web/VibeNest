@@ -4,12 +4,13 @@ export const signupAction = async ({ request }) => {
   try {
     const formData = await request.formData();
     const displayName = formData.get("displayName");
-    const email = formData.get("email");
     const username = formData.get("username");
+    const email = formData.get("email");
     const password = formData.get("password");
     const confirmPassword = formData.get("confirmPassword");
-    if (!displayName || !email || !username || !password || !confirmPassword) {
-      throw new Error("All fields are required");
+    
+    if (!displayName || !username || !email || !password || !confirmPassword) {
+      throw new Error("All fields are required from signupAction");
     }
     if (password !== confirmPassword) {
       throw new Error("Passwords do not match");

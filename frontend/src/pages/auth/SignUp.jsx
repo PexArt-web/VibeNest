@@ -2,15 +2,18 @@ import SharedInput from "../../Shared/Component/SharedInput";
 import SharedButton from "../../Shared/Component/SharedButton";
 import { FaUser, FaAt, FaEnvelope, FaLock } from "react-icons/fa";
 import { Form, useActionData, useNavigation } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 const SignUp = () => {
-  // remember to set action error to state error
-  // const [error, setError] = useState("");
   const actionData = useActionData();
+  const [error, setError] = useState("");
   console.log("Action Data:", actionData);
-  // if (actionData && actionData?.error) {
-  //   setError(actionData.error);
-  // }
+
+  useEffect(() => {
+    if (actionData?.error) {
+      setError(actionData.error || null);
+    } 
+  }, [actionData]);
   const navigation = useNavigation();
   
   
@@ -25,7 +28,7 @@ const SignUp = () => {
           Create Your VibeNest Account
         </h2>
 
-        {actionData?.error && <p className="text-red-600 text-sm text-center">{actionData.error}</p>}
+        {error && <p className="text-red-600 text-sm text-center">{error}</p>}
 
         <div className="flex items-center border-b-2 border-gray-300 py-2">
           <FaUser className="text-gray-500 mr-2" />
