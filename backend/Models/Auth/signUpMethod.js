@@ -1,7 +1,7 @@
 const User = require("../BluePrint/userModel");
 const bcrypt = require("bcryptjs");
 const validator = require("validator");
-const saltRounds = process.env.SALT_ROUND;
+const saltRounds = parseInt(process.env.SALT_ROUND);
 
 const { log } = console;
 
@@ -43,7 +43,7 @@ const signUp = async (displayName, username, email, password) => {
     });
     return user;
   } catch (error) {
-    throw new Error("User registration failed: " + error?.message);
+    throw new Error(error?.message);
   }
 };
 

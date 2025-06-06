@@ -7,7 +7,8 @@ import { Form, Link, useActionData, useNavigate, useNavigation } from "react-rou
 const Login = () => {
   const navigate = useNavigate()
   const actionData = useActionData();
-  console.log(actionData);
+  console.log(actionData, "actionData in Login");
+  
   const [error, setError] = useState(null);
   useEffect(() => {
     setError(actionData?.error || null);
@@ -17,6 +18,10 @@ const Login = () => {
     ) {
       navigate("/signup");
     }
+    if (actionData?.user) {
+    navigate("/home");
+    return null; 
+  }
   }, [actionData]);
   const navigation = useNavigation();
 

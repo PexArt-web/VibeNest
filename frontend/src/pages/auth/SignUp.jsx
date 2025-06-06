@@ -1,22 +1,38 @@
 import SharedInput from "../../Shared/Component/SharedInput";
 import SharedButton from "../../Shared/Component/SharedButton";
 import { FaUser, FaAt, FaEnvelope, FaLock } from "react-icons/fa";
-import { Form, useActionData, useNavigation } from "react-router-dom";
+import {
+  Form,
+  useActionData,
+  useNavigate,
+  useNavigation,
+} from "react-router-dom";
 import { useEffect, useState } from "react";
 
 const SignUp = () => {
   const actionData = useActionData();
+  const navigation = useNavigation();
+  const navigate = useNavigate();
   const [error, setError] = useState("");
-  console.log("Action Data:", actionData);
-
+  const [message, setMessage] = useState("");
+  console.log("Action Data user:", actionData?.user?.message);
+  console.log("Action Data error:", actionData?.error);
+  
   useEffect(() => {
     if (actionData?.error) {
       setError(actionData.error || null);
-    } 
+    }
+    if (actionData?.user?.message) {
+      setMessage(actionData.user.message || null);
+    }
+    if (actionData?.user) {
+      setError(null);
+      setTimeout(() => {
+        setMessage(null);
+        navigate("/login");
+      }, 5000);
+    }
   }, [actionData]);
-  const navigation = useNavigation();
-  
-  
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-600 via-pink-500 to-blue-500 px-4">
@@ -29,6 +45,7 @@ const SignUp = () => {
         </h2>
 
         {error && <p className="text-red-600 text-sm text-center">{error}</p>}
+        {message && <p className="text-green-600 text-sm text-center">{message}</p>}
 
         <div className="flex items-center border-b-2 border-gray-300 py-2">
           <FaUser className="text-gray-500 mr-2" />

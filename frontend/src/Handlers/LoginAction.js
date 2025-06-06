@@ -9,18 +9,11 @@ export const loginAction = async ({ request }) => {
     if (data.error) {
       throw new Error(data.error);
     }
-    // if (!data?.user) {
-    //   throw new Error("User not found");
-    // }
-    // if (!data?.user?.emailVerified) {
-    //   throw new Error("Email not verified");
-    // }
+    
     return { user: data };
   } catch (error) {
     return {
-      error: error?.message
-        ? error.message
-        : "An unexpected error occurred. Please try again later.",
+      error: error.message === "Failed to fetch" ? "An unexpected error occurred. Please try again later." : error.message
     };
   }
 };

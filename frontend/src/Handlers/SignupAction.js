@@ -28,6 +28,7 @@ export const signupAction = async ({ request }) => {
 
     return { user: data };
   } catch (error) {
-    return { error: error.message };
+
+    return { error: error.message === "getaddrinfo ENOTFOUND ac-txuncwb-shard-00-00.rdoweue.mongodb.net" || error.message === "read ECONNRESET"  || error.message === "Failed to fetch" ? "Error signing in please try again" : error.message };
   }
 };

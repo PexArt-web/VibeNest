@@ -18,7 +18,7 @@ const signupUser = async (req, res) => {
     }
     return res
       .status(201)
-      .json({ message: "User registered successfully", user: user.email });
+      .json({ message: "Registration successful Please log in", user: user.email });
   } catch (error) {
     return res.status(400).json({ error: error?.message });
   }

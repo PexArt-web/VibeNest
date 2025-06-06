@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import Footer from "./Components/Footer";
 import Header from "./Components/Header";
 import SharedButton from "../Shared/Component/SharedButton";
-import { useLoaderData } from "react-router-dom";
+// import { useLoaderData } from "react-router-dom";
 
 const dummyPosts = [
   {
@@ -23,8 +23,7 @@ const dummyPosts = [
 ];
 
 const HomePage = () => {
-  const loaderData = useLoaderData()
-  console.log("Loader Data:", loaderData);
+
   return (
     <>
       <div

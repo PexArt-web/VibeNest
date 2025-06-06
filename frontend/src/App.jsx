@@ -16,7 +16,7 @@ import SignUp from "./pages/Auth/SignUp";
 import Login from "./pages/Auth/Login";
 import { signupAction } from "./Handlers/SignupAction";
 import { loginAction } from "./Handlers/LoginAction";
-import { requireAuth } from "./Services/Middleware/requireAuth";
+import { homeVibeLoader, notificationLoader, profileLoader, trendingLoader } from "./Loaders/vibeLoaders";
 function App() {
   const router = createBrowserRouter(
     createRoutesFromElements(
@@ -25,10 +25,10 @@ function App() {
         <Route path="signup" element={<SignUp />} action={signupAction} />
         <Route path="login" element={<Login />} action={loginAction} />
         <Route element={<VibeLayOut />}>
-          <Route path="home" element={<HomePage />} loader={requireAuth}/>
-          <Route path="notification" element={<Notification />} loader={requireAuth} />
-          <Route path="trending" element={<Trending />} loader={requireAuth}/>
-          <Route path="profile" element={<Profile />} loader={requireAuth}/>
+          <Route path="home" element={<HomePage />} loader = {homeVibeLoader} />
+          <Route path="notification" element={<Notification />} loader={notificationLoader} />
+          <Route path="trending" element={<Trending />} loader={trendingLoader} />
+          <Route path="profile" element={<Profile />} loader={profileLoader} />
         </Route>
 
         <Route path="*" element={<NotFound />} />
