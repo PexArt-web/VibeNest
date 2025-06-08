@@ -1,14 +1,22 @@
+import { useAuthContext } from "@/Hooks/useAuthContext";
 import SharedButton from "../../Shared/Component/SharedButton";
 import SharedInput from "../../Shared/Component/SharedInput";
 import { useEffect, useState } from "react";
 import { FaUser, FaLock } from "react-icons/fa";
-import { Form, Link, useActionData, useNavigate, useNavigation } from "react-router-dom";
+import {
+  Form,
+  Link,
+  useActionData,
+  useNavigate,
+  useNavigation,
+} from "react-router-dom";
 
 const Login = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const navigation = useNavigation();
   const actionData = useActionData();
-  console.log(actionData, "actionData in Login");
-  
+  const { dispatch } = useAuthContext();
+
   const [error, setError] = useState(null);
   useEffect(() => {
     setError(actionData?.error || null);
@@ -18,12 +26,12 @@ const Login = () => {
     ) {
       navigate("/signup");
     }
-    if (actionData?.user) {
-    navigate("/home");
-    return null; 
-  }
-  }, [actionData]);
-  const navigation = useNavigation();
+    if (actionData && actionData?.user) {
+      setError(null);
+      dispatch({ type: "LOGIN", payload: actionData.user });
+      navigate("/home");
+    }
+  }, [actionData, dispatch, navigate]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-600 to-indigo-700 flex items-center justify-center px-4">

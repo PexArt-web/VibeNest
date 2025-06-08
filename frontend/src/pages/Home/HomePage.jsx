@@ -1,8 +1,9 @@
-import { FaHeart, FaRetweet, FaComment } from "react-icons/fa";
+import { FaHeart, FaRetweet, FaComment, FaFeatherAlt } from "react-icons/fa";
 import { motion } from "framer-motion";
-import Footer from "./Components/Footer";
-import Header from "./Components/Header";
-import SharedButton from "../Shared/Component/SharedButton";
+import Footer from "../Components/Footer";
+import Header from "../Components/Header";
+import SharedButton from "../../Shared/Component/SharedButton";
+import { Link } from "react-router-dom";
 // import { useLoaderData } from "react-router-dom";
 
 const dummyPosts = [
@@ -10,7 +11,7 @@ const dummyPosts = [
     id: 1,
     user: "Pex",
     username: "@pex_dev",
-    content: "Just launched VibeNest 🚀 — catch a vibe, drop a thought.",
+    content: "Just launched VibeNest catch a vibe, drop a thought.",
     avatar: "https://i.pravatar.cc/150?img=1",
   },
   {
@@ -23,7 +24,6 @@ const dummyPosts = [
 ];
 
 const HomePage = () => {
-
   return (
     <>
       <div
@@ -88,6 +88,13 @@ const HomePage = () => {
           ))}
         </div>
       </div>
+
+      <Link
+        to="create-post"
+        className="fixed bottom-20 md:bottom-30 right-4 md:right-16 bg-purple-600 hover:bg-purple-700 text-white p-4 rounded-full shadow-lg transition-all duration-300 flex items-center justify-center"
+      >
+        <FaFeatherAlt className="text-xl" />
+      </Link>
     </>
   );
 };

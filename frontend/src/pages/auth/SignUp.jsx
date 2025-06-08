@@ -15,9 +15,8 @@ const SignUp = () => {
   const navigate = useNavigate();
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
-  console.log("Action Data user:", actionData?.user?.message);
-  console.log("Action Data error:", actionData?.error);
   
+
   useEffect(() => {
     if (actionData?.error) {
       setError(actionData.error || null);
@@ -25,14 +24,14 @@ const SignUp = () => {
     if (actionData?.user?.message) {
       setMessage(actionData.user.message || null);
     }
-    if (actionData?.user) {
+    if (actionData && actionData?.user) {
       setError(null);
       setTimeout(() => {
         setMessage(null);
         navigate("/login");
       }, 5000);
     }
-  }, [actionData]);
+  }, [actionData, navigate]);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-600 via-pink-500 to-blue-500 px-4">
@@ -45,7 +44,9 @@ const SignUp = () => {
         </h2>
 
         {error && <p className="text-red-600 text-sm text-center">{error}</p>}
-        {message && <p className="text-green-600 text-sm text-center">{message}</p>}
+        {message && (
+          <p className="text-green-600 text-sm text-center">{message}</p>
+        )}
 
         <div className="flex items-center border-b-2 border-gray-300 py-2">
           <FaUser className="text-gray-500 mr-2" />

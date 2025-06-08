@@ -13,7 +13,7 @@ export const loginService = async(identifier, password) => {
 
         const data = await response.json();
         if (!response.ok) {
-            throw new Error(`Failed to log in: ${data?.error}`);
+            throw new Error(`${data?.error}`);
         }
         localStorage.setItem('user', JSON.stringify(data));
         return data;

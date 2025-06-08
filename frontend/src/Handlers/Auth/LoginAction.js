@@ -1,4 +1,4 @@
-import { loginService } from "../Services/Auth/loginService";
+import { loginService } from "../../Services/Auth/loginService";
 
 export const loginAction = async ({ request }) => {
   try {
@@ -12,8 +12,9 @@ export const loginAction = async ({ request }) => {
     
     return { user: data };
   } catch (error) {
+    console.error("Login action error:", error);
     return {
-      error: error.message === "Failed to fetch" ? "An unexpected error occurred. Please try again later." : error.message
+      error: error.message === "Failed to fetch" || error.message === "getaddrinfo ENOTFOUND ac-txuncwb-shard-00-00.rdoweue.mongodb.net" || error.message === "connect ETIMEDOUT 65.62.36.156:27017" ? "An unexpected error occurred. Please try again later." : error.message
     };
   }
 };

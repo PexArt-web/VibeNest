@@ -1,4 +1,4 @@
-import { signupService } from "../Services/Auth/signUpService";
+import { signupService } from "../../Services/Auth/signUpService";
 
 export const signupAction = async ({ request }) => {
   try {
