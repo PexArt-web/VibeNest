@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { trim } = require('validator');
 const Schema = mongoose.Schema;
 const vibeSchema = new Schema({
     userId: {
@@ -6,6 +7,16 @@ const vibeSchema = new Schema({
         ref: 'User',
         required: true
     },
+    // displayName:{
+    //     type: String,
+    //     required: true,
+    //     trim: true,
+    // },
+    // username:{
+    //     type: String,
+    //     required: true,
+    //     trim: true,
+    // },
     content:{
         type: String,
         required: true,
@@ -15,6 +26,9 @@ const vibeSchema = new Schema({
     imageUrl: {
         type: String,
         trim: true,
-        default: null
+        default: null,
+        required: false
     },
 })
+
+module.exports = vibeSchema

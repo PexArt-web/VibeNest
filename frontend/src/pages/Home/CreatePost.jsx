@@ -35,6 +35,7 @@ const CreatePost = () => {
             <SharedInput
               type={"file"}
               accept={"image/*"}
+              name={"image"}
               className={"hidden"}
               onChange={handleImageChange}
             />

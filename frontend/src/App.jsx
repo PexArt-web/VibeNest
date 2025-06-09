@@ -16,7 +16,7 @@ import SignUp from "./pages/Auth/SignUp";
 import Login from "./pages/Auth/Login";
 import { signupAction } from "./Handlers/Auth/SignupAction";
 import { loginAction } from "./Handlers/Auth/LoginAction";
-import { homeVibeLoader, notificationLoader, profileLoader, trendingLoader } from "./Loaders/vibeLoaders";
+import { createPostLoader, homeVibeLoader, notificationLoader, profileLoader, trendingLoader } from "./Loaders/vibeLoaders";
 import CreatePost from "./pages/Home/CreatePost";
 function App() {
   const router = createBrowserRouter(
@@ -28,7 +28,7 @@ function App() {
         <Route element={<VibeLayOut />}>
           <Route path="home">
           <Route index element= {<HomePage/>} loader={homeVibeLoader}/>
-          <Route path="create-post" element={<CreatePost/>} />
+          <Route path="create-post" element={<CreatePost/>} loader={createPostLoader} />
           </Route>
           <Route path="notification" element={<Notification />} loader={notificationLoader} />
           <Route path="trending" element={<Trending />} loader={trendingLoader} />

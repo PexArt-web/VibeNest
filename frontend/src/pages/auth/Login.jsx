@@ -85,7 +85,7 @@ const Login = () => {
           }
           label={
             navigation.state === "submitting"
-              ? "Checking Credentials.."
+              ? "Checking Credentials..."
               : "Login"
           }
         />

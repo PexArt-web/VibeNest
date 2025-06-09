@@ -6,6 +6,12 @@ export const homeVibeLoader = async ({ request }) => {
   return null;
 };
 
+export const createPostLoader = async ({request}) => {
+  await requireAuth(request)
+
+  return null
+}
+
 export const notificationLoader = async ({ request }) => {
   await requireAuth(request);
 
