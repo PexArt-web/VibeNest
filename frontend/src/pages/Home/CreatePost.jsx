@@ -1,10 +1,20 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SharedInput from "../../Shared/Component/SharedInput";
 import SharedButton from "../../Shared/Component/SharedButton";
 import { FaImage, FaFeatherAlt } from "react-icons/fa";
-import { Form } from "react-router-dom";
+import { Form, useActionData } from "react-router-dom";
 
 const CreatePost = () => {
+  const actionData = useActionData();
+  const [error, setError] = useState(null);
+  console.log("Action Data:", actionData);
+  useEffect(() => {
+    if (actionData?.error) {
+      setError(actionData.error || null);
+    } else if (actionData?.success) {
+      alert("Post created successfully!");
+    }
+  }, [actionData]);
   const [imagePreview, setImagePreview] = useState(null);
 
   const handleImageChange = (e) => {
@@ -16,10 +26,19 @@ const CreatePost = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#0f2027] via-[#203a43] to-[#2c5364] text-white flex justify-center items-center px-4 py-10">
-      <Form className="bg-white/10 backdrop-blur-md p-6 rounded-2xl shadow-xl max-w-xl w-full space-y-5">
+      <Form
+        className="bg-white/10 backdrop-blur-md p-6 rounded-2xl shadow-xl max-w-xl w-full space-y-5"
+        method="post"
+      >
         <h2 className="text-2xl font-bold flex items-center gap-2 text-white">
           <FaFeatherAlt /> Create a Vibe
         </h2>
+
+        {error && (
+          <div className="text-red-500 text-bold mb-4 text-center">
+            {error}
+          </div>
+        )}
 
         <textarea
           className="w-full p-3 rounded-md bg-white/20 text-white placeholder:text-white/60 focus:outline-none focus:ring-2 focus:ring-pink-500 resize-none"
