@@ -1,38 +1,36 @@
+import { uploadImageToCloud } from "../../Services/Cloud/cloudService";
 import { createVibePost } from "../../Services/VibeServices/vibeService";
 
 export const createVibeAction = async ({ request }) => {
-    const formData = await request.formData();
-    const content = formData.get("content");
-    const image = formData.get("image");
-    let imageUrl = null
-    if (!content && !image) {
-      return { error: "Content or Image is required" };
-    }
+  const formData = await request.formData();
+  const content = formData.get("content");
+  const image = formData.get("image");
+  let imageUrl = null;
+  if (!content && (!image || !image.size)) {
+    return { error: "Content or Image is required" };
+  }
   try {
-    if(image){
-        const formData = new FormData();
-        formData.append("file", image);
-        formData.append("upload_preset", "pex_unsigned_preset");
-        const response = await fetch("https://api.cloudinary.com/v1_1/ddyyfxfri/upload", {
-            method: "POST",
-            body: formData,
-        });
-        const data = await response.json()
-        if(!response.ok){
-            throw new Error(data?.error)
-        }
-        imageUrl = data.secure_url
+    if (image && image.name && image.size > 0) {
+      alert("Image is being uploaded, please wait...");
+      if (!(image instanceof File)) {
+        throw new Error("Invalid image file");
+      }
+      const data = await uploadImageToCloud(image);
+      imageUrl = data;
     }
     const vibePostData = {
-        content : content,
-        ...(imageUrl && {imageUrl})
-    }
-    const data = await createVibePost(vibePostData)
-    return data
+      content: content,
+      ...(imageUrl && { imageUrl }),
+    };
+    const data = await createVibePost(vibePostData);
+    return data;
   } catch (error) {
-    console.log(error)
     return {
-      error: `Error posting document please retry`,
+      error:
+        error?.message ==
+        `Unexpected token '<', "<!DOCTYPE "... is not valid JSON`
+          ? "Please input a valid content or image"
+          : `${error?.message}`,
     };
   }
 };

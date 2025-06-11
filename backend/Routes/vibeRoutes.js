@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { createVibe, getVibes, deleteVibe } = require('../Controller/vibeController');
-const { requireAuth } = require('../Middleware/authMiddleware');
+const { requireAuth } = require('../Middleware/requireAuth');
 
 router.use(requireAuth);
 

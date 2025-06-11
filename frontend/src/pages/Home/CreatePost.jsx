@@ -1,18 +1,29 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import SharedInput from "../../Shared/Component/SharedInput";
 import SharedButton from "../../Shared/Component/SharedButton";
 import { FaImage, FaFeatherAlt } from "react-icons/fa";
-import { Form, useActionData } from "react-router-dom";
+import { Form, useActionData, useNavigation } from "react-router-dom";
 
 const CreatePost = () => {
   const actionData = useActionData();
   const [error, setError] = useState(null);
-  console.log("Action Data:", actionData);
+  const [message, setMessage] = useState(null);
+  const textAreaRef = useRef(null);
+  const navigation = useNavigation();
   useEffect(() => {
     if (actionData?.error) {
       setError(actionData.error || null);
-    } else if (actionData?.success) {
-      alert("Post created successfully!");
+      setMessage(null);
+    } else if (actionData?.message) {
+      setMessage(actionData.message || null);
+      setError(null);
+    }
+    if (actionData && actionData?.data) {
+      if (textAreaRef.current) {
+        textAreaRef.current.value = "";
+      }
+      setError(null);
+      setImagePreview(null);
     }
   }, [actionData]);
   const [imagePreview, setImagePreview] = useState(null);
@@ -29,18 +40,25 @@ const CreatePost = () => {
       <Form
         className="bg-white/10 backdrop-blur-md p-6 rounded-2xl shadow-xl max-w-xl w-full space-y-5"
         method="post"
+        encType="multipart/form-data"
       >
         <h2 className="text-2xl font-bold flex items-center gap-2 text-white">
           <FaFeatherAlt /> Create a Vibe
         </h2>
 
         {error && (
-          <div className="text-red-500 text-bold mb-4 text-center">
-            {error}
+          <div className="text-red-500 text-bold mb-4 text-center">{error}</div>
+        )}
+
+        {message && (
+          <div className="text-green-500 text-bold mb-4 text-center">
+            {message}
           </div>
         )}
 
         <textarea
+          ref={textAreaRef}
+          autoFocus
           className="w-full p-3 rounded-md bg-white/20 text-white placeholder:text-white/60 focus:outline-none focus:ring-2 focus:ring-pink-500 resize-none"
           rows="5"
           placeholder="What's vibing in your mind?"
@@ -61,7 +79,9 @@ const CreatePost = () => {
           </label>
 
           <SharedButton
-            label="Post"
+            label={
+              navigation.state === "submitting" ? "Creating..." : "Create Post"
+            }
             type="submit"
             className="bg-pink-500 hover:bg-pink-600 text-white px-6 py-2 rounded-full transition duration-300"
           />
