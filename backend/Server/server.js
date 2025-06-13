@@ -23,6 +23,7 @@ connectDB((error) => {
       log(`Server is running on port ${port}`);
       log("app and database connected successfully");
     });
+    log(`server:  ${server}`)
     return;
   } else {
     log(error);

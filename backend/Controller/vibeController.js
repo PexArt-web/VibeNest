@@ -1,6 +1,5 @@
 const Vibe = require("../Models/BluePrint/vibeModel");
 
-const { log } = console;
 const createVibe = async (req, res) => {
   try {
     const { content, imageUrl } = req.body;
@@ -17,7 +16,6 @@ const createVibe = async (req, res) => {
     }
     return res.status(200).json({ message: "Vibe created successfully", data });
   } catch (error) {
-    log(error);
     throw error;
   }
 };

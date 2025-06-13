@@ -16,6 +16,9 @@ const CreatePost = () => {
       setMessage(null);
     } else if (actionData?.message) {
       setMessage(actionData.message || null);
+      setTimeout(() => {
+        setMessage(null);
+      }, 3000);
       setError(null);
     }
     if (actionData && actionData?.data) {

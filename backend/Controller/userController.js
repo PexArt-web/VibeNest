@@ -2,8 +2,6 @@ const login = require("../Models/Auth/loginMethod");
 const signUp = require("../Models/Auth/signUpMethod");
 const { createToken } = require("../Services/tokenService");
 
-const { log } = console;
-
 const signupUser = async (req, res) => {
   try {
     const { displayName, username, email, password } = req.body;

@@ -15,10 +15,9 @@ export const createVibePost = async ({ content, imageUrl }) => {
     });
     const data = await response.json();
     if (!response.ok) {
-      console.log("Error creating vibe post:", data?.error);
       if (
-        data?.error == "Invalid token" ||
-        data?.error == "Request is not authorized"
+        data?.error === "Invalid token" ||
+        data?.error === "Request is not authorized"
       ) {
         localStorage.removeItem("user");
         return null;
@@ -29,6 +28,9 @@ export const createVibePost = async ({ content, imageUrl }) => {
     }
     return data;
   } catch (error) {
+    if (error.message === "Failed to fetch") {
+      error.message = "An unexpected error occurred. Please try again later.";
+    }
     throw new Error(error.message);
   }
 };

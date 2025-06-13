@@ -19,7 +19,6 @@ export const uploadImageToCloud = async (file) => {
         
         return data.secure_url; 
     } catch (error) {
-        console.error("Upload error:", error);
         throw new Error(`${error?.message == "Failed to fetch" ? "Error Posting your Vibes , check your connection and try again" : error?.message} `);
     }
 }

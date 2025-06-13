@@ -3,8 +3,6 @@ const bcrypt = require("bcryptjs");
 const validator = require("validator");
 const saltRounds = parseInt(process.env.SALT_ROUND);
 
-const { log } = console;
-
 const signUp = async (displayName, username, email, password) => {
   try {
     if (!displayName || !username || !email || !password) {

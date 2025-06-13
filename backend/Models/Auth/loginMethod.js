@@ -4,8 +4,6 @@ const MaxAttempts = 5;
 let MaxTrial = 0;
 const lockTimeOut = 30 * 60 * 1000; // 30 minutes lockOut
 
-const { log } = console;
-
 const login = async (identifier, password) => {
   try {
     if (!identifier || !password) {
@@ -14,7 +12,6 @@ const login = async (identifier, password) => {
     const existingUser = await User.findOne({
       $or: [{ username: identifier }, { email: identifier }],
     }).select("+password");
-    log("Existing User:", existingUser);
     if (!existingUser) {
       if (MaxTrial >= MaxAttempts) {
         throw new Error("Too many login attempts. redirecting to signup page");
@@ -52,7 +49,6 @@ const login = async (identifier, password) => {
     await existingUser.save();
     return existingUser;
   } catch (error) {
-    log("Login Error:", error);
     throw Error(error?.message);
   }
 };
