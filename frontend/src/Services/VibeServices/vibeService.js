@@ -1,36 +1,61 @@
-export const createVibePost = async ({ content, imageUrl }) => {
-  try {
-    const user = await JSON.parse(localStorage.getItem("user"));
-    if (!user) {
-      throw new Error("unauthorized user, please login again");
+const getAccessToken = async () => {
+  const user = await JSON.parse(localStorage.getItem("user"));
+  if (!user) {
+    throw new Error("unauthorized user, please login again");
+  }
+  return user?.user?.token;
+};
+
+const checkResponse = (response, data) => {
+  if (!response.ok) {
+    if (
+      data?.error === "Invalid token" ||
+      data?.error === "Request is not authorized"
+    ) {
+      localStorage.removeItem("user");
+      return null;
     }
-    const token = user?.user?.token;
+    throw new Error(data?.error);
+  }
+};
+
+export const createVibePost = async ({ content, imageUrl }) => {
+  if (!content && !imageUrl) {
+    throw new Error("Content and image URL are required to create a vibe post");
+  }
+  try {
     const response = await fetch("http://localhost:4000/api/user/create-vibe", {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${await getAccessToken()}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ content, imageUrl }),
     });
     const data = await response.json();
-    if (!response.ok) {
-      if (
-        data?.error === "Invalid token" ||
-        data?.error === "Request is not authorized"
-      ) {
-        localStorage.removeItem("user");
-        return null;
-        // window.location.href = "/login";
-        // throw new Error("Session expired, please login again");
-      }
-      throw new Error(data?.error);
-    }
+    await checkResponse(response, data);
     return data;
   } catch (error) {
     if (error.message === "Failed to fetch") {
       error.message = "An unexpected error occurred. Please try again later.";
     }
+    throw new Error(error.message);
+  }
+};
+
+export const getVibes = async () => {
+  try {
+    const response = await fetch("http://localhost:4000/api/user/get-vibes", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${await getAccessToken()}`,
+      },
+    });
+    const data = await response.json();
+    await checkResponse(response, data);
+    return data;
+  } catch (error) {
     throw new Error(error.message);
   }
 };

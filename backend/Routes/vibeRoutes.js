@@ -1,10 +1,17 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const { createVibe, getVibes, deleteVibe } = require('../Controller/vibeController');
-const { requireAuth } = require('../Middleware/requireAuth');
+const {
+  createVibe,
+  getVibes,
+  deleteVibe,
+} = require("../Controller/vibeController");
+const { requireAuth } = require("../Middleware/requireAuth");
 
 router.use(requireAuth);
 
-router.post("/create-vibe", createVibe)
+router.post("/create-vibe", createVibe);
 
-module.exports = router
+router.get("/get-vibes", getVibes);
+
+router.delete("/delete-vibe/:id", deleteVibe);
+module.exports = router;

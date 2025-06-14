@@ -13,13 +13,13 @@ const SplashScreen = () => {
       setShowSplash(false);
     }, 5000);
 
-    return () => clearTimeout(timer);
-  }, []);
+    if (!showSplash) {
+      navigate("/home", { replace: true });
+      return null;
+    }
 
-  if (!showSplash) {
-    navigate("/home", { replace: true });
-    return null; 
-  }
+    return () => clearTimeout(timer);
+  }, [showSplash]);
 
   return (
     <div className="h-screen w-full bg-gradient-to-br from-purple-600 via-pink-500 to-yellow-400 flex items-center justify-center">
