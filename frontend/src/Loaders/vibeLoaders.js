@@ -4,7 +4,7 @@ import { defer } from "react-router-dom";
 
 export const homeVibeLoader = async ({ request }) => {
   await requireAuth(request);
-  const vibe = await getVibes();
+  const vibe =  getVibes();
   return defer({ vibe });
 };
 

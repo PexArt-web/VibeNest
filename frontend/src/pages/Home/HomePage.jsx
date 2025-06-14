@@ -4,6 +4,7 @@ import Footer from "../Components/Footer";
 import SharedButton from "../../Shared/Component/SharedButton";
 import { Await, Link, useLoaderData } from "react-router-dom";
 import { Suspense } from "react";
+import Fallback from "@/Suspense/Fallback";
 
 const HomePage = () => {
   const dataElements = useLoaderData();
@@ -15,11 +16,7 @@ const HomePage = () => {
       >
         <div className="max-w-2xl mx-auto space-y-6">
           <Suspense
-            fallback={
-              <div className="text-center text-lg mt-30 text-black">
-                Loading...
-              </div>
-            }
+            fallback={<Fallback/>}
           >
             <Await resolve={dataElements?.vibe}>
               {(vibeData) => (
