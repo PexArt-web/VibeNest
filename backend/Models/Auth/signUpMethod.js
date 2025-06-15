@@ -3,9 +3,9 @@ const bcrypt = require("bcryptjs");
 const validator = require("validator");
 const saltRounds = parseInt(process.env.SALT_ROUND);
 
-const signUp = async (displayName, username, email, password) => {
+const signUp = async (displayName, username, email, password, avatar) => {
   try {
-    if (!displayName || !username || !email || !password) {
+    if (!displayName || !username || !email || !password || !avatar) {
       throw Error("All fields are required");
     }
     if (!username.startsWith("@")) {
@@ -37,6 +37,7 @@ const signUp = async (displayName, username, email, password) => {
       displayName: displayName,
       username: username,
       email: email,
+      avatar: avatar,
       password: hashedPassword,
     });
     return user;

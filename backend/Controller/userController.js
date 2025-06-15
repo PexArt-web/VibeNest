@@ -4,11 +4,11 @@ const { createToken } = require("../Services/tokenService");
 
 const signupUser = async (req, res) => {
   try {
-    const { displayName, username, email, password } = req.body;
-    if (!displayName || !username || !email || !password) {
+    const { displayName, username, email, password, avatar } = req.body;
+    if (!displayName || !username || !email || !password || !avatar) {
       return res.status(400).json({ error: "All fields are required" });
     }
-    const user = await signUp(displayName, username, email, password);
+    const user = await signUp(displayName, username, email, password, avatar);
     if (!user) {
       return res.status(400).json({ error: "User registration failed" });
     }

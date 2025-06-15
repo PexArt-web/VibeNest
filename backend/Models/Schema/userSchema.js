@@ -9,6 +9,11 @@ const userSchema = new Schema(
       required: true,
       trim: true,
     },
+    avatar: {
+      type: String,
+      default: "https://example.com/default-avatar.png", 
+      // required
+    },
     username: {
       type: String,
       required: true,

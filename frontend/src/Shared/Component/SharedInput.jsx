@@ -9,7 +9,8 @@ const SharedInput = ({
   onChange,
   required,
   autoComplete,
-  accept
+  accept,
+  id
 }) => {
   return (
     <div>
@@ -17,6 +18,7 @@ const SharedInput = ({
         accept={accept}
         type={type}
         name={name}
+        id={id}
         placeholder={placeholder}
         value={value}
         className={className}

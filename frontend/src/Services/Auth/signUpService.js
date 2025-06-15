@@ -1,4 +1,4 @@
-export const signupService = async (displayName, username, email, password) => {
+export const signupService = async (displayName, username, email, password, avatar) => {
   try {
     const response = await fetch("http://localhost:4000/api/user/signup", {
       method: "POST",
@@ -10,6 +10,7 @@ export const signupService = async (displayName, username, email, password) => {
         username,
         email,
         password,
+        avatar
       }),
     });
     const data = await response.json();
