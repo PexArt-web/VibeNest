@@ -31,6 +31,10 @@ const signUp = async (displayName, username, email, password, avatar) => {
     if (existingUser) {
       throw Error("Email already exists");
     }
+    const existingUsername = await User.findOne({ username });
+    if (existingUsername) {
+      throw Error("Username already exists");
+    }
     const salt = await bcrypt.genSalt(saltRounds);
     const hashedPassword = await bcrypt.hash(password, salt);
     const user = await User.create({

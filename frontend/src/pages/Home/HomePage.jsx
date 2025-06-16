@@ -7,6 +7,7 @@ import Fallback from "../../Suspense/Fallback";
 
 const HomePage = () => {
   const dataElements = useLoaderData();
+  console.log(dataElements, "dataElements");
   const [vibePosts, setVibePosts] = useState([]);
 
   useEffect(() => {
@@ -17,7 +18,6 @@ const HomePage = () => {
     fetchVibePosts();
   }, [dataElements]);
 
- 
   const handleDelete = (id) => {
     alert(`Delete post with ID: ${id}`);
   };
@@ -31,67 +31,81 @@ const HomePage = () => {
           <Suspense fallback={<Fallback />}>
             <Await resolve={dataElements?.vibe}>
               {() => {
-                return vibePosts?.vibes?.map((post) => (
-                  <motion.div
-                    key={post.id}
-                    whileHover={{ scale: 1.02 }}
-                    className="bg-white/10 rounded-2xl p-4 shadow-md hover:shadow-lg transition-shadow duration-300"
-                    onClick={() => handleDelete(post._id)}
-                  >
-                    <div className="flex items-start gap-4 flex-wrap">
-                      <img
-                        //remember to turn imageUrl to avatar
-                        src={post.imageUrl}
-                        alt={`${post.user} avatar`}
-                        className="w-12 h-12 rounded-full border border-white/30"
-                      />
-                      <div>
-                        <div className="font-semibold text-lg">
-                          {post.userId?.displayName}
-                        </div>
-                        <div className="text-sm text-white/60">
-                          {post.userId?.username}
-                        </div>
-                        <p className="mt-2 text-white/90">{post.content}</p>
-                        <div className="flex gap-6 mt-3 text-white/70 text-sm">
-                          <SharedButton
-                            className={
-                              "hover:text-pink-400 transition-colors duration-200 flex items-center gap-1"
-                            }
-                            label={
-                              <>
-                                <FaHeart /> 12
-                              </>
-                            }
-                            whileTap={{ scale: 1.2 }}
+                return vibePosts?.vibes?.map(
+                  (post) => (
+                    console.log(post, "posts"),
+                    (
+                      <motion.div
+                        key={post.id}
+                        whileHover={{ scale: 1.02 }}
+                        className="bg-white/10 rounded-2xl p-4 shadow-md hover:shadow-lg transition-shadow duration-300"
+                        onClick={() => handleDelete(post._id)}
+                      >
+                        <div className="flex items-start gap-4 flex-wrap">
+                          <img
+                            src={post.userId?.avatar}
+                            alt={`${post.user} avatar`}
+                            className="w-12 h-12 rounded-full border border-white/30"
                           />
-                          <SharedButton
-                            className={
-                              "hover:text-green-400 transition-colors duration-200 flex items-center gap-1"
-                            }
-                            label={
-                              <>
-                                <FaRetweet /> 5
-                              </>
-                            }
-                            whileTap={{ scale: 1.2 }}
-                          />
-                          <SharedButton
-                            className={
-                              "hover:text-blue-400 transition-colors duration-200 flex items-center gap-1"
-                            }
-                            label={
-                              <>
-                                <FaComment /> 3
-                              </>
-                            }
-                            whileTap={{ scale: 1.2 }}
-                          />
+                          <div className="flex-1">
+                            <div className="font-semibold text-lg">
+                              {post.userId?.displayName}
+                            </div>
+                            <div className="text-sm text-white/60">
+                              {post.userId?.username}
+                            </div>
+                            <p className="mt-2 text-white/90">{post.content}</p>
+                            {post.imageUrl && (
+                              <div className="mt-4">
+                                <img
+                                  src={post.imageUrl}
+                                  alt="User post"
+                                  className="rounded-lg w-full max-h-96 object-cover border border-white/20"
+                                />
+                              </div>
+                            )}
+                            <div className="flex gap-6 justify-evenly mt-3 text-white/70 text-sm">
+                              <SharedButton
+                                className={
+                                  "hover:text-blue-400 transition-colors duration-200 flex items-center gap-1"
+                                }
+                                label={
+                                  <>
+                                    <FaComment /> 3
+                                  </>
+                                }
+                                whileTap={{ scale: 1.2 }}
+                              />
+
+                              <SharedButton
+                                className={
+                                  "hover:text-green-400 transition-colors duration-200 flex items-center gap-1"
+                                }
+                                label={
+                                  <>
+                                    <FaRetweet /> 5
+                                  </>
+                                }
+                                whileTap={{ scale: 1.2 }}
+                              />
+                              <SharedButton
+                                className={
+                                  "hover:text-pink-400 transition-colors duration-200 flex items-center gap-1"
+                                }
+                                label={
+                                  <>
+                                    <FaHeart /> 12
+                                  </>
+                                }
+                                whileTap={{ scale: 1.2 }}
+                              />
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                    </div>
-                  </motion.div>
-                ));
+                      </motion.div>
+                    )
+                  )
+                );
               }}
             </Await>
           </Suspense>
@@ -109,5 +123,3 @@ const HomePage = () => {
 };
 
 export default HomePage;
-
-
