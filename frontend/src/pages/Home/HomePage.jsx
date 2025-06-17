@@ -1,9 +1,11 @@
 import { FaHeart, FaRetweet, FaComment, FaFeatherAlt } from "react-icons/fa";
+import { FiMoreVertical, FiTrash2 } from "react-icons/fi";
 import { motion } from "framer-motion";
 import SharedButton from "../../Shared/Component/SharedButton";
 import { Await, Link, useLoaderData } from "react-router-dom";
 import { Suspense, useEffect, useState } from "react";
 import Fallback from "../../Suspense/Fallback";
+import SharedDropDown from "@/Shared/Component/SharedDropDown";
 
 const HomePage = () => {
   const dataElements = useLoaderData();
@@ -20,6 +22,10 @@ const HomePage = () => {
 
   const handleDelete = (id) => {
     alert(`Delete post with ID: ${id}`);
+    // if (window.confirm("Are you sure you want to delete this post?")) {
+    //   console.log(`Post with ID ${id} deleted`);
+    // }
+    setVibePosts((prevPosts) => prevPosts.filter((post) => post._id !== id));
   };
   return (
     <>
@@ -39,7 +45,7 @@ const HomePage = () => {
                         key={post.id}
                         whileHover={{ scale: 1.02 }}
                         className="bg-white/10 rounded-2xl p-4 shadow-md hover:shadow-lg transition-shadow duration-300"
-                        onClick={() => handleDelete(post._id)}
+                        // onClick={() => handleDelete(post._id)}
                       >
                         <div className="flex items-start gap-4 flex-wrap">
                           <img
@@ -48,12 +54,28 @@ const HomePage = () => {
                             className="w-12 h-12 rounded-full border border-white/30"
                           />
                           <div className="flex-1">
-                            <div className="font-semibold text-lg">
-                              {post.userId?.displayName}
+                            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start w-full gap-2 sm:gap-4">
+                              <div>
+                                <div className="font-semibold text-lg text-white">
+                                  {post.userId?.displayName}
+                                </div>
+                                <div className="text-sm text-white/60">
+                                  {post.userId?.username}
+                                </div>
+                              </div>
+
+                              <div className="self-end sm:self-start">
+                                <SharedDropDown
+                                  parentLabel={<FiMoreVertical size={20} />}
+                                  dropDownLabel={"Delete"}
+                                  dropDownIcon={
+                                    <FiTrash2 size={20} color="red" />
+                                  }
+                                  handleDelete={() => handleDelete(post._id)}
+                                />
+                              </div>
                             </div>
-                            <div className="text-sm text-white/60">
-                              {post.userId?.username}
-                            </div>
+
                             <p className="mt-2 text-white/90">{post.content}</p>
                             {post.imageUrl && (
                               <div className="mt-4">
