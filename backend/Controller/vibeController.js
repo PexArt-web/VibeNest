@@ -1,4 +1,5 @@
 const Vibe = require("../Models/BluePrint/vibeModel");
+const mongoose = require("mongoose");
 
 const createVibe = async (req, res) => {
   try {
@@ -36,6 +37,23 @@ const getVibes = async (req, res) => {
   }
 };
 
+const getVibeById = async (req, res) => {
+  try {
+    const userId = req.params.id;
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
+      return res.status(400).json({ error: "Invalid vibe ID" });
+    }
+    const vibe = await Vibe.find({ userId }).populate("userId");
+    if (!vibe) {
+      return res.status(404).json({ error: "Vibe not found" });
+    }
+    return res.status(200).json({ message: "Vibe fetched successfully", vibe });
+  } catch (error) {
+    console.error("Error fetching vibe:", error);
+    return res.status(500).json({ error: "Failed to fetch vibe" });
+  }
+};
+
 const deleteVibe = async (req, res) => {
   try {
     const vibeId = req.params.id;
@@ -49,15 +67,11 @@ const deleteVibe = async (req, res) => {
     if (!vibe) {
       return res.status(404).json({ error: "Vibe not found" });
     }
-    // if (vibe.userId.toString() !== userId.toString()) {
-    //   return res.status(403).json({ error: "You are not authorized to delete this vibe" });
-    // }
     await Vibe.findByIdAndDelete(vibeId);
     return res.status(200).json({ message: "Vibe deleted successfully" });
-  }
-  catch (error) {
+  } catch (error) {
     return res.status(500).json({ error: "Failed to delete vibe" });
   }
-}
+};
 
-module.exports = { createVibe, getVibes, deleteVibe };
+module.exports = { createVibe, getVibes, deleteVibe, getVibeById };

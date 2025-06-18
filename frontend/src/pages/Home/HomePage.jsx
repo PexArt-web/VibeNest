@@ -6,10 +6,12 @@ import { Await, Link, useLoaderData } from "react-router-dom";
 import { Suspense, useEffect, useState } from "react";
 import Fallback from "../../Suspense/Fallback";
 import SharedDropDown from "@/Shared/Component/SharedDropDown";
+import { deleteVibePost } from "@/Services/VibeServices/vibeService";
+import { useAuthContext } from "@/Hooks/useAuthContext";
 
 const HomePage = () => {
   const dataElements = useLoaderData();
-  console.log(dataElements, "dataElements");
+  const { user } = useAuthContext();
   const [vibePosts, setVibePosts] = useState([]);
 
   useEffect(() => {
@@ -19,13 +21,17 @@ const HomePage = () => {
     };
     fetchVibePosts();
   }, [dataElements]);
-
-  const handleDelete = (id) => {
-    alert(`Delete post with ID: ${id}`);
-    // if (window.confirm("Are you sure you want to delete this post?")) {
-    //   console.log(`Post with ID ${id} deleted`);
-    // }
-    setVibePosts((prevPosts) => prevPosts.filter((post) => post._id !== id));
+  
+  const handleDelete = async (id) => {
+    try {
+      await deleteVibePost(id);
+      setVibePosts((prevPosts) => ({
+        ...prevPosts,
+        vibes: prevPosts.vibes?.filter((post) => post._id !== id),
+      }));
+    } catch (error) {
+      console.error("Error deleting post:", error);
+    }
   };
   return (
     <>
@@ -34,25 +40,23 @@ const HomePage = () => {
     text-white p-19 "
       >
         <div className="max-w-2xl mx-auto space-y-6">
-          <Suspense fallback={<Fallback />}>
+          <Suspense fallback={<Fallback loadingTitle={"Loading your vibes..."}  titleFollowUp={"Please vibe with us a sec.."}/>}>
             <Await resolve={dataElements?.vibe}>
               {() => {
                 return vibePosts?.vibes?.map(
                   (post) => (
-                    console.log(post, "posts"),
                     (
                       <motion.div
-                        key={post.id}
+                      key={post.id}
                         whileHover={{ scale: 1.02 }}
                         className="bg-white/10 rounded-2xl p-4 shadow-md hover:shadow-lg transition-shadow duration-300"
-                        // onClick={() => handleDelete(post._id)}
                       >
                         <div className="flex items-start gap-4 flex-wrap">
                           <img
                             src={post.userId?.avatar}
                             alt={`${post.user} avatar`}
                             className="w-12 h-12 rounded-full border border-white/30"
-                          />
+                            />
                           <div className="flex-1">
                             <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start w-full gap-2 sm:gap-4">
                               <div>
@@ -64,7 +68,7 @@ const HomePage = () => {
                                 </div>
                               </div>
 
-                              <div className="self-end sm:self-start">
+                             {user?.user._id === post?.userId._id && <div className="self-end sm:self-start">
                                 <SharedDropDown
                                   parentLabel={<FiMoreVertical size={20} />}
                                   dropDownLabel={"Delete"}
@@ -73,7 +77,7 @@ const HomePage = () => {
                                   }
                                   handleDelete={() => handleDelete(post._id)}
                                 />
-                              </div>
+                              </div>}
                             </div>
 
                             <p className="mt-2 text-white/90">{post.content}</p>

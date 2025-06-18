@@ -59,3 +59,52 @@ export const getVibes = async () => {
     throw new Error(error.message);
   }
 };
+
+export const deleteVibePost = async (id) => {
+  if (!id) {
+    throw new Error("Vibe ID is required to delete a vibe post");
+  }
+  try {
+    const response = await fetch(
+      `http://localhost:4000/api/user/delete-vibe/${id}`,
+      {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${await getAccessToken()}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    const data = await response.json();
+    await checkResponse(response, data);
+    return data;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
+
+export const getUserProfile = async (id) => {
+  if (!id) {
+    throw new Error("User ID is required to fetch user profile");
+  }
+  try {
+    const response = await fetch(
+      `http://localhost:4000/api/user/get-userVibe/${id}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${await getAccessToken()}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    const data = await response.json();
+    await checkResponse(response, data);
+    return data;
+  } catch (error) {
+    throw new Error(error.message);
+  } 
+}
+
+
+

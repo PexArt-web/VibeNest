@@ -1,25 +1,41 @@
+import { useAuthContext } from "@/Hooks/useAuthContext";
 import SharedButton from "../Shared/Component/SharedButton";
+import { Await, useLoaderData } from "react-router-dom";
+import { Suspense, useEffect, useState } from "react";
 
 const Profile = () => {
+  const { user } = useAuthContext();
+  const dataElements = useLoaderData();
+  const [profilePosts, setProfilePosts] = useState([]);
+  useEffect(() => {
+    const fetchProfilePost = async () => {
+      const profilePosts = (await dataElements?.usersVibe) || [];
+      setProfilePosts(profilePosts);
+    };
+    fetchProfilePost();
+  }, [dataElements, profilePosts]);
+
+console.log(profilePosts, "profilePosts");
   return (
-    <div className="min-h-screen bg-gray-950 py-10 px-4 pt-14 mb-11">
+    <div className="min-h-screen bg-gray-950 py-10 px-4 pt-14 mb-11 mt-5">
       <div className="max-w-2xl mx-auto bg-white rounded-xl shadow-xl overflow-hidden">
         <div className="bg-gradient-to-r from-purple-500 to-blue-500 h-32 relative">
           <h1 className="text-center">cover here</h1>
           <img
-            src="https://i.pravatar.cc/150?img=8"
+            src={user?.user.avatar}
             alt="avatar"
             className="w-24 h-24 rounded-full border-4 border-white absolute bottom-[-2rem] left-6"
           />
         </div>
 
-        {/* User Info */}
         <div className="pt-16 px-6 pb-4">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <h2 className="text-2xl font-bold text-gray-900">Pex Dev</h2>
-              <p className="text-gray-500">@pex_dev</p>
-              <p className="text-gray-600 mt-1 text-sm">pex@email.com</p>
+              <h2 className="text-2xl font-bold text-gray-900">
+                {user?.user.displayName}
+              </h2>
+              <p className="text-gray-500">{user?.user.username}</p>
+              <p className="text-gray-600 mt-1 text-sm">{user?.user.email}</p>
             </div>
             <SharedButton
               className={
@@ -39,29 +55,24 @@ const Profile = () => {
           </h3>
 
           <div className="space-y-4">
-            {/* Sample post card */}
-            <div className="bg-gray-100 p-4 rounded-lg shadow hover:shadow-lg transition">
-              <p className="text-gray-800">
-                Just launched VibeNest 🚀 — catch a vibe, drop a thought.
-              </p>
-              <span className="text-sm text-gray-500">2 hours ago</span>
-            </div>
-
-            <div className="bg-gray-100 p-4 rounded-lg shadow hover:shadow-lg transition">
-              <p className="text-gray-800">
-                Building the frontend with React + Tailwind. Loving the flow!
-              </p>
-              <span className="text-sm text-gray-500">1 day ago</span>
-            </div>
-            <div className="bg-gray-100 p-4 rounded-lg shadow hover:shadow-lg transition">
-              <p className="text-gray-800">
-                Building the backend with mongoDb and express. still Loving the
-                flow!
-              </p>
-              <span className="text-sm text-gray-500">few hours a ago</span>
-            </div>
-
-            {/* Add more dynamic posts here later */}
+            <Suspense fallback={<div>Loading posts...</div>}>
+              <Await resolve={dataElements?.usersVibe}>
+                {() => {
+                  return profilePosts?.vibe?.map((post) => (
+                    console.log(post, "post"),
+                    <div
+                      key={post._id}
+                      className="bg-gray-100 p-4 rounded-lg shadow hover:shadow-lg transition"
+                    >
+                      <p className="text-gray-800">{post.vibe}</p>
+                      <span className="text-sm text-gray-500">
+                        {new Date(post.createdAt).toLocaleDateString()}
+                      </span>
+                    </div>
+                  ));
+                }}
+              </Await>
+            </Suspense>
           </div>
         </div>
       </div>
