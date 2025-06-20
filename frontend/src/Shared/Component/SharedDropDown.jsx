@@ -13,7 +13,7 @@ const SharedDropDown = ({ parentLabel, dropDownLabel, handleDelete , dropDownIco
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" className={"text-black"}>
+        <Button variant="outline" className={"text-black hover:bg-gray-100 hover:text-black bg-gray-700"} >
           {parentLabel}
         </Button>
       </DropdownMenuTrigger>

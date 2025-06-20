@@ -2,6 +2,8 @@ import { useAuthContext } from "@/Hooks/useAuthContext";
 import SharedButton from "../Shared/Component/SharedButton";
 import { Await, useLoaderData } from "react-router-dom";
 import { Suspense, useEffect, useState } from "react";
+import Fallback from "@/Suspense/Fallback";
+import moment from "moment";
 
 const Profile = () => {
   const { user } = useAuthContext();
@@ -15,7 +17,6 @@ const Profile = () => {
     fetchProfilePost();
   }, [dataElements, profilePosts]);
 
-console.log(profilePosts, "profilePosts");
   return (
     <div className="min-h-screen bg-gray-950 py-10 px-4 pt-14 mb-11 mt-5">
       <div className="max-w-2xl mx-auto bg-white rounded-xl shadow-xl overflow-hidden">
@@ -55,21 +56,42 @@ console.log(profilePosts, "profilePosts");
           </h3>
 
           <div className="space-y-4">
-            <Suspense fallback={<div>Loading posts...</div>}>
+            <Suspense
+              fallback={
+                <Fallback
+                  loadingTitle={"Loading your vibes..."}
+                  titleFollowUp={"Please vibe with us a sec.."}
+                />
+              }
+            >
               <Await resolve={dataElements?.usersVibe}>
                 {() => {
-                  return profilePosts?.vibe?.map((post) => (
-                    console.log(post, "post"),
-                    <div
-                      key={post._id}
-                      className="bg-gray-100 p-4 rounded-lg shadow hover:shadow-lg transition"
-                    >
-                      <p className="text-gray-800">{post.vibe}</p>
-                      <span className="text-sm text-gray-500">
-                        {new Date(post.createdAt).toLocaleDateString()}
-                      </span>
-                    </div>
-                  ));
+                  return profilePosts?.vibe?.map(
+                    (post) => (
+                      console.log(post, "post"),
+                      (
+                        <div
+                          key={post._id}
+                          className="bg-gray-100 p-4 rounded-lg shadow hover:shadow-lg transition"
+                        >
+                          <p className="text-gray-800">{post.content}</p>
+                          {post.imageUrl && (
+                            <div className="mt-4">
+                              <img
+                                src={post.imageUrl}
+                                alt="User post"
+                                className="rounded-lg w-full max-h-96 object-cover border border-white/20"
+                              />
+                            </div>
+                          )}
+
+                         {post.createdAt && <span className="text-sm text-gray-500">
+                            {moment(post.createdAt).fromNow()}
+                          </span>}
+                        </div>
+                      )
+                    )
+                  );
                 }}
               </Await>
             </Suspense>

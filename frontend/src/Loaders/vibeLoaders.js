@@ -33,6 +33,6 @@ export const profileLoader = async ({ request }) => {
     throw new Error("Unauthorized user, please login again");
   }
   const userId = user?.user?._id;
-  const usersVibe = await getUserProfile(userId);
+  const usersVibe = getUserProfile(userId);
   return defer({ usersVibe });
 };
