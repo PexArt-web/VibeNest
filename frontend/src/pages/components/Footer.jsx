@@ -1,4 +1,5 @@
-import { FaHome, FaBell, FaFire, FaUser } from "react-icons/fa";
+import { FaHome, FaBell, FaFire, FaUser, FaCommentDots } from "react-icons/fa";
+import { MdMessage } from "react-icons/md";
 import { NavLink } from "react-router-dom";
 
 const Footer = () => {
@@ -44,6 +45,21 @@ const Footer = () => {
           <FaFire size={20} />
           <span className="text-xs mt-1">Trending</span>
         </NavLink>
+
+        <NavLink
+          to={"/chat"}
+          className={({ isActive }) =>
+            `flex flex-col items-center hover:text-blue-500 transition ${
+              isActive
+                ? "text-blue-600 font-semibold border-b-2 border-blue-600"
+                : "text-gray-500"
+            }`
+          }
+        >
+          <MdMessage className=" text-xl" />
+          <span className="text-xs mt-1">Chat</span>
+        </NavLink>
+
         <NavLink
           to={"/profile"}
           className={({ isActive }) =>

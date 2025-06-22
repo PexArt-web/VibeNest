@@ -8,7 +8,6 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { color } from "framer-motion";
 const SharedDropDown = ({ parentLabel, dropDownLabel, handleDelete , dropDownIcon}) => {
   return (
     <DropdownMenu>

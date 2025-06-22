@@ -19,6 +19,7 @@ import { loginAction } from "./Handlers/Auth/LoginAction";
 import { createPostLoader, homeVibeLoader, notificationLoader, profileLoader, trendingLoader } from "./Loaders/vibeLoaders";
 import CreatePost from "./pages/Home/CreatePost";
 import { createVibeAction } from "./Handlers/VibeActions/createVibeAction";
+import VibeChats from "./pages/VibeChats";
 function App() {
   const router = createBrowserRouter(
     createRoutesFromElements(
@@ -33,12 +34,14 @@ function App() {
           </Route>
           <Route path="notification" element={<Notification />} loader={notificationLoader} />
           <Route path="trending" element={<Trending />} loader={trendingLoader} />
+
+          <Route path="chat" element = {<VibeChats/>} />
           <Route path="profile" element={<Profile />} loader={profileLoader} />
         </Route>
 
         <Route path="*" element={<NotFound />} />
       </Route>
-    )
+    ) 
   );
   return (
     <>
