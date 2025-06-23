@@ -7,7 +7,7 @@ const Footer = () => {
     <footer className="fixed bottom-0 left-0 w-full bg-gray-800 border-t border-gray-800 shadow-lg z-50">
       <div className="flex justify-around items-center py-3 md:py-4">
         <NavLink
-          to={"/home"}
+          to={"home"}
           className={({ isActive }) =>
             `flex flex-col items-center hover:text-blue-500 transition ${
               isActive
@@ -33,7 +33,7 @@ const Footer = () => {
           <span className="text-xs mt-1">Alerts</span>
         </NavLink>
         <NavLink
-          to={"/trending"}
+          to={"trending"}
           className={({ isActive }) =>
             `flex flex-col items-center hover:text-blue-500 transition ${
               isActive
@@ -47,7 +47,7 @@ const Footer = () => {
         </NavLink>
 
         <NavLink
-          to={"/chat"}
+          to={"chat"}
           className={({ isActive }) =>
             `flex flex-col items-center hover:text-blue-500 transition ${
               isActive
@@ -61,7 +61,7 @@ const Footer = () => {
         </NavLink>
 
         <NavLink
-          to={"/profile"}
+          to={"profile"}
           className={({ isActive }) =>
             `flex flex-col items-center hover:text-blue-500 transition ${
               isActive
