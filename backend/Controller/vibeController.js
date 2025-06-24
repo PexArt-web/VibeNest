@@ -58,6 +58,11 @@ const getVibesWithComments = async(req, res) =>{
         $project:{
           comments:0
         }
+      },
+      {
+        $sort:{
+          createdAt: -1
+        }
       }
     ])
   } catch (error) {

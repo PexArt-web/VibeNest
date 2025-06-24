@@ -1,8 +1,8 @@
 
 const VibeChats = () => {
   return (
-    <div>
-      <h1 className="mt-10 text-black">coming soon ...</h1>
+    <div className="min-h-screen mt-20">
+      <h1 className="">coming soon ...</h1>
     </div>
   )
 }

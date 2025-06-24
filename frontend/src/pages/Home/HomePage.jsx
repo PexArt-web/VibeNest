@@ -33,6 +33,14 @@ const HomePage = () => {
       console.error("Error deleting post:", error);
     }
   };
+
+  const viewPost = async (id) => {
+    try {
+      alert(id);
+    } catch (error) {
+      console.error(error, "view Post Error");
+    }
+  };
   return (
     <>
       <div
@@ -55,90 +63,93 @@ const HomePage = () => {
                     key={post.id}
                     whileHover={{ scale: 1.02 }}
                     className="bg-white/10 rounded-2xl p-4 shadow-md hover:shadow-lg transition-shadow duration-300"
+                    onClick={() => viewPost(post._id)}
                   >
-                    <div className="flex items-start gap-4 flex-wrap">
-                      <img
-                        src={post.userId?.avatar}
-                        alt={`${post.user} avatar`}
-                        className="w-12 h-12 rounded-full border border-white/30"
-                      />
-                      <div className="flex-1">
-                        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start w-full gap-2 sm:gap-4">
-                          <div>
-                            <div className="font-semibold text-lg text-white">
-                              {post.userId?.displayName}
+                    <Link to={post._id}>
+                      <div className="flex items-start gap-4 flex-wrap">
+                        <img
+                          src={post.userId?.avatar}
+                          alt={`${post.user} avatar`}
+                          className="w-12 h-12 rounded-full border border-white/30"
+                        />
+                        <div className="flex-1">
+                          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start w-full gap-2 sm:gap-4">
+                            <div>
+                              <div className="font-semibold text-lg text-white">
+                                {post.userId?.displayName}
+                              </div>
+                              <div className="text-sm text-white/60">
+                                {post.userId?.username}
+                              </div>
                             </div>
-                            <div className="text-sm text-white/60">
-                              {post.userId?.username}
+
+                            <div className="text-xs text-white/40 mt-1">
+                              {moment(post.createdAt).fromNow()}
                             </div>
+
+                            {user?.user._id === post?.userId._id && (
+                              <div className="self-end sm:self-start">
+                                <SharedDropDown
+                                  parentLabel={<FiMoreVertical size={10} />}
+                                  dropDownLabel={"Delete"}
+                                  dropDownIcon={
+                                    <FiTrash2 size={20} color="red" />
+                                  }
+                                  handleDelete={() => handleDelete(post._id)}
+                                />
+                              </div>
+                            )}
                           </div>
 
-                          <div className="text-xs text-white/40 mt-1">
-                            {moment(post.createdAt).fromNow()}
-                          </div>
-
-                          {user?.user._id === post?.userId._id && (
-                            <div className="self-end sm:self-start">
-                              <SharedDropDown
-                                parentLabel={<FiMoreVertical size={10} />}
-                                dropDownLabel={"Delete"}
-                                dropDownIcon={
-                                  <FiTrash2 size={20} color="red" />
-                                }
-                                handleDelete={() => handleDelete(post._id)}
+                          <p className="mt-2 text-white/90">{post.content}</p>
+                          {post.imageUrl && (
+                            <div className="mt-4">
+                              <img
+                                src={post.imageUrl}
+                                alt="User post"
+                                className="rounded-lg w-full max-h-96 object-cover border border-white/20"
                               />
                             </div>
                           )}
-                        </div>
+                          <div className="flex gap-6 justify-evenly mt-3 text-white/70 text-sm">
+                            <SharedButton
+                              className={
+                                "hover:text-blue-400 transition-colors duration-200 flex items-center gap-1"
+                              }
+                              label={
+                                <>
+                                  <FaComment /> 3
+                                </>
+                              }
+                              whileTap={{ scale: 1.2 }}
+                            />
 
-                        <p className="mt-2 text-white/90">{post.content}</p>
-                        {post.imageUrl && (
-                          <div className="mt-4">
-                            <img
-                              src={post.imageUrl}
-                              alt="User post"
-                              className="rounded-lg w-full max-h-96 object-cover border border-white/20"
+                            <SharedButton
+                              className={
+                                "hover:text-green-400 transition-colors duration-200 flex items-center gap-1"
+                              }
+                              label={
+                                <>
+                                  <FaRetweet /> 5
+                                </>
+                              }
+                              whileTap={{ scale: 1.2 }}
+                            />
+                            <SharedButton
+                              className={
+                                "hover:text-pink-400 transition-colors duration-200 flex items-center gap-1"
+                              }
+                              label={
+                                <>
+                                  <FaHeart /> 12
+                                </>
+                              }
+                              whileTap={{ scale: 1.2 }}
                             />
                           </div>
-                        )}
-                        <div className="flex gap-6 justify-evenly mt-3 text-white/70 text-sm">
-                          <SharedButton
-                            className={
-                              "hover:text-blue-400 transition-colors duration-200 flex items-center gap-1"
-                            }
-                            label={
-                              <>
-                                <FaComment /> 3
-                              </>
-                            }
-                            whileTap={{ scale: 1.2 }}
-                          />
-
-                          <SharedButton
-                            className={
-                              "hover:text-green-400 transition-colors duration-200 flex items-center gap-1"
-                            }
-                            label={
-                              <>
-                                <FaRetweet /> 5
-                              </>
-                            }
-                            whileTap={{ scale: 1.2 }}
-                          />
-                          <SharedButton
-                            className={
-                              "hover:text-pink-400 transition-colors duration-200 flex items-center gap-1"
-                            }
-                            label={
-                              <>
-                                <FaHeart /> 12
-                              </>
-                            }
-                            whileTap={{ scale: 1.2 }}
-                          />
                         </div>
                       </div>
-                    </div>
+                    </Link>
                   </motion.div>
                 ));
               }}
