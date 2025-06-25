@@ -3,101 +3,90 @@ import { FaComment, FaHeart, FaRetweet } from "react-icons/fa";
 
 const VibeDetails = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-black text-white p-4 mt-15">
-      <div className="max-w-2xl mx-auto bg-white/10 p-6 rounded-2xl shadow-lg space-y-6">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-black text-white pt-20 px-4 pb-28">
+      <div className="max-w-2xl mx-auto bg-white/10 p-6 rounded-2xl shadow-xl space-y-6 relative">
         {/* User Info */}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3">
           <img
             src="https://via.placeholder.com/150"
             alt="Avatar"
-            className="w-14 h-14 rounded-full border border-white/30"
+            className="w-12 h-12 rounded-full border border-white/20"
           />
           <div>
-            <h2 className="text-lg font-semibold text-white">User Name</h2>
-            <p className="text-sm text-gray-400">@username</p>
+            <h2 className="text-base font-semibold text-white leading-none">
+              User Name
+            </h2>
+            <p className="text-xs text-gray-400">@username</p>
           </div>
         </div>
 
         {/* Vibe Content */}
-        <div>
-          <p className="text-white/90 text-base leading-relaxed">
-            This is where the vibe content will be shown. Could be text, could
-            be an image, could be a feeling.
-          </p>
+        <div className="text-white/90 text-base leading-relaxed">
+          This is where the vibe content will be shown. Could be text, could be
+          an image, could be a feeling.
           <img
             src="https://via.placeholder.com/400x200"
             alt="Post content"
-            className="mt-4 rounded-lg w-full object-cover border border-white/20"
+            className="mt-4 rounded-xl w-full object-cover border border-white/20"
+          />
+        </div>
+
+        <div className="flex gap-6 justify-around text-white/70 text-sm border-t border-white/20 pt-3">
+          <SharedButton
+            className="hover:text-blue-400 transition-colors duration-200 flex items-center gap-1"
+            label={
+              <>
+                <FaComment /> 3
+              </>
+            }
+            whileTap={{ scale: 1.2 }}
+          />
+          <SharedButton
+            className="hover:text-green-400 transition-colors duration-200 flex items-center gap-1"
+            label={
+              <>
+                <FaRetweet /> 5
+              </>
+            }
+            whileTap={{ scale: 1.2 }}
+          />
+          <SharedButton
+            className="hover:text-pink-400 transition-colors duration-200 flex items-center gap-1"
+            label={
+              <>
+                <FaHeart /> 12
+              </>
+            }
+            whileTap={{ scale: 1.2 }}
           />
         </div>
 
         {/* Comment Section */}
-        <div>
+        <div className="mt-6 space-y-4 max-h-[300px] overflow-y-auto pr-2">
           <h3 className="text-lg font-semibold mb-2">Comments</h3>
-          <div className="space-y-4">
-            <div className="bg-white/5 p-3 rounded-lg">
-              <p className="text-sm text-white">
-                <span className="font-bold">@commenter</span> This is a comment.
+          {[...Array(6)].map((_, i) => (
+            <div
+              key={i}
+              className="bg-white/5 p-3 rounded-lg backdrop-blur-sm"
+            >
+              <p className="text-sm text-white leading-snug">
+                <span className="font-bold text-purple-300">@user{i}</span>{" "}
+                Sample comment number {i + 1}
               </p>
             </div>
-            <div className="bg-white/5 p-3 rounded-lg">
-              <p className="text-sm text-white">
-                <span className="font-bold">@anotheruser</span> Another comment
-                here!
-              </p>
-            </div>
-          </div>
-          <hr className="mt-2" />
-          <div className="flex gap-6 justify-evenly mt-3 text-white/70 text-sm">
-            <SharedButton
-              className={
-                "hover:text-blue-400 transition-colors duration-200 flex items-center gap-1"
-              }
-              label={
-                <>
-                  <FaComment /> 3
-                </>
-              }
-              whileTap={{ scale: 1.2 }}
-            />
-
-            <SharedButton
-              className={
-                "hover:text-green-400 transition-colors duration-200 flex items-center gap-1"
-              }
-              label={
-                <>
-                  <FaRetweet /> 5
-                </>
-              }
-              whileTap={{ scale: 1.2 }}
-            />
-            <SharedButton
-              className={
-                "hover:text-pink-400 transition-colors duration-200 flex items-center gap-1"
-              }
-              label={
-                <>
-                  <FaHeart /> 12
-                </>
-              }
-              whileTap={{ scale: 1.2 }}
-            />
-          </div>
+          ))}
         </div>
-        <hr />
 
-        {/* Comment Input */}
-        <div>
-          <form className="flex items-center gap-2 mt-4">
+        <div className="fixed bottom-20 left-0 right-0 px-4 ">
+          <form className="flex items-center gap-2 max-w-2xl mx-auto bg-white/10 px-4 py-2 rounded-full border border-white/20 backdrop-blur-sm shadow-lg">
             <input
               type="text"
               placeholder="Leave a comment..."
-              className="flex-1 px-4 py-2 rounded-full bg-white/10 border border-white/20 text-sm text-white placeholder-gray-400 focus:outline-none"
+              className="flex-1 bg-transparent outline-none text-sm text-white placeholder-gray-400"
             />
             <button
               type="submit"
-              className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-full text-sm font-medium transition"
+              className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-1.5 rounded-full text-sm font-medium transition"
             >
               Send
             </button>
