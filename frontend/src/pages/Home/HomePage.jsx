@@ -34,13 +34,7 @@ const HomePage = () => {
     }
   };
 
-  const viewPost = async (id) => {
-    try {
-      alert(id);
-    } catch (error) {
-      console.error(error, "view Post Error");
-    }
-  };
+ 
   return (
     <>
       <div
@@ -63,7 +57,6 @@ const HomePage = () => {
                     key={post.id}
                     whileHover={{ scale: 1.02 }}
                     className="bg-white/10 rounded-2xl p-4 shadow-md hover:shadow-lg transition-shadow duration-300"
-                    onClick={() => viewPost(post._id)}
                   >
                     <Link to={post._id}>
                       <div className="flex items-start gap-4 flex-wrap">

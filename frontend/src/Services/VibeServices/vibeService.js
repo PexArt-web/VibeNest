@@ -103,8 +103,43 @@ export const getUserProfile = async (id) => {
     return data;
   } catch (error) {
     throw new Error(error.message);
-  } 
+  }
+};
+
+export const getUsersVibeById = async (id) => {
+  console.log(id, "doc id")
+  try {
+    const response = await fetch(
+      `http://localhost:4000/api/user/get-userVibe/${id}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${await getAccessToken()}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    const data = await response.json();
+    await checkResponse(response, data);
+    return data;
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
+export const createComment = async (id)=>{
+  try {
+    const response = await fetch(`http://localhost:4000/api/user/create-comment/${id}`,
+      {
+        method: "POST",
+        headers:{
+          Authorization:  `Bearer ${await getAccessToken()}`,
+          "Content-Type":"application/json"
+        }
+      }
+    )
+    const data = await
+  } catch (error) {
+    throw new Error(error)
+  }
 }
-
-
-

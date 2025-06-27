@@ -1,7 +1,11 @@
 import SharedButton from "@/Shared/Component/SharedButton";
+import SharedInput from "@/Shared/Component/SharedInput";
 import { FaComment, FaHeart, FaRetweet } from "react-icons/fa";
+import { Form, useLoaderData } from "react-router-dom";
 
 const VibeDetails = () => {
+  const dataElements = useLoaderData();
+  console.log(dataElements, "dataElements");
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-black text-white pt-20 px-4 pb-28">
       <div className="max-w-2xl mx-auto bg-white/10 p-6 rounded-2xl shadow-xl space-y-6 relative">
@@ -65,10 +69,7 @@ const VibeDetails = () => {
         <div className="mt-6 space-y-4 max-h-[300px] overflow-y-auto pr-2">
           <h3 className="text-lg font-semibold mb-2">Comments</h3>
           {[...Array(6)].map((_, i) => (
-            <div
-              key={i}
-              className="bg-white/5 p-3 rounded-lg backdrop-blur-sm"
-            >
+            <div key={i} className="bg-white/5 p-3 rounded-lg backdrop-blur-sm">
               <p className="text-sm text-white leading-snug">
                 <span className="font-bold text-purple-300">@user{i}</span>{" "}
                 Sample comment number {i + 1}
@@ -78,19 +79,26 @@ const VibeDetails = () => {
         </div>
 
         <div className="fixed bottom-20 left-0 right-0 px-4 ">
-          <form className="flex items-center gap-2 max-w-2xl mx-auto bg-white/10 px-4 py-2 rounded-full border border-white/20 backdrop-blur-sm shadow-lg">
+          <Form
+            encType="multipart/form-data"
+            method="post"
+            className="flex items-center gap-2 max-w-2xl mx-auto bg-white/10 px-4 py-2 rounded-full border border-white/20 backdrop-blur-sm shadow-lg"
+          >
+            {/* <SharedInput type={"text"} placeholder={"Leave a comment..."} className={"flex-1 bg-transparent outline-none text-sm text-white placeholder-gray-400"}/> */}
             <input
               type="text"
               placeholder="Leave a comment..."
               className="flex-1 bg-transparent outline-none text-sm text-white placeholder-gray-400"
+              name="content"
             />
-            <button
-              type="submit"
-              className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-1.5 rounded-full text-sm font-medium transition"
-            >
-              Send
-            </button>
-          </form>
+            <SharedButton
+              type={"submit"}
+              className={
+                "bg-purple-600 hover:bg-purple-700 text-white px-4 py-1.5 rounded-full text-sm font-medium transition"
+              }
+              label={"Send"}
+            />
+          </Form>
         </div>
       </div>
     </div>

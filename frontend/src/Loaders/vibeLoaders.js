@@ -1,4 +1,8 @@
-import { getUserProfile, getVibes } from "../Services/VibeServices/vibeService";
+import {
+  getUserProfile,
+  getUsersVibeById,
+  getVibes,
+} from "../Services/VibeServices/vibeService";
 import { requireAuth } from "../Services/Middleware/requireAuth";
 import { defer } from "react-router-dom";
 
@@ -8,6 +12,12 @@ export const homeVibeLoader = async ({ request }) => {
   return defer({ vibe });
 };
 
+export const vibeById = async ({ params }) => {
+  await requireAuth();
+  const { id } = params;
+  const vibeWithId = getUsersVibeById(id);
+  return defer({ vibeWithId });
+};
 export const createPostLoader = async ({ request }) => {
   await requireAuth(request);
 

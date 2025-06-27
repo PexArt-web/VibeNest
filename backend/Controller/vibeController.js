@@ -2,6 +2,7 @@ const Vibe = require("../Models/BluePrint/vibeModel");
 const mongoose = require("mongoose");
 const Comment = require("../Models/BluePrint/commentModel");
 
+const { log } = console;
 const createVibe = async (req, res) => {
   try {
     const { content, imageUrl } = req.body;
@@ -38,38 +39,52 @@ const getVibes = async (req, res) => {
   }
 };
 
-const getVibesWithComments = async(req, res) =>{
+const getVibesWithComments = async (req, res) => {
+  const  vibeId  = req.params;
+  log(vibeId, "params")
+  if (!mongoose.Types.ObjectId.isValid(vibeId)) {
+    return res.status(400).json({ error: "Invalid document Id" });
+  }
   try {
     const vibes = await Vibe.aggregate([
       {
-        $lookup:{
-          from:"Comments",
-          localField:"_id",
-          foreignField:"vibeId",
-          as:"Comment"
-        }
+        $match: {
+          _id: new mongoose.Types.ObjectId(vibeId),
+        },
       },
       {
-        $addFields:{
-          commentCount:{$size: "$Comments"}
-        }
+        $lookup: {
+          from: "Comment",
+          localField: "_id",
+          foreignField: "vibeId",
+          as: "Comment",
+        },
       },
       {
-        $project:{
-          comments:0
-        }
+        $addFields: {
+          commentCount: { $size: "$Comment" },
+        },
       },
       {
-        $sort:{
-          createdAt: -1
-        }
-      }
-    ])
+        $project: {
+          comment: 0,
+        },
+      },
+      {
+        $sort: {
+          createdAt: -1,
+        },
+      },
+    ]);
+    log(vibes, "with Id")
+    return res
+      .status(200)
+      .json({ message: "vibe fetched successfully", vibes });
   } catch (error) {
-    console.error("error getting vibes", error)
-    return res.status(500).json({message:"error fetching vibes" , error})
+    console.error("error getting vibes", error);
+    return res.status(500).json({ message: "error fetching vibes", error });
   }
-}
+};
 
 const getVibeById = async (req, res) => {
   try {
@@ -184,15 +199,11 @@ const likeOrUnlikeVibe = async (req, res) => {
     }
 
     await vibe.save();
-    return res
-      .status(200)
-      .json({
-        message: liked
-          ? "Vibe Unliked successfully"
-          : "Vibe liked Successfully",
-        likesCount: vibe.likes.length,
-        liked: !liked,
-      });
+    return res.status(200).json({
+      message: liked ? "Vibe Unliked successfully" : "Vibe liked Successfully",
+      likesCount: vibe.likes.length,
+      liked: !liked,
+    });
   } catch (error) {
     console.error("Error like this Post", error);
     return res.status(500).json({ message: "Error liking Post , try again" });
@@ -206,4 +217,5 @@ module.exports = {
   getVibeById,
   createComment,
   getComments,
+  getVibesWithComments,
 };

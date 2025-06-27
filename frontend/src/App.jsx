@@ -16,7 +16,7 @@ import SignUp from "./pages/Auth/SignUp";
 import Login from "./pages/Auth/Login";
 import { signupAction } from "./Handlers/Auth/SignupAction";
 import { loginAction } from "./Handlers/Auth/LoginAction";
-import { createPostLoader, homeVibeLoader, notificationLoader, profileLoader, trendingLoader } from "./Loaders/vibeLoaders";
+import { createPostLoader, homeVibeLoader, notificationLoader, profileLoader, trendingLoader, vibeById } from "./Loaders/vibeLoaders";
 import CreatePost from "./pages/Home/CreatePost";
 import { createVibeAction } from "./Handlers/VibeActions/createVibeAction";
 import VibeChats from "./pages/VibeChats";
@@ -31,7 +31,7 @@ function App() {
         <Route element={<VibeLayOut />}>
           <Route path="home">
           <Route index element= {<HomePage/>} loader={homeVibeLoader}/>
-          <Route path=":id" element={<VibeDetails/>} />
+          <Route path=":id" element={<VibeDetails/>} loader={vibeById} />
           <Route path="create-post" element={<CreatePost/>} loader={createPostLoader} action={createVibeAction} />
           </Route>
           <Route path="notification" element={<Notification />} loader={notificationLoader} />
