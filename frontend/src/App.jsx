@@ -21,6 +21,7 @@ import CreatePost from "./pages/Home/CreatePost";
 import { createVibeAction } from "./Handlers/VibeActions/createVibeAction";
 import VibeChats from "./pages/VibeChats";
 import VibeDetails from "./pages/Home/vibeView/VibeDetails";
+import { vibeComment } from "./Handlers/VibeActions/vibeCommentAction";
 function App() {
   const router = createBrowserRouter(
     createRoutesFromElements(
@@ -31,7 +32,7 @@ function App() {
         <Route element={<VibeLayOut />}>
           <Route path="home">
           <Route index element= {<HomePage/>} loader={homeVibeLoader}/>
-          <Route path=":id" element={<VibeDetails/>} loader={vibeById} />
+          <Route path=":vibeId" element={<VibeDetails/>} loader={vibeById} action={vibeComment} />
           <Route path="create-post" element={<CreatePost/>} loader={createPostLoader} action={createVibeAction} />
           </Route>
           <Route path="notification" element={<Notification />} loader={notificationLoader} />

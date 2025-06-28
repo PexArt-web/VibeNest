@@ -127,7 +127,8 @@ export const getUsersVibeById = async (id) => {
   }
 };
 
-export const createComment = async (id)=>{
+export const createComment = async ({id, content, imageUrl})=>{
+  console.log(id, "vibe comment")
   try {
     const response = await fetch(`http://localhost:4000/api/user/create-comment/${id}`,
       {
@@ -135,10 +136,13 @@ export const createComment = async (id)=>{
         headers:{
           Authorization:  `Bearer ${await getAccessToken()}`,
           "Content-Type":"application/json"
-        }
+        },
+        body: JSON.stringify({content, imageUrl})
       }
     )
-    const data = await
+    const data = await response.json()
+    await checkResponse(response, data)
+    return data
   } catch (error) {
     throw new Error(error)
   }

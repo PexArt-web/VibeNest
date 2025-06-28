@@ -5,7 +5,8 @@ const PageLoadError = () => {
   const error = useRouteError();
   const location = useLocation();
   const path = location.pathname;
-
+  console.log(error, "errorPage")
+  console.log(error?.message, "PageLoad Error")
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-red-400 via-purple-500 to-blue-600 text-white px-6 text-center">
       <FaBug className="text-5xl mb-4 animate-pulse" />

@@ -135,14 +135,15 @@ const createComment = async (req, res) => {
     if (!content && !imageUrl) {
       return res.status(400).json({ error: "Content or image is required" });
     }
-    const { vibeId } = req.params;
-    if (!mongoose.Types.ObjectId.isValid(vibeId)) {
+    const { id } = req.params;
+    log(id, "ID")
+    if (!mongoose.Types.ObjectId.isValid(id)) {
       return res.status(400).json({ error: "Invalid vibe ID" });
     }
-    if (!vibeId) {
+    if (!id) {
       return res.status(404).json({ error: "Vibe not found" });
     }
-    const comment = await Comment.create({ content, imageUrl, userId, vibeId });
+    const comment = await Comment.create({ content, imageUrl, userId, id });
     if (!comment) {
       return res.status(500).json({ error: "Failed to create comment" });
     }
