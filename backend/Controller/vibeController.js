@@ -61,16 +61,16 @@ const getVibesWithComments = async (req, res) => {
           as: "comment",
         },
       },
-      // {
-      //   $addFields: {
-      //     commentCount: { $size: "$comments" },
-      //   },
-      // },
-      // {
-      //   $project: {  
-      //     comment: 0,
-      //   },
-      // },
+      {
+        $addFields: {
+          commentCount: { $size: "$comments" },
+        },
+      },
+      {
+        $project: {  
+          comment: 0,
+        },
+      },
       {
         $sort: {
           createdAt: -1,

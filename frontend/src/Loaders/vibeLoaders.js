@@ -1,5 +1,5 @@
 import {
-  getUserProfile,
+  // getUserProfile,
   getUsersVibeById,
   getVibes,
 } from "../Services/VibeServices/vibeService";
@@ -38,11 +38,12 @@ export const trendingLoader = async ({ request }) => {
 
 export const profileLoader = async ({ request }) => {
   await requireAuth(request);
-  const user = await JSON.parse(localStorage.getItem("user"));
-  if (!user) {
-    throw new Error("Unauthorized user, please login again");
-  }
-  const userId = user?.user?._id;
-  const usersVibe = getUserProfile(userId);
-  return defer({ usersVibe });
+  // const user = await JSON.parse(localStorage.getItem("user"));
+  // if (!user) {
+  //   throw new Error("Unauthorized user, please login again");
+  // }
+  // const userId = user?.user?._id;
+  // const usersVibe = getUserProfile(userId);
+  // return defer({ usersVibe });
+  return null
 };
