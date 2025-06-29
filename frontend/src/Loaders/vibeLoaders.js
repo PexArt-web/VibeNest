@@ -14,8 +14,8 @@ export const homeVibeLoader = async ({ request }) => {
 
 export const vibeById = async ({ params }) => {
   await requireAuth();
-  const { id } = params;
-  const vibeWithId = getUsersVibeById(id);
+  const { vibeId } = params;
+  const vibeWithId = getUsersVibeById(vibeId);
   return defer({ vibeWithId });
 };
 export const createPostLoader = async ({ request }) => {

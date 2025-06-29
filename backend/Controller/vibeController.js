@@ -40,8 +40,9 @@ const getVibes = async (req, res) => {
 };
 
 const getVibesWithComments = async (req, res) => {
-  const  vibeId  = req.params;
-  log(vibeId, "params")
+  const { id } = req.params;
+  log(id, "params");
+  let vibeId = id;
   if (!mongoose.Types.ObjectId.isValid(vibeId)) {
     return res.status(400).json({ error: "Invalid document Id" });
   }
@@ -54,29 +55,29 @@ const getVibesWithComments = async (req, res) => {
       },
       {
         $lookup: {
-          from: "Comment",
+          from: "comments",
           localField: "_id",
           foreignField: "vibeId",
-          as: "Comment",
+          as: "comment",
         },
       },
-      {
-        $addFields: {
-          commentCount: { $size: "$Comment" },
-        },
-      },
-      {
-        $project: {
-          comment: 0,
-        },
-      },
+      // {
+      //   $addFields: {
+      //     commentCount: { $size: "$comments" },
+      //   },
+      // },
+      // {
+      //   $project: {  
+      //     comment: 0,
+      //   },
+      // },
       {
         $sort: {
           createdAt: -1,
         },
       },
     ]);
-    log(vibes, "with Id")
+    log(vibes, "with Id");
     return res
       .status(200)
       .json({ message: "vibe fetched successfully", vibes });
@@ -136,17 +137,23 @@ const createComment = async (req, res) => {
       return res.status(400).json({ error: "Content or image is required" });
     }
     const { id } = req.params;
-    log(id, "ID")
+    log(id, "from vibe comment controller");
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return res.status(400).json({ error: "Invalid vibe ID" });
     }
     if (!id) {
       return res.status(404).json({ error: "Vibe not found" });
     }
-    const comment = await Comment.create({ content, imageUrl, userId, id });
+    const comment = await Comment.create({
+      content,
+      imageUrl,
+      userId,
+      vibeId: id,
+    });
     if (!comment) {
       return res.status(500).json({ error: "Failed to create comment" });
     }
+    log(comment, "comment created");
     return res
       .status(200)
       .json({ message: "Comment created successfully", comment });

@@ -5,7 +5,7 @@ import { Form, useLoaderData } from "react-router-dom";
 
 const VibeDetails = () => {
   const dataElements = useLoaderData();
-  console.log(dataElements, "dataElements");
+  console.log(dataElements, "dataElements from vibe details");
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-black text-white pt-20 px-4 pb-28">
       <div className="max-w-2xl mx-auto bg-white/10 p-6 rounded-2xl shadow-xl space-y-6 relative">
