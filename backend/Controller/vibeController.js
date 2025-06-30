@@ -138,7 +138,7 @@ const createComment = async (req, res) => {
     }
     const { id } = req.params;
     log(id, "from vibe comment controller");
-    if (!mongoose.Types.ObjectId.isValid(id)) {
+    if (!mongoose.Types.ObjectId.isValid(id)) { 
       return res.status(400).json({ error: "Invalid vibe ID" });
     }
     if (!id) {
