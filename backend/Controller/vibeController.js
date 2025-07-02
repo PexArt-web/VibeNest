@@ -25,34 +25,34 @@ const createVibe = async (req, res) => {
   }
 };
 
-const getVibes = async (req, res) => {
-  try {
-    const vibes = await Vibe.find().sort({ createdAt: -1 }).populate("userId");
-    if (!vibes) {
-      return res.status(404).json({ error: "No vibes found" });
-    }
-    return res
-      .status(200)
-      .json({ message: "Vibes fetched successfully", vibes });
-  } catch (error) {
-    throw error;
-  }
-};
+// const getVibes = async (req, res) => {
+//   try {
+//     const vibes = await Vibe.find().sort({ createdAt: -1 }).populate("userId");
+//     if (!vibes) {
+//       return res.status(404).json({ error: "No vibes found" });
+//     }
+//     return res
+//       .status(200)
+//       .json({ message: "Vibes fetched successfully", vibes });
+//   } catch (error) {
+//     throw error;
+//   }
+// };
 
 const getVibesWithComments = async (req, res) => {
-  const { id } = req.params;
-  log(id, "params");
-  let vibeId = id;
-  if (!mongoose.Types.ObjectId.isValid(vibeId)) {
-    return res.status(400).json({ error: "Invalid document Id" });
-  }
+  // const { id } = req.params;
+  // log(id, "params");
+  // let vibeId = id;
+  // if (!mongoose.Types.ObjectId.isValid(vibeId)) {
+  //   return res.status(400).json({ error: "Invalid document Id" });
+  // }
   try {
     const vibes = await Vibe.aggregate([
-      {
-        $match: {
-          _id: new mongoose.Types.ObjectId(vibeId),
-        },
-      },
+      // {
+      //   $match: {
+      //     _id: new mongoose.Types.ObjectId(vibeId),
+      //   },
+      // },
       {
         $lookup: {
           from: "comments",
@@ -63,11 +63,22 @@ const getVibesWithComments = async (req, res) => {
       },
       {
         $addFields: {
-          commentCount: { $size: "$comments" },
+          commentCount: { $size: { $ifNull: ["$comment", []] } },
         },
       },
       {
-        $project: {  
+        $lookup: {
+          from: "users",
+          localField: "userId", 
+          foreignField: "_id", 
+          as: "user", 
+        },
+      },
+      {
+        $unwind: "$user",
+      },
+      {
+        $project: {
           comment: 0,
         },
       },
@@ -138,7 +149,7 @@ const createComment = async (req, res) => {
     }
     const { id } = req.params;
     log(id, "from vibe comment controller");
-    if (!mongoose.Types.ObjectId.isValid(id)) { 
+    if (!mongoose.Types.ObjectId.isValid(id)) {
       return res.status(400).json({ error: "Invalid vibe ID" });
     }
     if (!id) {
@@ -220,7 +231,7 @@ const likeOrUnlikeVibe = async (req, res) => {
 
 module.exports = {
   createVibe,
-  getVibes,
+  // getVibes,
   deleteVibe,
   getVibeById,
   createComment,

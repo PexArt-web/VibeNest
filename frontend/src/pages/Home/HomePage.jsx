@@ -53,6 +53,7 @@ const HomePage = () => {
             <Await resolve={dataElements?.vibe}>
               {() => {
                 return vibePosts?.vibes?.map((post) => (
+                  console.log(post, "post from vibe home page"),
                   <motion.div
                     key={post.id}
                     whileHover={{ scale: 1.02 }}
@@ -61,18 +62,18 @@ const HomePage = () => {
                     <Link to={post._id}>
                       <div className="flex items-start gap-4 flex-wrap">
                         <img
-                          src={post.userId?.avatar}
-                          alt={`${post.user} avatar`}
+                          src={post.user?.avatar}
+                          alt={`${post.user?.displayName} avatar`}
                           className="w-12 h-12 rounded-full border border-white/30"
                         />
                         <div className="flex-1">
                           <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start w-full gap-2 sm:gap-4">
                             <div>
                               <div className="font-semibold text-lg text-white">
-                                {post.userId?.displayName}
+                                {post.user?.displayName}
                               </div>
                               <div className="text-sm text-white/60">
-                                {post.userId?.username}
+                                {post.user?.username}
                               </div>
                             </div>
 

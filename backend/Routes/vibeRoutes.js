@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const {
   createVibe,
-  getVibes,
+  // getVibes,
   deleteVibe,
   getVibeById,
   createComment,
@@ -15,12 +15,13 @@ router.use(requireAuth);
 
 router.post("/create-vibe", createVibe);
 
-router.get("/get-vibes", getVibes);
+// router.get("/get-vibes", getVibes);
+router.get("/get-vibes", getVibesWithComments);
 
 router.delete("/delete-vibe/:id", deleteVibe);
 
 // router.get("/get-userVibe/:id", getVibeById)
-router.get("/get-userVibe/:id", getVibesWithComments);
+// router.get("/get-userVibe/:id", getVibesWithComments);
 
 router.post("/create-comment/:id", createComment);
 
