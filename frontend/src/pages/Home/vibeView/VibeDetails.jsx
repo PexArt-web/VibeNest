@@ -1,8 +1,9 @@
 import SharedButton from "@/Shared/Component/SharedButton";
 import SharedInput from "@/Shared/Component/SharedInput";
-import { useEffect, useState } from "react";
+import Fallback from "@/Suspense/Fallback";
+import { Suspense, useEffect, useState } from "react";
 import { FaComment, FaHeart, FaRetweet } from "react-icons/fa";
-import { Form, useLoaderData } from "react-router-dom";
+import { Await, Form, useLoaderData } from "react-router-dom";
 
 const VibeDetails = () => {
   const dataElements = useLoaderData();
@@ -20,6 +21,30 @@ const VibeDetails = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-black text-white pt-20 px-4 pb-28">
       <div className="max-w-2xl mx-auto bg-white/10 p-6 rounded-2xl shadow-xl space-y-6 relative">
+        <Suspense fallback={<Fallback  loadingTitle={"Loading your vibes..."}
+                titleFollowUp={"Please vibe with us a sec.."}/>}>
+          <Await resolve={dataElements?.vibeWithId}>
+            {()=>{
+              return details?.vibe?.map((vibe)=>(
+                console.log(vibe, "vibe from details"),
+                <div key={vibe._id} className="space-y-4">
+                  <h1 className="text-2xl font-bold text-white">{vibe.title}</h1>
+                  <p className="text-sm text-gray-400">
+                    {new Date(vibe.createdAt).toLocaleDateString()}
+                  </p>
+                  <p className="text-base text-white/90">{vibe.content}</p>
+                  {vibe.imageUrl && (
+                    <img
+                      src={vibe.imageUrl}
+                      alt="Vibe content"
+                      className="mt-4 rounded-xl w-full object-cover border border-white/20"
+                    />
+                  )}
+                </div>
+              ))
+            }}
+          </Await>
+        </Suspense>
         {/* User Info */}
         <div className="flex items-center gap-3">
           <img

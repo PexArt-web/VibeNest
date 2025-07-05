@@ -112,7 +112,7 @@ const HomePage = () => {
                               }
                               label={
                                 <>
-                                  <FaComment /> 3
+                                  <FaComment /> {post.commentCount}
                                 </>
                               }
                               whileTap={{ scale: 1.2 }}

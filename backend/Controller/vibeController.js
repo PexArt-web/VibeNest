@@ -25,34 +25,11 @@ const createVibe = async (req, res) => {
   }
 };
 
-// const getVibes = async (req, res) => {
-//   try {
-//     const vibes = await Vibe.find().sort({ createdAt: -1 }).populate("userId");
-//     if (!vibes) {
-//       return res.status(404).json({ error: "No vibes found" });
-//     }
-//     return res
-//       .status(200)
-//       .json({ message: "Vibes fetched successfully", vibes });
-//   } catch (error) {
-//     throw error;
-//   }
-// };
 
-const getVibesWithComments = async (req, res) => {
-  // const { id } = req.params;
-  // log(id, "params");
-  // let vibeId = id;
-  // if (!mongoose.Types.ObjectId.isValid(vibeId)) {
-  //   return res.status(400).json({ error: "Invalid document Id" });
-  // }
+const getWholeVibes = async (req, res) => {
   try {
     const vibes = await Vibe.aggregate([
-      // {
-      //   $match: {
-      //     _id: new mongoose.Types.ObjectId(vibeId),
-      //   },
-      // },
+   
       {
         $lookup: {
           from: "comments",
@@ -88,26 +65,25 @@ const getVibesWithComments = async (req, res) => {
         },
       },
     ]);
-    log(vibes, "with Id");
     return res
       .status(200)
       .json({ message: "vibe fetched successfully", vibes });
   } catch (error) {
-    console.error("error getting vibes", error);
     return res.status(500).json({ message: "error fetching vibes", error });
   }
 };
 
 const getVibeById = async (req, res) => {
   try {
-    const userId = req.params.id;
-    if (!mongoose.Types.ObjectId.isValid(userId)) {
+    const _id = req.params.id;
+    if (!mongoose.Types.ObjectId.isValid(_id)) {
       return res.status(400).json({ error: "Invalid vibe ID" });
     }
-    const vibe = await Vibe.find({ userId }).populate("userId");
+    const vibe = await Vibe.find({ _id }).populate('userId');
     if (!vibe) {
       return res.status(404).json({ error: "Vibe not found" });
     }
+    log(vibe, "vibe")
     return res.status(200).json({ message: "Vibe fetched successfully", vibe });
   } catch (error) {
     console.error("Error fetching vibe:", error);
@@ -236,5 +212,5 @@ module.exports = {
   getVibeById,
   createComment,
   getComments,
-  getVibesWithComments,
+  getWholeVibes,
 };

@@ -1,6 +1,6 @@
 import {
   // getUserProfile,
-  getUsersVibeById,
+  getVibeById,
   getVibes,
 } from "../Services/VibeServices/vibeService";
 import { requireAuth } from "../Services/Middleware/requireAuth";
@@ -15,9 +15,10 @@ export const homeVibeLoader = async ({ request }) => {
 export const vibeById = async ({ params }) => {
   await requireAuth();
   const { vibeId } = params;
-  const vibeWithId = getUsersVibeById(vibeId);
+  const vibeWithId = getVibeById(vibeId);
   return defer({ vibeWithId });
 };
+
 export const createPostLoader = async ({ request }) => {
   await requireAuth(request);
 

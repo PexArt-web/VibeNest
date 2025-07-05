@@ -7,7 +7,7 @@ const {
   getVibeById,
   createComment,
   getComments,
-  getVibesWithComments,
+  getWholeVibes,
 } = require("../Controller/vibeController");
 const { requireAuth } = require("../Middleware/requireAuth");
 
@@ -16,11 +16,11 @@ router.use(requireAuth);
 router.post("/create-vibe", createVibe);
 
 // router.get("/get-vibes", getVibes);
-router.get("/get-vibes", getVibesWithComments);
+router.get("/get-vibes", getWholeVibes);
 
 router.delete("/delete-vibe/:id", deleteVibe);
 
-// router.get("/get-userVibe/:id", getVibeById)
+router.get("/get-userVibe/:id", getVibeById)
 // router.get("/get-userVibe/:id", getVibesWithComments);
 
 router.post("/create-comment/:id", createComment);

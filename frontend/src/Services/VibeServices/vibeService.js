@@ -106,8 +106,7 @@ export const deleteVibePost = async (id) => {
 //   }
 // };
 
-export const getUsersVibeById = async (id) => {
-  console.log(id, "doc id")
+export const getVibeById = async (id) => {
   try {
     const response = await fetch(
       `http://localhost:4000/api/user/get-userVibe/${id}`,
