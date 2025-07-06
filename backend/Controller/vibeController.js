@@ -80,11 +80,13 @@ const getVibeById = async (req, res) => {
       return res.status(400).json({ error: "Invalid vibe ID" });
     }
     const vibe = await Vibe.find({ _id }).populate('userId');
+    const comment = await Comment.find({vibeId: _id})
+    .populate("userId")
+    .sort({ createdAt: -1 });
     if (!vibe) {
       return res.status(404).json({ error: "Vibe not found" });
     }
-    log(vibe, "vibe")
-    return res.status(200).json({ message: "Vibe fetched successfully", vibe });
+    return res.status(200).json({ message: "Vibe fetched successfully", vibe, comment });
   } catch (error) {
     console.error("Error fetching vibe:", error);
     return res.status(500).json({ error: "Failed to fetch vibe" });
