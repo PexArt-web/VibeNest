@@ -8,6 +8,7 @@ const {
   createComment,
   getComments,
   getWholeVibes,
+  reVibe,
 } = require("../Controller/vibeController");
 const { requireAuth } = require("../Middleware/requireAuth");
 
@@ -26,5 +27,7 @@ router.get("/get-userVibe/:id", getVibeById)
 router.post("/create-comment/:id", createComment);
 
 router.get("/get-comments/:id", getComments);
+
+router.post("/vibes/:id/revibe", reVibe)
 
 module.exports = router;

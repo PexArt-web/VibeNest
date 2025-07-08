@@ -25,11 +25,9 @@ const createVibe = async (req, res) => {
   }
 };
 
-
 const getWholeVibes = async (req, res) => {
   try {
     const vibes = await Vibe.aggregate([
-   
       {
         $lookup: {
           from: "comments",
@@ -46,9 +44,9 @@ const getWholeVibes = async (req, res) => {
       {
         $lookup: {
           from: "users",
-          localField: "userId", 
-          foreignField: "_id", 
-          as: "user", 
+          localField: "userId",
+          foreignField: "_id",
+          as: "user",
         },
       },
       {
@@ -79,14 +77,16 @@ const getVibeById = async (req, res) => {
     if (!mongoose.Types.ObjectId.isValid(_id)) {
       return res.status(400).json({ error: "Invalid vibe ID" });
     }
-    const vibe = await Vibe.find({ _id }).populate('userId');
-    const comment = await Comment.find({vibeId: _id})
-    .populate("userId")
-    .sort({ createdAt: -1 });
+    const vibe = await Vibe.find({ _id }).populate("userId");
+    const comment = await Comment.find({ vibeId: _id })
+      .populate("userId")
+      .sort({ createdAt: -1 });
     if (!vibe) {
       return res.status(404).json({ error: "Vibe not found" });
     }
-    return res.status(200).json({ message: "Vibe fetched successfully", vibe, comment });
+    return res
+      .status(200)
+      .json({ message: "Vibe fetched successfully", vibe, comment });
   } catch (error) {
     console.error("Error fetching vibe:", error);
     return res.status(500).json({ error: "Failed to fetch vibe" });
@@ -170,6 +170,39 @@ const getComments = async (req, res) => {
   }
 };
 
+const reVibe = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const { vibeId } = req.params;
+    const content = req.body;
+    if (!userId || !vibeId) {
+      return res.status(400).json({error:"Invalid or Missing VibeId"})
+    }
+    if (!mongoose.Types.ObjectId.isValid(vibeId)) {
+      return res.status(400).json({ error: "Invalid Vibe ID" });
+    }
+    
+    const original = await Vibe.findById(vibeId)
+    if(!original){
+      return res.status(404).json({ error: "Original vibe not found" });
+    }
+
+    const reVibeData = {
+      userId,
+      isRevibe: true,
+      originalVibe: vibeId,
+      ...(content && { content }),
+    };
+    const reVibed = await Vibe.create(reVibeData);
+    return res
+      .status(200)
+      .json({ message: "Post reVibed successfully", reVibed });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Error revibing" });
+  }
+};
+
 const likeOrUnlikeVibe = async (req, res) => {
   try {
     const { userId } = req.user;
@@ -215,4 +248,5 @@ module.exports = {
   createComment,
   getComments,
   getWholeVibes,
+  reVibe
 };
