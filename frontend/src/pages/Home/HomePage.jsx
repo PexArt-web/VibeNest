@@ -2,7 +2,7 @@ import { FaHeart, FaRetweet, FaComment, FaFeatherAlt } from "react-icons/fa";
 import { FiMoreVertical, FiTrash2 } from "react-icons/fi";
 import { motion } from "framer-motion";
 import SharedButton from "../../Shared/Component/SharedButton";
-import { Await, Link, useLoaderData } from "react-router-dom";
+import { Await, Link, useLoaderData, useSubmit } from "react-router-dom";
 import { Suspense, useEffect, useState } from "react";
 import Fallback from "../../Suspense/Fallback";
 import SharedDropDown from "@/Shared/Component/SharedDropDown";
@@ -11,6 +11,7 @@ import { useAuthContext } from "@/Hooks/useAuthContext";
 import moment from "moment";
 const HomePage = () => {
   const dataElements = useLoaderData();
+  const submit = useSubmit()
   const { user } = useAuthContext();
   const [vibePosts, setVibePosts] = useState([]);
 
@@ -34,7 +35,14 @@ const HomePage = () => {
     }
   };
 
- 
+  const handleReVibe = async (id) => {
+    alert("ReVibe functionality is not implemented yet." + " " + id);
+    const formData = new FormData()
+    formData.append("actionType", "revibe");
+    formData.append("id", id);
+    submit(formData, {method: "POST"})
+  };
+
   return (
     <>
       <div
@@ -52,100 +60,108 @@ const HomePage = () => {
           >
             <Await resolve={dataElements?.vibe}>
               {() => {
-                return vibePosts?.vibes?.map((post) => (
-                  console.log(post, "post from vibe home page"),
-                  <motion.div
-                    key={post.id}
-                    whileHover={{ scale: 1.02 }}
-                    className="bg-white/10 rounded-2xl p-4 shadow-md hover:shadow-lg transition-shadow duration-300"
-                  >
-                    <Link to={post._id}>
-                      <div className="flex items-start gap-4 flex-wrap">
-                        <img
-                          src={post.user?.avatar}
-                          alt={`${post.user?.displayName} avatar`}
-                          className="w-12 h-12 rounded-full border border-white/30"
-                        />
-                        <div className="flex-1">
-                          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start w-full gap-2 sm:gap-4">
-                            <div>
-                              <div className="font-semibold text-lg text-white">
-                                {post.user?.displayName}
+                return vibePosts?.vibes?.map(
+                  (post) => (
+                    console.log(post, "post from vibe home page"),
+                    (
+                      <motion.div
+                        key={post.id}
+                        whileHover={{ scale: 1.02 }}
+                        className="bg-white/10 rounded-2xl p-4 shadow-md hover:shadow-lg transition-shadow duration-300"
+                      >
+                        <div className="flex items-start gap-4 flex-wrap">
+                          <img
+                            src={post.user?.avatar}
+                            alt={`${post.user?.displayName} avatar`}
+                            className="w-12 h-12 rounded-full border border-white/30"
+                          />
+                          <div className="flex-1">
+                            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start w-full gap-2 sm:gap-4">
+                              <div>
+                                <div className="font-semibold text-lg text-white">
+                                  {post.user?.displayName}
+                                </div>
+                                <div className="text-sm text-white/60">
+                                  {post.user?.username}
+                                </div>
                               </div>
-                              <div className="text-sm text-white/60">
-                                {post.user?.username}
+
+                              <div className="text-xs text-white/40 mt-1">
+                                {moment(post.createdAt).fromNow()}
                               </div>
-                            </div>
 
-                            <div className="text-xs text-white/40 mt-1">
-                              {moment(post.createdAt).fromNow()}
+                              {user?.user._id === post?.userId && (
+                                <div className="self-end sm:self-start">
+                                  <SharedDropDown
+                                    parentLabel={<FiMoreVertical size={10} />}
+                                    dropDownLabel={"Delete"}
+                                    dropDownIcon={
+                                      <FiTrash2 size={20} color="red" />
+                                    }
+                                    handleDelete={() => handleDelete(post._id)}
+                                  />
+                                </div>
+                              )}
                             </div>
-
-                            {user?.user._id === post?.userId._id && (
-                              <div className="self-end sm:self-start">
-                                <SharedDropDown
-                                  parentLabel={<FiMoreVertical size={10} />}
-                                  dropDownLabel={"Delete"}
-                                  dropDownIcon={
-                                    <FiTrash2 size={20} color="red" />
+                            <Link to={post._id}>
+                              <p className="mt-2 text-white/90">
+                                {post.content}
+                              </p>
+                              {post.imageUrl && (
+                                <div className="mt-4">
+                                  <img
+                                    src={post.imageUrl}
+                                    alt="User post"
+                                    className="rounded-lg w-full max-h-96 object-cover border border-white/20"
+                                  />
+                                </div>
+                              )}
+                            </Link>
+                            <div className="flex gap-6 justify-evenly mt-3 text-white/70 text-sm">
+                              <Link to={post._id}>
+                                <SharedButton
+                                  className={
+                                    "hover:text-blue-400 transition-colors duration-200 flex items-center gap-1"
                                   }
-                                  handleDelete={() => handleDelete(post._id)}
+                                  label={
+                                    <>
+                                      <FaComment /> {post.commentCount}
+                                    </>
+                                  }
+                                  whileTap={{ scale: 1.2 }}
                                 />
-                              </div>
-                            )}
-                          </div>
+                              </Link>
 
-                          <p className="mt-2 text-white/90">{post.content}</p>
-                          {post.imageUrl && (
-                            <div className="mt-4">
-                              <img
-                                src={post.imageUrl}
-                                alt="User post"
-                                className="rounded-lg w-full max-h-96 object-cover border border-white/20"
+                              <SharedButton
+                                className={
+                                  "hover:text-green-400 transition-colors duration-200 flex items-center gap-1"
+                                }
+                                handleClick={() => handleReVibe(post._id)}
+                                label={
+                                  <>
+                                    <FaRetweet /> 5
+                                  </>
+                                }
+                                whileTap={{ scale: 1.2 }}
+                              />
+                              <SharedButton
+                                className={
+                                  "hover:text-pink-400 transition-colors duration-200 flex items-center gap-1"
+                                }
+                                label={
+                                  <>
+                                    <FaHeart /> 12
+                                  </>
+                                }
+                                whileTap={{ scale: 1.2 }}
                               />
                             </div>
-                          )}
-                          <div className="flex gap-6 justify-evenly mt-3 text-white/70 text-sm">
-                            <SharedButton
-                              className={
-                                "hover:text-blue-400 transition-colors duration-200 flex items-center gap-1"
-                              }
-                              label={
-                                <>
-                                  <FaComment /> {post.commentCount}
-                                </>
-                              }
-                              whileTap={{ scale: 1.2 }}
-                            />
-
-                            <SharedButton
-                              className={
-                                "hover:text-green-400 transition-colors duration-200 flex items-center gap-1"
-                              }
-                              label={
-                                <>
-                                  <FaRetweet /> 5
-                                </>
-                              }
-                              whileTap={{ scale: 1.2 }}
-                            />
-                            <SharedButton
-                              className={
-                                "hover:text-pink-400 transition-colors duration-200 flex items-center gap-1"
-                              }
-                              label={
-                                <>
-                                  <FaHeart /> 12
-                                </>
-                              }
-                              whileTap={{ scale: 1.2 }}
-                            />
                           </div>
                         </div>
-                      </div>
-                    </Link>
-                  </motion.div>
-                ));
+                      </motion.div>
+                    )
+                  )
+                );
               }}
             </Await>
           </Suspense>

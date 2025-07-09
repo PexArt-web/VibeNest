@@ -28,6 +28,6 @@ router.post("/create-comment/:id", createComment);
 
 router.get("/get-comments/:id", getComments);
 
-router.post("/vibes/:id/revibe", reVibe)
+router.post("/:id/revibe", reVibe)
 
 module.exports = router;

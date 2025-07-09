@@ -24,7 +24,7 @@ export const createVibePost = async ({ content, imageUrl }) => {
     throw new Error("Content and image URL are required to create a vibe post");
   }
   try {
-    const response = await fetch("http://localhost:4000/api/user/create-vibe", {
+    const response = await fetch("http://localhost:4000/api/vibes/create-vibe", {
       method: "POST",
       headers: {
         Authorization: `Bearer ${await getAccessToken()}`,
@@ -45,7 +45,7 @@ export const createVibePost = async ({ content, imageUrl }) => {
 
 export const getVibes = async () => {
   try {
-    const response = await fetch("http://localhost:4000/api/user/get-vibes", {
+    const response = await fetch("http://localhost:4000/api/vibes/get-vibes", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -66,7 +66,7 @@ export const deleteVibePost = async (id) => {
   }
   try {
     const response = await fetch(
-      `http://localhost:4000/api/user/delete-vibe/${id}`,
+      `http://localhost:4000/api/vibes/delete-vibe/${id}`,
       {
         method: "DELETE",
         headers: {
@@ -109,7 +109,7 @@ export const deleteVibePost = async (id) => {
 export const getVibeById = async (id) => {
   try {
     const response = await fetch(
-      `http://localhost:4000/api/user/get-userVibe/${id}`,
+      `http://localhost:4000/api/vibes/get-userVibe/${id}`,
       {
         method: "GET",
         headers: {
@@ -130,7 +130,7 @@ export const getVibeById = async (id) => {
 export const createComment = async ({id, content, imageUrl})=>{
   console.log(id, "vibe comment")
   try {
-    const response = await fetch(`http://localhost:4000/api/user/create-comment/${id}`,
+    const response = await fetch(`http://localhost:4000/api/vibes/create-comment/${id}`,
       {
         method: "POST",
         headers:{
@@ -145,5 +145,28 @@ export const createComment = async ({id, content, imageUrl})=>{
     return data
   } catch (error) {
     throw new Error(error)
+  }
+}
+
+export const revibe = async (id) => {
+  console.log(id, "revibe id")
+  
+  try {
+    const response = await fetch(`http://localhost:4000/api/vibes/${id}/revibe`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${await getAccessToken()}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ actionType: "revibe", id }),
+    });
+    const data = await response.json();
+    await checkResponse(response, data);
+    return data;
+  } catch (error) {
+    if (error.message === "Failed to fetch") {
+      error.message = "An unexpected error occurred. Please try again later.";
+    }
+    throw new Error(error.message);
   }
 }
