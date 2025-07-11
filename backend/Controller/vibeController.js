@@ -25,6 +25,52 @@ const createVibe = async (req, res) => {
   }
 };
 
+// const getWholeVibes = async (req, res) => {
+//   try {
+//     const vibes = await Vibe.aggregate([
+//       {
+//         $lookup: {
+//           from: "comments",
+//           localField: "_id",
+//           foreignField: "vibeId",
+//           as: "comment",
+//         },
+//       },
+//       {
+//         $addFields: {
+//           commentCount: { $size: { $ifNull: ["$comment", []] } },
+//         },
+//       },
+//       {
+//         $lookup: {
+//           from: "users",
+//           localField: "userId",
+//           foreignField: "_id",
+//           as: "user",
+//         },
+//       },
+//       {
+//         $unwind: "$user",
+//       },
+//       {
+//         $project: {
+//           comment: 0,
+//         },
+//       },
+//       {
+//         $sort: {
+//           createdAt: -1,
+//         },
+//       },
+//     ]);
+//     return res
+//       .status(200)
+//       .json({ message: "vibe fetched successfully", vibes });
+//   } catch (error) {
+//     return res.status(500).json({ message: "error fetching vibes", error });
+//   }
+// };
+
 const getWholeVibes = async (req, res) => {
   try {
     const vibes = await Vibe.aggregate([
@@ -52,6 +98,39 @@ const getWholeVibes = async (req, res) => {
       {
         $unwind: "$user",
       },
+
+      //  Getting the original vibe if it's a reVibe
+      {
+        $lookup: {
+          from: "vibes",
+          localField: "originalVibe",
+          foreignField: "_id",
+          as: "originalVibeData",
+        },
+      },
+      {
+        $unwind: {
+          path: "$originalVibeData",
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+
+      // Now get the user who posted the originalVibe
+      {
+        $lookup: {
+          from: "users",
+          localField: "originalVibeData.userId",
+          foreignField: "_id",
+          as: "originalVibeData.user",
+        },
+      },
+      {
+        $unwind: {
+          path: "$originalVibeData.user",
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+
       {
         $project: {
           comment: 0,
@@ -63,6 +142,7 @@ const getWholeVibes = async (req, res) => {
         },
       },
     ]);
+
     return res
       .status(200)
       .json({ message: "vibe fetched successfully", vibes });
@@ -174,16 +254,18 @@ const reVibe = async (req, res) => {
   try {
     const userId = req.user._id;
     const { id } = req.params;
-    const content = req.body;
+    log(reVibe, "revibed ID");
+    const content = req.body.content;
+    log(content, "revibed content");
     if (!userId || !id) {
-      return res.status(400).json({error:"Invalid or Missing VibeId"})
+      return res.status(400).json({ error: "Invalid or Missing VibeId" });
     }
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return res.status(400).json({ error: "Invalid Vibe ID" });
     }
-    
-    const original = await Vibe.findById(id)
-    if(!original){
+
+    const original = await Vibe.findById(id);
+    if (!original) {
       return res.status(404).json({ error: "Original vibe not found" });
     }
 
@@ -202,7 +284,7 @@ const reVibe = async (req, res) => {
       .status(200)
       .json({ message: "Post reVibed successfully", reVibed });
   } catch (error) {
-    log(error)
+    log(error);
     return res.status(500).json({ error: "Error revibing" });
   }
 };
@@ -252,5 +334,5 @@ module.exports = {
   createComment,
   getComments,
   getWholeVibes,
-  reVibe
+  reVibe,
 };

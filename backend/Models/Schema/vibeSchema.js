@@ -9,7 +9,7 @@ const vibeSchema = new Schema(
     },
     content: {
       type: String,
-      required: true,
+      // required: true,
       trim: true,
       maxlength: 500,
     },

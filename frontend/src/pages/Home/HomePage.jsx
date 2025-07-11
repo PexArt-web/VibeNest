@@ -39,6 +39,7 @@ const HomePage = () => {
     alert("ReVibe functionality is not implemented yet." + " " + id);
     const formData = new FormData()
     formData.append("actionType", "revibe");
+    formData.append("content", "ReVibed post");
     formData.append("id", id);
     submit(formData, {method: "POST"})
   };

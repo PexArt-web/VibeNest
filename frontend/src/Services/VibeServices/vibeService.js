@@ -148,9 +148,9 @@ export const createComment = async ({id, content, imageUrl})=>{
   }
 }
 
-export const revibe = async (id) => {
+export const revibe = async ({id, content}) => {
   console.log(id, "revibe id")
-  
+  console.log(content, "content")
   try {
     const response = await fetch(`http://localhost:4000/api/vibes/${id}/revibe`, {
       method: "POST",
@@ -158,7 +158,7 @@ export const revibe = async (id) => {
         Authorization: `Bearer ${await getAccessToken()}`,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ actionType: "revibe", id }),
+      body: JSON.stringify({ actionType: "revibe", id, content }),
     });
     const data = await response.json();
     await checkResponse(response, data);
