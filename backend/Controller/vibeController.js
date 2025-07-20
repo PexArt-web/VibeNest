@@ -73,6 +73,7 @@ const createVibe = async (req, res) => {
 
 const getWholeVibes = async (req, res) => {
   try {
+    // coming back to understand this properly
     const vibes = await Vibe.aggregate([
       {
         $lookup: {
