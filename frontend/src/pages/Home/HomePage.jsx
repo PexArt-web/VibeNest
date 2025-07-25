@@ -11,7 +11,7 @@ import { useAuthContext } from "@/Hooks/useAuthContext";
 import moment from "moment";
 const HomePage = () => {
   const dataElements = useLoaderData();
-  const submit = useSubmit()
+  const submit = useSubmit();
   const { user } = useAuthContext();
   const [vibePosts, setVibePosts] = useState([]);
 
@@ -37,11 +37,11 @@ const HomePage = () => {
 
   const handleReVibe = async (id) => {
     alert("ReVibe functionality is not implemented yet." + " " + id);
-    const formData = new FormData()
+    const formData = new FormData();
     formData.append("actionType", "revibe");
     formData.append("content", "ReVibed post");
     formData.append("id", id);
-    submit(formData, {method: "POST"})
+    submit(formData, { method: "POST" });
   };
 
   return (

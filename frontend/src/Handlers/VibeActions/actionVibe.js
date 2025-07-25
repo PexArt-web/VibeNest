@@ -18,6 +18,8 @@ export const actionVibe = async ({ request }) => {
       // }
       const data = await revibe({ id: vibeId, content });
       return { message: "Post reVibed successfully", data };
+    }else{
+      return null
     }
   } catch (error) {
     return { error: error.message };
