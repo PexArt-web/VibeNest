@@ -76,6 +76,7 @@ const HomePage = () => {
                             alt={`${post.user?.displayName} avatar`}
                             className="w-12 h-12 rounded-full border border-white/30"
                           />
+
                           <div className="flex-1">
                             <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start w-full gap-2 sm:gap-4">
                               <div>
@@ -104,6 +105,7 @@ const HomePage = () => {
                                 </div>
                               )}
                             </div>
+
                             <Link to={post._id}>
                               <p className="mt-2 text-white/90">
                                 {post.content}
@@ -118,6 +120,38 @@ const HomePage = () => {
                                 </div>
                               )}
                             </Link>
+                            {post.isRevibe && post.originalVibeData && (
+                              <div className="mt-4 border-l-4 border-purple-500 pl-4 bg-white/5 rounded-lg p-3">
+                                <div className="flex items-center gap-2 mb-2">
+                                  <img
+                                    src={post.originalVibeData.user?.avatar}
+                                    alt="Original Poster Avatar"
+                                    className="w-8 h-8 rounded-full border border-white/20"
+                                  />
+                                  <div>
+                                    <div className="text-sm font-medium text-white">
+                                      {post.originalVibeData.user?.displayName}
+                                    </div>
+                                    <div className="text-xs text-white/40">
+                                      {post.originalVibeData.user?.username}
+                                    </div>
+                                  </div>
+                                </div>
+                                <p className="text-white/80 text-sm">
+                                  {post.originalVibeData.content}
+                                </p>
+                                {post.originalVibeData.imageUrl && (
+                                  <div className="mt-2">
+                                    <img
+                                      src={post.originalVibeData.imageUrl}
+                                      alt="Original Vibe"
+                                      className="rounded-lg w-full max-h-60 object-cover border border-white/20"
+                                    />
+                                  </div>
+                                )}
+                              </div>
+                            )}
+
                             <div className="flex gap-6 justify-evenly mt-3 text-white/70 text-sm">
                               <Link to={post._id}>
                                 <SharedButton
