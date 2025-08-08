@@ -63,10 +63,11 @@ const HomePage = () => {
               {() => {
                 return vibePosts?.vibes?.map(
                   (post) => (
+                    // console.log(post, "post from vibe home page"),
                     console.log(post, "post from vibe home page"),
                     (
                       <motion.div
-                        key={post.id}
+                        key={post._id}
                         whileHover={{ scale: 1.02 }}
                         className="bg-white/10 rounded-2xl p-4 shadow-md hover:shadow-lg transition-shadow duration-300"
                       >
@@ -168,9 +169,11 @@ const HomePage = () => {
                               </Link>
 
                               <SharedButton
-                                className={
-                                  "hover:text-green-400 transition-colors duration-200 flex items-center gap-1"
-                                }
+                                className={`hover:text-green-400 transition-colors duration-200 flex items-center gap-1 ${
+                                  post._id == post.originalVibeData._id
+                                    ? "text-green-400"
+                                    : "text-white/70"
+                                }`}
                                 handleClick={() => handleReVibe(post._id)}
                                 label={
                                   <>
@@ -179,6 +182,7 @@ const HomePage = () => {
                                 }
                                 whileTap={{ scale: 1.2 }}
                               />
+
                               <SharedButton
                                 className={
                                   "hover:text-pink-400 transition-colors duration-200 flex items-center gap-1"
