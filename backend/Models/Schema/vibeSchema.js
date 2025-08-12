@@ -19,18 +19,27 @@ const vibeSchema = new Schema(
       default: null,
       required: false,
     },
-    isRevibe:{
-      type:Boolean,
-      default: false
+    isRevibe: {
+      type: Boolean,
+      default: false,
     },
-    originalVibe:{
-      type:Schema.Types.ObjectId,
-      ref:"Vibe"
-    },
-    likes : [{
+    reViberId: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+        default: [],
+      },
+    ],
+    originalVibe: {
       type: Schema.Types.ObjectId,
-      ref: "User"
-    }],
+      ref: "Vibe",
+    },
+    likes: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
     sentAt: {
       type: Date,
       default: Date.now,
