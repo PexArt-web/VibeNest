@@ -11,6 +11,7 @@ import { useAuthContext } from "@/Hooks/useAuthContext";
 import moment from "moment";
 const HomePage = () => {
   const dataElements = useLoaderData();
+  console.log(dataElements, "dataElements from HomePage");
   const submit = useSubmit();
   const { user } = useAuthContext();
   const [vibePosts, setVibePosts] = useState([]);
@@ -170,7 +171,9 @@ const HomePage = () => {
 
                               <SharedButton
                                 className={`hover:text-green-400 transition-colors duration-200 flex items-center gap-1 ${
-                                  post._id == post.originalVibeData._id
+                                  user?.user._id ===
+                                    post?.originalVibeData?.userId &&
+                                  post?.reViberId.includes(user?.user._id)
                                     ? "text-green-400"
                                     : "text-white/70"
                                 }`}

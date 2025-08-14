@@ -254,11 +254,17 @@ const getComments = async (req, res) => {
 const reVibe = async (req, res) => {
   try {
     const userId = req.user._id;
+    // const reViberId = req.user._id;
     const { id } = req.params;
     log(reVibe, "revibed ID");
     const content = req.body.content;
     log(content, "revibed content");
-    if (!userId || !id) {
+    if (!userId) {
+      return res
+        .status(401)
+        .json({ error: "Unauthorized user, please login again" });
+    }
+    if (!id) {
       return res.status(400).json({ error: "Invalid or Missing VibeId" });
     }
     if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -269,10 +275,22 @@ const reVibe = async (req, res) => {
     if (!original) {
       return res.status(404).json({ error: "Original vibe not found" });
     }
+   
+    const isAlreadyRevibed = original.reViberId.includes(userId);
+
+    if (isAlreadyRevibed) {
+      return res
+        .status(400)
+        .json({ error: "You have already revibed this post" });
+    }else {
+      original.reViberId.push(userId);
+      await original.save();
+    } 
 
     const reVibeData = {
       userId,
       isRevibe: true,
+      // reViberId: [userId],
       originalVibe: id,
       ...(content && { content }),
     };
