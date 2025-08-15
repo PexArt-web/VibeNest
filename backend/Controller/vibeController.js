@@ -275,17 +275,18 @@ const reVibe = async (req, res) => {
     if (!original) {
       return res.status(404).json({ error: "Original vibe not found" });
     }
-   
+
     const isAlreadyRevibed = original.reViberId.includes(userId);
 
     if (isAlreadyRevibed) {
-      return res
-        .status(400)
-        .json({ error: "You have already revibed this post" });
-    }else {
+      // return res
+      //   .status(400)
+      //   .json({ error: "You have already revibed this post" });
+      throw new Error("You have already revibed this post, undo revibe to reVibe again");
+    } else {
       original.reViberId.push(userId);
       await original.save();
-    } 
+    }
 
     const reVibeData = {
       userId,

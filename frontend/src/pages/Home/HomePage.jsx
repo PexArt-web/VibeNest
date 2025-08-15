@@ -171,9 +171,7 @@ const HomePage = () => {
 
                               <SharedButton
                                 className={`hover:text-green-400 transition-colors duration-200 flex items-center gap-1 ${
-                                  user?.user._id ===
-                                    post?.originalVibeData?.userId &&
-                                  post?.reViberId.includes(user?.user._id)
+                                  post?.reViberId?.includes(user?.user._id)
                                     ? "text-green-400"
                                     : "text-white/70"
                                 }`}
