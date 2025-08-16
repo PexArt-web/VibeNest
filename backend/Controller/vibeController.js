@@ -282,11 +282,16 @@ const reVibe = async (req, res) => {
       // return res
       //   .status(400)
       //   .json({ error: "You have already revibed this post" });
-      throw new Error("You have already revibed this post, undo revibe to reVibe again");
+      original.reViberId = original.reViberId.filter(
+        (id) => id.toString() !== userId.toString()
+      );
+      // await original.save();
+      // throw new Error("You have already revibed this post, undo revibe to reVibe again");
+      return;
     } else {
       original.reViberId.push(userId);
-      await original.save();
     }
+    await original.save();
 
     const reVibeData = {
       userId,
