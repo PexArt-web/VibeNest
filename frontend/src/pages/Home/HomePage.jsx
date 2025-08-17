@@ -37,7 +37,7 @@ const HomePage = () => {
   };
 
   const handleReVibe = async (id) => {
-    alert("ReVibe functionality is not implemented yet." + " " + id);
+    // alert("ReVibe functionality is not implemented yet." + " " + id);
     const formData = new FormData();
     formData.append("actionType", "revibe");
     formData.append("content", "ReVibed post");

@@ -272,20 +272,33 @@ const reVibe = async (req, res) => {
     }
 
     const original = await Vibe.findById(id);
+    // 689d63bfc220cba433a0c9b7
     if (!original) {
       return res.status(404).json({ error: "Original vibe not found" });
     }
+    log(original, "original vibe data");
 
     const isAlreadyRevibed = original.reViberId.includes(userId);
 
     if (isAlreadyRevibed) {
+      log("User has already revibed this post");
+      log("original.reViberId", original.reViberId);
+      log(isAlreadyRevibed, "isAlreadyRevibed");
+      log(userId.toString(), "userId");
       // return res
       //   .status(400)
       //   .json({ error: "You have already revibed this post" });
-      original.reViberId = original.reViberId.filter(
+     let origin = original.reViberId.filter(
         (id) => id.toString() !== userId.toString()
       );
-      // await original.save();
+      await original.updateOne({ _id: id }, {$pull});
+      log("revibe origin", original.reViberId);
+      await original.save();
+      if(origin){
+        log("revibe origin", origin);
+      }else{
+        log("revibe origin is unable to filter");
+      }
       // throw new Error("You have already revibed this post, undo revibe to reVibe again");
       return;
     } else {
