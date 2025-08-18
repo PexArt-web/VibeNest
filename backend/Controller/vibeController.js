@@ -281,25 +281,13 @@ const reVibe = async (req, res) => {
     const isAlreadyRevibed = original.reViberId.includes(userId);
 
     if (isAlreadyRevibed) {
-      log("User has already revibed this post");
-      log("original.reViberId", original.reViberId);
-      log(isAlreadyRevibed, "isAlreadyRevibed");
-      log(userId.toString(), "userId");
-      // return res
-      //   .status(400)
-      //   .json({ error: "You have already revibed this post" });
-     let origin = original.reViberId.filter(
-        (id) => id.toString() !== userId.toString()
+      await original.updateOne(
+        { _id: id },
+        { $pull: { reViberId: userId } },
+        { new: true }
       );
-      await original.updateOne({ _id: id }, {$pull});
-      log("revibe origin", original.reViberId);
-      await original.save();
-      if(origin){
-        log("revibe origin", origin);
-      }else{
-        log("revibe origin is unable to filter");
-      }
-      // throw new Error("You have already revibed this post, undo revibe to reVibe again");
+
+      // await original.save();
       return;
     } else {
       original.reViberId.push(userId);
