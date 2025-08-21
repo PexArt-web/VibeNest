@@ -252,13 +252,12 @@ const getComments = async (req, res) => {
 };
 
 const reVibe = async (req, res) => {
+  //dealing with the user that revibed the original vibe
   try {
     const userId = req.user._id;
     // const reViberId = req.user._id;
     const { id } = req.params;
-    log(reVibe, "revibed ID");
     const content = req.body.content;
-    log(content, "revibed content");
     if (!userId) {
       return res
         .status(401)
@@ -272,27 +271,28 @@ const reVibe = async (req, res) => {
     }
 
     const original = await Vibe.findById(id);
-    // 689d63bfc220cba433a0c9b7
     if (!original) {
       return res.status(404).json({ error: "Original vibe not found" });
     }
-    log(original, "original vibe data");
 
-    const isAlreadyRevibed = original.reViberId.includes(userId);
+    const isAlreadyRevibed = original.reViberId.some(
+      (reviberId) => reviberId.toString() === userId.toString()
+    );
 
     if (isAlreadyRevibed) {
-      await original.updateOne(
-        { _id: id },
-        { $pull: { reViberId: userId } },
-        { new: true }
+      original.reViberId = original.reViberId.filter(
+        (reviber) => reviber.toString() !== userId.toString()
       );
-
-      // await original.save();
-      return;
+      await original.save();
+      const deletedReVibe = await Vibe.findOneAndDelete({
+        userId,
+        originalVibe: id,
+      });
+      return res.status(200).json({ message: "Revibe removed successfully" });
     } else {
       original.reViberId.push(userId);
+      await original.save();
     }
-    await original.save();
 
     const reVibeData = {
       userId,
@@ -305,7 +305,6 @@ const reVibe = async (req, res) => {
     if (!reVibed) {
       return res.status(500).json({ error: "Failed to revibe" });
     }
-    log(reVibed, "reVibed data");
     return res
       .status(200)
       .json({ message: "Post reVibed successfully", reVibed });
