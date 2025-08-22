@@ -298,6 +298,7 @@ const reVibe = async (req, res) => {
       userId,
       isRevibe: true,
       // reViberId: [userId],
+      //
       originalVibe: id,
       ...(content && { content }),
     };
