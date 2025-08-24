@@ -24,14 +24,17 @@ export const createVibePost = async ({ content, imageUrl }) => {
     throw new Error("Content and image URL are required to create a vibe post");
   }
   try {
-    const response = await fetch("http://localhost:4000/api/vibes/create-vibe", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${await getAccessToken()}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ content, imageUrl }),
-    });
+    const response = await fetch(
+      "http://localhost:4000/api/vibes/create-vibe",
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${await getAccessToken()}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ content, imageUrl }),
+      }
+    );
     const data = await response.json();
     await checkResponse(response, data);
     return data;
@@ -120,46 +123,50 @@ export const getVibeById = async (id) => {
     );
     const data = await response.json();
     await checkResponse(response, data);
-    console.log(data,  "service data")
+    console.log(data, "service data");
     return data;
   } catch (error) {
     throw new Error(error);
   }
 };
 
-export const createComment = async ({id, content, imageUrl})=>{
-  console.log(id, "vibe comment")
+export const createComment = async ({ id, content, imageUrl }) => {
+  console.log(id, "vibe comment");
   try {
-    const response = await fetch(`http://localhost:4000/api/vibes/create-comment/${id}`,
+    const response = await fetch(
+      `http://localhost:4000/api/vibes/create-comment/${id}`,
       {
         method: "POST",
-        headers:{
-          Authorization:  `Bearer ${await getAccessToken()}`,
-          "Content-Type":"application/json"
+        headers: {
+          Authorization: `Bearer ${await getAccessToken()}`,
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify({content, imageUrl})
+        body: JSON.stringify({ content, imageUrl }),
       }
-    )
-    const data = await response.json()
-    await checkResponse(response, data)
-    return data
+    );
+    const data = await response.json();
+    await checkResponse(response, data);
+    return data;
   } catch (error) {
-    throw new Error(error)
+    throw new Error(error);
   }
-}
+};
 
-export const revibe = async ({id, content}) => {
-  console.log(id, "revibe id")
-  console.log(content, "content")
+export const revibe = async ({ id, content }) => {
+  console.log(id, "revibe id");
+  console.log(content, "content");
   try {
-    const response = await fetch(`http://localhost:4000/api/vibes/${id}/revibe`, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${await getAccessToken()}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ actionType: "revibe", id, content }),
-    });
+    const response = await fetch(
+      `http://localhost:4000/api/vibes/${id}/revibe`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${await getAccessToken()}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ actionType: "revibe", id, content }),
+      }
+    );
     const data = await response.json();
     await checkResponse(response, data);
     return data;
@@ -169,4 +176,23 @@ export const revibe = async ({id, content}) => {
     }
     throw new Error(error.message);
   }
-}
+};
+
+export const like = async (id) => {
+  console.log(id, "like id");
+  try {
+    const response = await fetch(`http://localhost:4000/api/vibes/${id}/like`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${await getAccessToken()}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ actionType: "like", id }),
+    });
+    const data = await response.json();
+    await checkResponse(response, data);
+    return data;
+  } catch (error) {
+    throw new Error(error);
+  }
+};

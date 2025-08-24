@@ -1,4 +1,4 @@
-import { revibe } from "@/Services/VibeServices/vibeService";
+import { like, revibe } from "@/Services/VibeServices/vibeService";
 
 export const actionVibe = async ({ request }) => {
   const formData = await request.formData();
@@ -18,6 +18,9 @@ export const actionVibe = async ({ request }) => {
       // }
       const data = await revibe({ id: vibeId, content });
       return { message: "Post reVibed successfully", data };
+    }else if(actionType === "like"){
+      const data = await like(vibeId);
+      return { message: "Vibe liked/unliked successfully", data };
     }else{
       return null
     }
@@ -25,3 +28,4 @@ export const actionVibe = async ({ request }) => {
     return { error: error.message };
   }
 };
+

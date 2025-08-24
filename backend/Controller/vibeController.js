@@ -252,7 +252,6 @@ const getComments = async (req, res) => {
 };
 
 const reVibe = async (req, res) => {
-  //dealing with the user that revibed the original vibe
   try {
     const userId = req.user._id;
     // const reViberId = req.user._id;
@@ -291,27 +290,27 @@ const reVibe = async (req, res) => {
       return res.status(200).json({ message: "Revibe removed successfully" });
     } else {
       original.reViberId.push(userId);
-      await original.save();
+      await original.save(); 
     }
+
 
     const reVibeData = {
       userId,
       isRevibe: true,
       // reViberId: [userId],
-      //
       originalVibe: id,
       ...(content && { content }),
     };
     const reVibed = await Vibe.create(reVibeData);
     if (!reVibed) {
-      return res.status(500).json({ error: "Failed to revibe" });
+      return res.status(500).json({ error: `Failed to revibe, ${reVibed}` });
     }
     return res
       .status(200)
       .json({ message: "Post reVibed successfully", reVibed });
   } catch (error) {
     log(error);
-    return res.status(500).json({ error: "Error revibing" });
+    return res.status(500).json({ error:`Error revibg the vibe, ${error}` });
   }
 };
 
@@ -319,9 +318,11 @@ const likeOrUnlikeVibe = async (req, res) => {
   try {
     const { userId } = req.user;
     const { vibeId } = req.params;
+    log(userId, "userId from like controller");
+    log(vibeId, "vibeId from like controller");
     if (!userId) {
       return res
-        .status(500)
+        .status(401)
         .json({ message: "Action not authorized , please try again" });
     }
     if (!vibeId) {
@@ -331,7 +332,9 @@ const likeOrUnlikeVibe = async (req, res) => {
     if (!vibe) {
       return res.status(500).json({ message: "vibe not found" });
     }
-    const liked = vibe.likes.include(userId);
+    const liked = vibe.likes.some(
+      (id) => id.toString() === userId.toString()
+    );
     if (liked) {
       vibe.likes = vibe.likes.filter(
         (id) => id.toString() !== userId.toString()
@@ -341,6 +344,7 @@ const likeOrUnlikeVibe = async (req, res) => {
     }
 
     await vibe.save();
+
     return res.status(200).json({
       message: liked ? "Vibe Unliked successfully" : "Vibe liked Successfully",
       likesCount: vibe.likes.length,
@@ -361,4 +365,5 @@ module.exports = {
   getComments,
   getWholeVibes,
   reVibe,
+  likeOrUnlikeVibe,
 };

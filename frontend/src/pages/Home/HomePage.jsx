@@ -45,6 +45,13 @@ const HomePage = () => {
     submit(formData, { method: "POST" });
   };
 
+  const handleReactions = async (id) => {
+    const formData = new FormData();
+    formData.append("actionType", "like");
+    formData.append("id", id);
+    submit(formData, { method: "POST" });
+  };
+
   return (
     <>
       <div
@@ -158,7 +165,7 @@ const HomePage = () => {
                               <Link to={post._id}>
                                 <SharedButton
                                   className={
-                                    "hover:text-blue-400 transition-colors duration-200 flex items-center gap-1"
+                                    "hover:text-blue-400 transition-colors duration-200 flex items-center cursor-pointer gap-1"
                                   }
                                   label={
                                     <>
@@ -170,7 +177,7 @@ const HomePage = () => {
                               </Link>
 
                               <SharedButton
-                                className={`hover:text-green-400 transition-colors duration-200 flex items-center gap-1 ${
+                                className={`hover:text-green-400 transition-colors cursor-pointer duration-200 flex items-center gap-1 ${
                                   post?.reViberId?.includes(user?.user._id)
                                     ? "text-green-400"
                                     : "text-white/70"
@@ -186,7 +193,8 @@ const HomePage = () => {
 
                               <SharedButton
                                 className={
-                                  "hover:text-pink-400 transition-colors duration-200 flex items-center gap-1"
+                                  `hover:text-pink-400 transition-colors duration-200 flex items-center gap-1 cursor-pointer ${post.likes?.includes(user?.user._id)
+                                    ? "text-pink-400" : "text-white/70"}`
                                 }
                                 label={
                                   <>
@@ -194,6 +202,7 @@ const HomePage = () => {
                                   </>
                                 }
                                 whileTap={{ scale: 1.2 }}
+                                handleClick={() => handleReactions(post._id)}
                               />
                             </div>
                           </div>
