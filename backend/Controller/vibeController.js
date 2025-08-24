@@ -290,9 +290,8 @@ const reVibe = async (req, res) => {
       return res.status(200).json({ message: "Revibe removed successfully" });
     } else {
       original.reViberId.push(userId);
-      await original.save(); 
+      await original.save();
     }
-
 
     const reVibeData = {
       userId,
@@ -310,16 +309,14 @@ const reVibe = async (req, res) => {
       .json({ message: "Post reVibed successfully", reVibed });
   } catch (error) {
     log(error);
-    return res.status(500).json({ error:`Error revibg the vibe, ${error}` });
+    return res.status(500).json({ error: `Error revibg the vibe, ${error}` });
   }
 };
 
 const likeOrUnlikeVibe = async (req, res) => {
   try {
-    const { userId } = req.user;
+    const userId = req.user._id;
     const { vibeId } = req.params;
-    log(userId, "userId from like controller");
-    log(vibeId, "vibeId from like controller");
     if (!userId) {
       return res
         .status(401)
@@ -328,13 +325,14 @@ const likeOrUnlikeVibe = async (req, res) => {
     if (!vibeId) {
       return res.status(500).json({ message: "vibe not found" });
     }
+    if (!mongoose.Types.ObjectId.isValid(vibeId)) {
+      return res.status(400).json({ error: "Invalid Vibe ID" });
+    }
     const vibe = await Vibe.findById(vibeId);
     if (!vibe) {
       return res.status(500).json({ message: "vibe not found" });
     }
-    const liked = vibe.likes.some(
-      (id) => id.toString() === userId.toString()
-    );
+    const liked = vibe.likes.some((id) => id.toString() === userId.toString());
     if (liked) {
       vibe.likes = vibe.likes.filter(
         (id) => id.toString() !== userId.toString()

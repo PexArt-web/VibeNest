@@ -185,7 +185,7 @@ const HomePage = () => {
                                 handleClick={() => handleReVibe(post._id)}
                                 label={
                                   <>
-                                    <FaRetweet /> 5
+                                    <FaRetweet /> {post.reViberId?.length || 0}
                                   </>
                                 }
                                 whileTap={{ scale: 1.2 }}
@@ -198,7 +198,7 @@ const HomePage = () => {
                                 }
                                 label={
                                   <>
-                                    <FaHeart /> 12
+                                    <FaHeart /> {post.likes?.length || 0}
                                   </>
                                 }
                                 whileTap={{ scale: 1.2 }}
