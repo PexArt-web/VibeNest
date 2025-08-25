@@ -56,7 +56,7 @@ const HomePage = () => {
     <>
       <div
         className="min-h-screen bg-gradient-to-br from-[#0f2027] via-[#203a43] to-[#2c5364] 
-    text-white p-19 "
+    text-white p-19 mt-2 mb-3"
       >
         <div className="max-w-2xl mx-auto space-y-6">
           <Suspense
@@ -71,7 +71,6 @@ const HomePage = () => {
               {() => {
                 return vibePosts?.vibes?.map(
                   (post) => (
-                    // console.log(post, "post from vibe home page"),
                     console.log(post, "post from vibe home page"),
                     (
                       <motion.div
