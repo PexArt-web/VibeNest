@@ -61,7 +61,7 @@ const Footer = () => {
         </NavLink>
 
         <NavLink
-          to={"profile"}
+          to={"/profile"}
           className={({ isActive }) =>
             `flex flex-col items-center hover:text-blue-500 transition ${
               isActive

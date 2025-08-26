@@ -15,7 +15,7 @@ const SplashScreen = () => {
 
     if (!showSplash) {
       navigate("/home", { replace: true });
-      return null;
+      // return null;
     }
 
     return () => clearTimeout(timer);
