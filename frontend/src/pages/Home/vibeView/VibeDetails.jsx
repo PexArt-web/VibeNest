@@ -3,7 +3,7 @@ import SharedInput from "@/Shared/Component/SharedInput";
 import Fallback from "@/Suspense/Fallback";
 import { Suspense, useEffect, useState } from "react";
 import { FaComment, FaHeart, FaRetweet } from "react-icons/fa";
-import { Await, Form, useLoaderData } from "react-router-dom";
+import { Await, Form, Link, useLoaderData } from "react-router-dom";
 
 const VibeDetails = () => {
   const dataElements = useLoaderData();
@@ -18,7 +18,7 @@ const VibeDetails = () => {
     vibeFetch();
   }, [dataElements?.vibeWithId]);
 
-  console.log(details?.comment.length, "length");
+  console.log(details, "length");
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-black text-white pt-20 pb-28 px-4">
       <div className="max-w-2xl mx-auto space-y-8 relative">
@@ -42,16 +42,16 @@ const VibeDetails = () => {
                     >
                       <div className="flex items-center gap-4">
                         <img
-                          src={vibe?.userId?.avatar || "/default-avatar.png"}
+                          src={vibe?.user?.avatar || "/default-avatar.png"}
                           alt="User Avatar"
                           className="w-12 h-12 rounded-full border border-white/20"
                         />
                         <div>
                           <h2 className="text-lg font-semibold text-white">
-                            {vibe?.userId?.displayName || "Anonymous"}
+                            {vibe?.user?.displayName || "Anonymous"}
                           </h2>
                           <p className="text-sm text-gray-400">
-                            {vibe?.userId?.username || "username"}
+                            {vibe?.user?.username || "username"}
                           </p>
                         </div>
                       </div>
@@ -71,12 +71,50 @@ const VibeDetails = () => {
                       </div>
 
                       {/*  */}
+                      {vibe.isRevibe && vibe.originalVibeData && (
+                        <Link
+                          to={`/home/${vibe.originalVibeData._id}`}
+                          className="cursor-pointer"
+                        >
+                          <div className="mt-4 border-l-4 border-purple-500 pl-4 bg-white/5 rounded-lg p-3">
+                            <div className="flex items-center gap-2 mb-2">
+                              <img
+                                src={vibe.originalVibeData.user?.avatar}
+                                alt="Original Poster Avatar"
+                                className="w-8 h-8 rounded-full border border-white/20"
+                              />
+                              <div>
+                                <div className="text-sm font-medium text-white">
+                                  {vibe.originalVibeData.user?.displayName}
+                                </div>
+                                <div className="text-xs text-white/40">
+                                  {vibe.originalVibeData.user?.username}
+                                </div>
+                              </div>
+                            </div>
+                            <p className="text-white/80 text-sm">
+                              {vibe.originalVibeData.content}
+                            </p>
+                            {vibe.originalVibeData.imageUrl && (
+                              <div className="mt-2">
+                                <img
+                                  src={vibe.originalVibeData.imageUrl}
+                                  alt="Original Vibe"
+                                  className="rounded-lg w-full max-h-60 object-cover border border-white/20"
+                                />
+                              </div>
+                            )}
+                          </div>
+                        </Link>
+                      )}
+
+                      {/*  */}
                       <div className="flex gap-6 justify-around text-white/70 text-sm border-t border-white/20 pt-3">
                         <SharedButton
                           className="hover:text-blue-400 flex items-center gap-1"
                           label={
                             <>
-                              <FaComment /> {details?.comment.length || 0}
+                              <FaComment /> {vibe.commentCount || 0}
                             </>
                           }
                           whileTap={{ scale: 1.2 }}
@@ -85,7 +123,7 @@ const VibeDetails = () => {
                           className="hover:text-green-400 flex items-center gap-1"
                           label={
                             <>
-                              <FaRetweet /> 0
+                              <FaRetweet /> {vibe?.reViberId.length || 0}
                             </>
                           }
                           whileTap={{ scale: 1.2 }}
@@ -94,7 +132,7 @@ const VibeDetails = () => {
                           className="hover:text-pink-400 flex items-center gap-1"
                           label={
                             <>
-                              <FaHeart /> 0
+                              <FaHeart /> {vibe?.likes.length || 0}
                             </>
                           }
                           whileTap={{ scale: 1.2 }}
@@ -104,8 +142,8 @@ const VibeDetails = () => {
                       {/* */}
                       <div className="mt-6 space-y-4 max-h-[300px] overflow-y-auto pr-2">
                         <h3 className="text-lg font-semibold mb-2">Comments</h3>
-                        {details?.comment?.length > 0 ? (
-                          details?.comment.map(
+                        {vibe.commentCount > 0 ? (
+                          details?.comment?.map(
                             (comment) => (
                               console.log(comment, "comment from details"),
                               (
@@ -125,7 +163,7 @@ const VibeDetails = () => {
                           )
                         ) : (
                           <p className="text-gray-400 text-sm">
-                            No comments yet 🫠
+                            No comments yet ...
                           </p>
                         )}
                       </div>

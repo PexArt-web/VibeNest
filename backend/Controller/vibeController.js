@@ -158,10 +158,85 @@ const getVibeById = async (req, res) => {
     if (!mongoose.Types.ObjectId.isValid(_id)) {
       return res.status(400).json({ error: "Invalid vibe ID" });
     }
-    const vibe = await Vibe.find({ _id }).populate("userId");
+
+     const vibe = await Vibe.aggregate([
+      { $match: { _id: new mongoose.Types.ObjectId(_id) } },
+      {
+        $lookup: {
+          from: "comments",
+          localField: "_id",
+          foreignField: "vibeId",
+          as: "comment",
+        },
+      },
+      {
+        $addFields: {
+          commentCount: { $size: { $ifNull: ["$comment", []] } },
+        },
+      },
+      {
+        $lookup: {
+          from: "users",
+          localField: "userId",
+          foreignField: "_id",
+          as: "user",
+        },
+      },
+      {
+        $unwind: "$user",
+      },
+
+      //  Getting the original vibe if it's a reVibe
+      {
+        $lookup: {
+          from: "vibes",
+          localField: "originalVibe",
+          foreignField: "_id",
+          as: "originalVibeData",
+        },
+      },
+      {
+        $unwind: {
+          path: "$originalVibeData",
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+
+      // Now get the user who posted the originalVibe
+      {
+        $lookup: {
+          from: "users",
+          localField: "originalVibeData.userId",
+          foreignField: "_id",
+          as: "originalVibeData.user",
+        },
+      },
+      {
+        $unwind: {
+          path: "$originalVibeData.user",
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+
+      {
+        $project: {
+          comment: 0,
+        },
+      },
+      {
+        $sort: {
+          createdAt: -1,
+        },
+      },
+    ]);
+
+    // const vibe = await Vibe.find({ _id }).populate("userId");
+    // log(await vibe.originalVibe, "vibe by id");
+    
     const comment = await Comment.find({ vibeId: _id })
       .populate("userId")
       .sort({ createdAt: -1 });
+    log(vibe, "vibe by id");
     if (!vibe) {
       return res.status(404).json({ error: "Vibe not found" });
     }

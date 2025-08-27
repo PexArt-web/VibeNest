@@ -114,9 +114,10 @@ const HomePage = () => {
                             </div>
 
                             <Link to={post._id} className="cursor-pointer">
-                              <p className="mt-2 text-white/90">
+                              <p className="mt-2 text-white/90 ">
                                 {post.content}
                               </p>
+                              {/* <p>hje</p> */}
                               {post.imageUrl && (
                                 <div className="mt-4">
                                   <img

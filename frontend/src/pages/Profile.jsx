@@ -5,7 +5,7 @@
 // import Fallback from "@/Suspense/Fallback";
 // import moment from "moment";
 
-// const Profile = () => {
+const Profile = () => {
 //   const { user } = useAuthContext();
 //   const dataElements = useLoaderData();
 //   const [profilePosts, setProfilePosts] = useState([]);
@@ -100,6 +100,6 @@
 //       </div>
 //     </div>
 //   );
-// };
+};
 
-// export default Profile;
+export default Profile;
