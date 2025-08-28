@@ -38,7 +38,6 @@ function App() {
           </Route>
           <Route path="notification" element={<Notification />} loader={notificationLoader} />
           <Route path="trending" element={<Trending />} loader={trendingLoader} />
-
           <Route path="chat" element = {<VibeChats/>} />
           <Route path="profile" element={<Profile />} loader={profileLoader} />
         </Route>

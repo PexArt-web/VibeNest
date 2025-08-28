@@ -1,24 +1,51 @@
+import { useAuthContext } from "@/Hooks/useAuthContext";
 import SharedButton from "@/Shared/Component/SharedButton";
 import SharedInput from "@/Shared/Component/SharedInput";
 import Fallback from "@/Suspense/Fallback";
-import { Suspense, useEffect, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import { FaComment, FaHeart, FaRetweet } from "react-icons/fa";
-import { Await, Form, Link, useLoaderData } from "react-router-dom";
+import {
+  Await,
+  Form,
+  Link,
+  useLoaderData,
+  useNavigation,
+  useSubmit,
+} from "react-router-dom";
 
 const VibeDetails = () => {
   const dataElements = useLoaderData();
-  console.log(dataElements, "dataElements in VibeDetails");
   const [details, setDetails] = useState();
+  const submit = useSubmit();
+  const { user } = useAuthContext();
+  const navigation = useNavigation();
+  const formRef = useRef();
   useEffect(() => {
     const vibeFetch = async () => {
       const vibe = (await dataElements?.vibeWithId) || [];
       setDetails(vibe);
-      console.log(vibe, "vibe from useEffect");
     };
     vibeFetch();
-  }, [dataElements?.vibeWithId]);
 
-  console.log(details, "length");
+    if (navigation.state === "idle") {
+      formRef.current?.reset();
+    }
+  }, [dataElements?.vibeWithId, navigation.state]);
+
+  const handleReVibe = async (id) => {
+    const formData = new FormData();
+    formData.append("actionType", "revibe");
+    formData.append("content", "");
+    formData.append("id", id);
+    submit(formData, { method: "POST" });
+  };
+
+  const handleReactions = async (id) => {
+    const formData = new FormData();
+    formData.append("actionType", "like");
+    formData.append("id", id);
+    submit(formData, { method: "POST" });
+  };
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-black text-white pt-20 pb-28 px-4">
       <div className="max-w-2xl mx-auto space-y-8 relative">
@@ -26,151 +53,150 @@ const VibeDetails = () => {
           fallback={
             <Fallback
               loadingTitle="Loading Vibe..."
-              titleFollowUp="Hold on a sec 🔄"
+              titleFollowUp="Hold on a sec "
             />
           }
         >
           <Await resolve={dataElements?.vibeWithId}>
             {() => {
-              return details?.vibe?.map(
-                (vibe) => (
-                  console.log(vibe, "vibe from details"),
-                  (
-                    <div
-                      key={vibe._id}
-                      className="bg-white/10 p-6 rounded-2xl shadow-lg space-y-4"
+              return details?.vibe?.map((vibe) => (
+                <div
+                  key={vibe._id}
+                  className="bg-white/10 p-6 rounded-2xl shadow-lg space-y-4"
+                >
+                  <div className="flex items-center gap-4">
+                    <img
+                      src={vibe?.user?.avatar || "/default-avatar.png"}
+                      alt="User Avatar"
+                      className="w-12 h-12 rounded-full border border-white/20"
+                    />
+                    <div>
+                      <h2 className="text-lg font-semibold text-white">
+                        {vibe?.user?.displayName || "Anonymous"}
+                      </h2>
+                      <p className="text-sm text-gray-400">
+                        {vibe?.user?.username || "username"}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* */}
+                  <div className="space-y-2">
+                    <p className="text-base text-white/90">{vibe.content}</p>
+                    {vibe.imageUrl && (
+                      <img
+                        src={vibe.imageUrl}
+                        alt="Vibe image"
+                        className="w-full rounded-xl mt-3 object-cover border border-white/20"
+                      />
+                    )}
+                  </div>
+
+                  {/*  */}
+                  {vibe.isRevibe && vibe.originalVibeData && (
+                    <Link
+                      to={`/home/${vibe.originalVibeData._id}`}
+                      className="cursor-pointer"
                     >
-                      <div className="flex items-center gap-4">
-                        <img
-                          src={vibe?.user?.avatar || "/default-avatar.png"}
-                          alt="User Avatar"
-                          className="w-12 h-12 rounded-full border border-white/20"
-                        />
-                        <div>
-                          <h2 className="text-lg font-semibold text-white">
-                            {vibe?.user?.displayName || "Anonymous"}
-                          </h2>
-                          <p className="text-sm text-gray-400">
-                            {vibe?.user?.username || "username"}
+                      <div className="mt-4 border-l-4 border-purple-500 pl-4 bg-white/5 rounded-lg p-3">
+                        <div className="flex items-center gap-2 mb-2">
+                          <img
+                            src={vibe.originalVibeData.user?.avatar}
+                            alt="Original Poster Avatar"
+                            className="w-8 h-8 rounded-full border border-white/20"
+                          />
+                          <div>
+                            <div className="text-sm font-medium text-white">
+                              {vibe.originalVibeData.user?.displayName}
+                            </div>
+                            <div className="text-xs text-white/40">
+                              {vibe.originalVibeData.user?.username}
+                            </div>
+                          </div>
+                        </div>
+                        <p className="text-white/80 text-sm">
+                          {vibe.originalVibeData.content}
+                        </p>
+                        {vibe.originalVibeData.imageUrl && (
+                          <div className="mt-2">
+                            <img
+                              src={vibe.originalVibeData.imageUrl}
+                              alt="Original Vibe"
+                              className="rounded-lg w-full max-h-60 object-cover border border-white/20"
+                            />
+                          </div>
+                        )}
+                      </div>
+                    </Link>
+                  )}
+
+                  {/*  */}
+                  <div className="flex gap-6 justify-around text-white/70 text-sm border-t border-white/20 pt-3">
+                    <SharedButton
+                      className="hover:text-blue-400 flex items-center gap-1"
+                      label={
+                        <>
+                          <FaComment /> {vibe.commentCount || 0}
+                        </>
+                      }
+                      whileTap={{ scale: 1.2 }}
+                    />
+                    <SharedButton
+                      className={`hover:text-green-400 flex items-center gap-1 ${
+                        vibe?.reViberId?.includes(user?.user._id)
+                          ? "text-green-400"
+                          : "text-white/70"
+                      }`}
+                      label={
+                        <>
+                          <FaRetweet /> {vibe?.reViberId.length || 0}
+                        </>
+                      }
+                      handleClick={() => handleReVibe(vibe._id)}
+                      whileTap={{ scale: 1.2 }}
+                    />
+
+                    <SharedButton
+                      className={`hover:text-pink-400 flex items-center gap-1 ${
+                        vibe?.likes.includes(user?.user._id)
+                          ? " text-pink-500"
+                          : "text-white/70"
+                      }`}
+                      label={
+                        <>
+                          <FaHeart /> {vibe?.likes.length || 0}
+                        </>
+                      }
+                      whileTap={{ scale: 1.2 }}
+                      handleClick={() => handleReactions(vibe._id)}
+                    />
+                  </div>
+
+                  {/* */}
+                  <div className="mt-6 space-y-4 max-h-[300px] overflow-y-auto pr-2">
+                    <h3 className="text-lg font-semibold mb-2">Comments</h3>
+                    {vibe.commentCount > 0 ? (
+                      details?.comment?.map((comment) => (
+                        <div
+                          key={comment._id}
+                          className="bg-white/5 p-3 rounded-lg backdrop-blur-sm"
+                        >
+                          <p className="text-sm text-white leading-snug">
+                            <span className="font-bold text-purple-300">
+                              {comment?.userId?.username || "user"}
+                            </span>{" "}
+                            {comment.content}
                           </p>
                         </div>
-                      </div>
-
-                      {/* */}
-                      <div className="space-y-2">
-                        <p className="text-base text-white/90">
-                          {vibe.content}
-                        </p>
-                        {vibe.imageUrl && (
-                          <img
-                            src={vibe.imageUrl}
-                            alt="Vibe image"
-                            className="w-full rounded-xl mt-3 object-cover border border-white/20"
-                          />
-                        )}
-                      </div>
-
-                      {/*  */}
-                      {vibe.isRevibe && vibe.originalVibeData && (
-                        <Link
-                          to={`/home/${vibe.originalVibeData._id}`}
-                          className="cursor-pointer"
-                        >
-                          <div className="mt-4 border-l-4 border-purple-500 pl-4 bg-white/5 rounded-lg p-3">
-                            <div className="flex items-center gap-2 mb-2">
-                              <img
-                                src={vibe.originalVibeData.user?.avatar}
-                                alt="Original Poster Avatar"
-                                className="w-8 h-8 rounded-full border border-white/20"
-                              />
-                              <div>
-                                <div className="text-sm font-medium text-white">
-                                  {vibe.originalVibeData.user?.displayName}
-                                </div>
-                                <div className="text-xs text-white/40">
-                                  {vibe.originalVibeData.user?.username}
-                                </div>
-                              </div>
-                            </div>
-                            <p className="text-white/80 text-sm">
-                              {vibe.originalVibeData.content}
-                            </p>
-                            {vibe.originalVibeData.imageUrl && (
-                              <div className="mt-2">
-                                <img
-                                  src={vibe.originalVibeData.imageUrl}
-                                  alt="Original Vibe"
-                                  className="rounded-lg w-full max-h-60 object-cover border border-white/20"
-                                />
-                              </div>
-                            )}
-                          </div>
-                        </Link>
-                      )}
-
-                      {/*  */}
-                      <div className="flex gap-6 justify-around text-white/70 text-sm border-t border-white/20 pt-3">
-                        <SharedButton
-                          className="hover:text-blue-400 flex items-center gap-1"
-                          label={
-                            <>
-                              <FaComment /> {vibe.commentCount || 0}
-                            </>
-                          }
-                          whileTap={{ scale: 1.2 }}
-                        />
-                        <SharedButton
-                          className="hover:text-green-400 flex items-center gap-1"
-                          label={
-                            <>
-                              <FaRetweet /> {vibe?.reViberId.length || 0}
-                            </>
-                          }
-                          whileTap={{ scale: 1.2 }}
-                        />
-                        <SharedButton
-                          className="hover:text-pink-400 flex items-center gap-1"
-                          label={
-                            <>
-                              <FaHeart /> {vibe?.likes.length || 0}
-                            </>
-                          }
-                          whileTap={{ scale: 1.2 }}
-                        />
-                      </div>
-
-                      {/* */}
-                      <div className="mt-6 space-y-4 max-h-[300px] overflow-y-auto pr-2">
-                        <h3 className="text-lg font-semibold mb-2">Comments</h3>
-                        {vibe.commentCount > 0 ? (
-                          details?.comment?.map(
-                            (comment) => (
-                              console.log(comment, "comment from details"),
-                              (
-                                <div
-                                  key={comment._id}
-                                  className="bg-white/5 p-3 rounded-lg backdrop-blur-sm"
-                                >
-                                  <p className="text-sm text-white leading-snug">
-                                    <span className="font-bold text-purple-300">
-                                      {comment?.userId?.username || "user"}
-                                    </span>{" "}
-                                    {comment.content}
-                                  </p>
-                                </div>
-                              )
-                            )
-                          )
-                        ) : (
-                          <p className="text-gray-400 text-sm">
-                            No comments yet ...
-                          </p>
-                        )}
-                      </div>
-                    </div>
-                  )
-                )
-              );
+                      ))
+                    ) : (
+                      <p className="text-gray-400 text-sm">
+                        No comments yet ...
+                      </p>
+                    )}
+                  </div>
+                </div>
+              ));
             }}
           </Await>
         </Suspense>
@@ -181,6 +207,7 @@ const VibeDetails = () => {
             method="post"
             className="flex items-center gap-2 max-w-2xl mx-auto bg-white/10 px-4 py-2 rounded-full border border-white/20 backdrop-blur-sm shadow-lg"
             encType="multipart/form-data"
+            ref={formRef}
           >
             <div className="flex-1">
               <SharedInput
@@ -195,7 +222,8 @@ const VibeDetails = () => {
             <SharedButton
               type="submit"
               className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-1.5 rounded-full text-sm font-medium transition"
-              label="Send"
+              label={navigation.state === "submitting" ? "Posting..." : "Post"}
+              disabled={navigation.state === "submitting"}
             />
           </Form>
         </div>

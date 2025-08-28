@@ -11,7 +11,6 @@ import { useAuthContext } from "@/Hooks/useAuthContext";
 import moment from "moment";
 const HomePage = () => {
   const dataElements = useLoaderData();
-  console.log(dataElements, "dataElements from HomePage");
   const submit = useSubmit();
   const { user } = useAuthContext();
   const [vibePosts, setVibePosts] = useState([]);
@@ -70,7 +69,6 @@ const HomePage = () => {
               {() => {
                 return vibePosts?.vibes?.map(
                   (post) => (
-                    console.log(post, "post from vibe home page"),
                     (
                       <motion.div
                         key={post._id}
@@ -117,7 +115,6 @@ const HomePage = () => {
                               <p className="mt-2 text-white/90 ">
                                 {post.content}
                               </p>
-                              {/* <p>hje</p> */}
                               {post.imageUrl && (
                                 <div className="mt-4">
                                   <img

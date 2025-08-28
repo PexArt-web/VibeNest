@@ -25,52 +25,6 @@ const createVibe = async (req, res) => {
   }
 };
 
-// const getWholeVibes = async (req, res) => {
-//   try {
-//     const vibes = await Vibe.aggregate([
-//       {
-//         $lookup: {
-//           from: "comments",
-//           localField: "_id",
-//           foreignField: "vibeId",
-//           as: "comment",
-//         },
-//       },
-//       {
-//         $addFields: {
-//           commentCount: { $size: { $ifNull: ["$comment", []] } },
-//         },
-//       },
-//       {
-//         $lookup: {
-//           from: "users",
-//           localField: "userId",
-//           foreignField: "_id",
-//           as: "user",
-//         },
-//       },
-//       {
-//         $unwind: "$user",
-//       },
-//       {
-//         $project: {
-//           comment: 0,
-//         },
-//       },
-//       {
-//         $sort: {
-//           createdAt: -1,
-//         },
-//       },
-//     ]);
-//     return res
-//       .status(200)
-//       .json({ message: "vibe fetched successfully", vibes });
-//   } catch (error) {
-//     return res.status(500).json({ message: "error fetching vibes", error });
-//   }
-// };
-
 const getWholeVibes = async (req, res) => {
   try {
     // coming back to understand this properly
@@ -159,7 +113,7 @@ const getVibeById = async (req, res) => {
       return res.status(400).json({ error: "Invalid vibe ID" });
     }
 
-     const vibe = await Vibe.aggregate([
+    const vibe = await Vibe.aggregate([
       { $match: { _id: new mongoose.Types.ObjectId(_id) } },
       {
         $lookup: {
@@ -230,13 +184,9 @@ const getVibeById = async (req, res) => {
       },
     ]);
 
-    // const vibe = await Vibe.find({ _id }).populate("userId");
-    // log(await vibe.originalVibe, "vibe by id");
-    
     const comment = await Comment.find({ vibeId: _id })
       .populate("userId")
       .sort({ createdAt: -1 });
-    log(vibe, "vibe by id");
     if (!vibe) {
       return res.status(404).json({ error: "Vibe not found" });
     }
@@ -282,7 +232,6 @@ const createComment = async (req, res) => {
       return res.status(400).json({ error: "Content or image is required" });
     }
     const { id } = req.params;
-    log(id, "from vibe comment controller");
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return res.status(400).json({ error: "Invalid vibe ID" });
     }
@@ -329,7 +278,6 @@ const getComments = async (req, res) => {
 const reVibe = async (req, res) => {
   try {
     const userId = req.user._id;
-    // const reViberId = req.user._id;
     const { id } = req.params;
     const content = req.body.content;
     if (!userId) {
@@ -371,7 +319,6 @@ const reVibe = async (req, res) => {
     const reVibeData = {
       userId,
       isRevibe: true,
-      // reViberId: [userId],
       originalVibe: id,
       ...(content && { content }),
     };
@@ -424,7 +371,6 @@ const likeOrUnlikeVibe = async (req, res) => {
       liked: !liked,
     });
   } catch (error) {
-    log("Error like this Post", error);
     return res.status(500).json({ message: "Error liking Post , try again" });
   }
 };

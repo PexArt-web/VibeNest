@@ -123,7 +123,6 @@ export const getVibeById = async (id) => {
     );
     const data = await response.json();
     await checkResponse(response, data);
-    console.log(data, "service data");
     return data;
   } catch (error) {
     throw new Error(error);
@@ -131,7 +130,6 @@ export const getVibeById = async (id) => {
 };
 
 export const createComment = async ({ id, content, imageUrl }) => {
-  console.log(id, "vibe comment");
   try {
     const response = await fetch(
       `http://localhost:4000/api/vibes/create-comment/${id}`,
@@ -153,8 +151,6 @@ export const createComment = async ({ id, content, imageUrl }) => {
 };
 
 export const revibe = async ({ id, content }) => {
-  console.log(id, "revibe id");
-  console.log(content, "content");
   try {
     const response = await fetch(
       `http://localhost:4000/api/vibes/${id}/revibe`,
@@ -179,7 +175,6 @@ export const revibe = async ({ id, content }) => {
 };
 
 export const like = async (id) => {
-  console.log(id, "like id");
   try {
     const response = await fetch(`http://localhost:4000/api/vibes/${id}/like`, {
       method: "POST",
