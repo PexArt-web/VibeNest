@@ -247,7 +247,6 @@ const createComment = async (req, res) => {
     if (!comment) {
       return res.status(500).json({ error: "Failed to create comment" });
     }
-    log(comment, "comment created");
     return res
       .status(200)
       .json({ message: "Comment created successfully", comment });
@@ -375,9 +374,33 @@ const likeOrUnlikeVibe = async (req, res) => {
   }
 };
 
+const vibeUserProfile = async (req, res) => {
+  try {
+    const  userId  = req.user._id;
+    if (!userId) {
+      return res
+        .status(401)
+        .json({ error: "Unauthorized user, please login again" });
+    }
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
+      return res.status(400).json({ error: "Invalid user ID" });
+    }
+    const vibes = await Vibe.find({ userId })
+      .populate("userId")
+      .sort({ createdAt: -1 });
+    return res
+      .status(200)
+      .json({ message: "User vibes fetched successfully", vibes });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: "Error fetching user vibes", error });
+  }
+};
+
+
 module.exports = {
   createVibe,
-  // getVibes,
   deleteVibe,
   getVibeById,
   createComment,
@@ -385,4 +408,5 @@ module.exports = {
   getWholeVibes,
   reVibe,
   likeOrUnlikeVibe,
+  vibeUserProfile,
 };
