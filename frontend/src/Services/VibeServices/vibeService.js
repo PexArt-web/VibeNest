@@ -86,28 +86,29 @@ export const deleteVibePost = async (id) => {
   }
 };
 
-// export const getUserProfile = async (id) => {
-//   if (!id) {
-//     throw new Error("User ID is required to fetch user profile");
-//   }
-//   try {
-//     const response = await fetch(
-//       `http://localhost:4000/api/user/get-userVibe/${id}`,
-//       {
-//         method: "GET",
-//         headers: {
-//           Authorization: `Bearer ${await getAccessToken()}`,
-//           "Content-Type": "application/json",
-//         },
-//       }
-//     );
-//     const data = await response.json();
-//     await checkResponse(response, data);
-//     return data;
-//   } catch (error) {
-//     throw new Error(error.message);
-//   }
-// };
+export const getUserProfile = async (id) => {
+  if (!id) {
+    throw new Error("User ID is required to fetch user profile");
+  }
+  try {
+    const response = await fetch(
+      `http://localhost:4000/api/vibes/user-profile`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${await getAccessToken()}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    const data = await response.json();
+    await checkResponse(response, data);
+    console.log(data, "data from getUserProfile");
+    return data;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
 
 export const getVibeById = async (id) => {
   try {

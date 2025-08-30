@@ -15,7 +15,7 @@ const Profile = () => {
       setProfilePosts(profilePosts);
     };
     fetchProfilePost();
-  }, [dataElements, profilePosts]);
+  }, [dataElements]);
 
   return (
     <div className="min-h-screen bg-gray-950 py-10 px-4 pt-14 mb-11 mt-5">

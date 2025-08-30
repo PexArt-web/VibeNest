@@ -31,6 +31,6 @@ router.post("/:id/revibe", reVibe)
 
 router.post("/:vibeId/like", likeOrUnlikeVibe);
 
-router.get("/user-profile/:id", vibeUserProfile);
+router.get("/user-profile", vibeUserProfile);
 
 module.exports = router;

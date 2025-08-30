@@ -388,6 +388,7 @@ const vibeUserProfile = async (req, res) => {
     const vibes = await Vibe.find({ userId })
       .populate("userId")
       .sort({ createdAt: -1 });
+      log(vibes, "from controller")
     return res
       .status(200)
       .json({ message: "User vibes fetched successfully", vibes });
