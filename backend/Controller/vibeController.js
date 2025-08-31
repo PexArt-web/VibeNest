@@ -238,6 +238,19 @@ const createComment = async (req, res) => {
     if (!id) {
       return res.status(404).json({ error: "Vibe not found" });
     }
+     const reVibeData = {
+      userId,
+      isRevibe: true,
+      originalVibe: id,
+      ...(content && { content }),
+    };
+    const reVibed = await Vibe.create(reVibeData);
+    if (!reVibed) {
+      return res.status(500).json({ error: `Failed to revibe, ${reVibed}` });
+    }
+    return res
+      .status(200)
+      .json({ message: "Post reVibed successfully", reVibed });
     const comment = await Comment.create({
       content,
       imageUrl,
@@ -376,7 +389,7 @@ const likeOrUnlikeVibe = async (req, res) => {
 
 const vibeUserProfile = async (req, res) => {
   try {
-    const  userId  = req.user._id;
+    const userId = req.user._id;
     if (!userId) {
       return res
         .status(401)
@@ -388,7 +401,6 @@ const vibeUserProfile = async (req, res) => {
     const vibes = await Vibe.find({ userId })
       .populate("userId")
       .sort({ createdAt: -1 });
-      log(vibes, "from controller")
     return res
       .status(200)
       .json({ message: "User vibes fetched successfully", vibes });
@@ -399,6 +411,96 @@ const vibeUserProfile = async (req, res) => {
   }
 };
 
+const commentLikeOrUnlike = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const { commentId } = req.params;
+    if (!userId) {
+      return res
+        .status(401)
+        .json({ message: "Action not authorized , please try again" });
+    }
+    if (!commentId) {
+      return res.status(500).json({ message: "Comment not found" });
+    }
+    if (!mongoose.Types.ObjectId.isValid(commentId)) {
+      return res.status(400).json({ error: "Invalid Comment ID" });
+    }
+    const comment = await Comment.findById(commentId);
+    if (!comment) {
+      return res.status(500).json({ message: "Comment not found" });
+    }
+    const liked = comment.likes.some(
+      (id) => id.toString() === userId.toString()
+    );
+    if (liked) {
+      comment.likes = comment.likes.filter(
+        (id) => id.toString() !== userId.toString()
+      );
+    } else {
+      comment.likes.push(userId);
+    }
+
+    await comment.save();
+
+    return res.status(200).json({
+      message: liked
+        ? "Comment Unliked successfully"
+        : "Comment liked Successfully",
+      likesCount: comment.likes.length,
+      liked: !liked,
+    });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: "Error liking Comment , try again" });
+  }
+};
+
+const commentRevibe = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const { id } = req.params;
+    const content = req.body.content;
+    if (!userId) {
+      return res
+        .status(401)
+        .json({ error: "Unauthorized user, please login again" });
+    }
+    if (!id) {
+      return res.status(400).json({ error: "Invalid or Missing CommentId" });
+    }
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ error: "Invalid Comment ID" });
+    }
+
+    const original = await Comment.findById(id);
+    if (!original) {
+      return res.status(404).json({ error: "Original Comment not found" });
+    }
+
+    const isAlreadyRevibed = original.commentReviberId.some(
+      (id) => id.toString() === userId.toString()
+    );
+    if(isAlreadyRevibed){
+      original.commentReviberId = original.commentReviberId.filter(
+        (reviber) => reviber.toString() !== userId.toString()
+      );
+      await original.save();
+      const deletedRevibe = await Comment.findOneAndDelete({
+        userId,
+        originalComment: id,
+      });
+      return res.status(200).json({ message: "Comment Revibe removed successfully" });
+    }else{
+       original.commentReviberId.push(userId);
+    }
+    await original.save()
+  } catch (error) {
+    log(error);
+    return res.status(500).json({ error: `Error revibg the vibe, ${error}` });
+  }
+};
 
 module.exports = {
   createVibe,
@@ -410,4 +512,5 @@ module.exports = {
   reVibe,
   likeOrUnlikeVibe,
   vibeUserProfile,
+  commentLikeOrUnlike,
 };

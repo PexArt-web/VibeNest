@@ -17,6 +17,7 @@ const Profile = () => {
     fetchProfilePost();
   }, [dataElements]);
 
+
   return (
     <div className="min-h-screen bg-gray-950 py-10 px-4 pt-14 mb-11 mt-5">
       <div className="max-w-2xl mx-auto bg-white rounded-xl shadow-xl overflow-hidden">
@@ -66,9 +67,8 @@ const Profile = () => {
             >
               <Await resolve={dataElements?.usersVibe}>
                 {() => {
-                  return profilePosts?.vibe?.map(
+                  return profilePosts?.vibes?.map(
                     (post) => (
-                      console.log(post, "post"),
                       (
                         <div
                           key={post._id}

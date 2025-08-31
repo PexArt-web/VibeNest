@@ -32,7 +32,7 @@ const VibeDetails = () => {
     }
   }, [dataElements?.vibeWithId, navigation.state]);
 
-  const handleReVibe = async (id) => {
+  const handleReVibe = (id) => {
     const formData = new FormData();
     formData.append("actionType", "revibe");
     formData.append("content", "");
@@ -40,12 +40,30 @@ const VibeDetails = () => {
     submit(formData, { method: "POST" });
   };
 
-  const handleReactions = async (id) => {
+  const handleReactions = (id) => {
     const formData = new FormData();
     formData.append("actionType", "like");
     formData.append("id", id);
     submit(formData, { method: "POST" });
   };
+
+  // comment reaction functions
+
+  const handleCommentLike = (id) =>{
+    const formData = new FormData()
+    formData.append("actionType", "likeComment")
+    formData.append("commentId", id)
+    submit(formData, { method: "POST" });
+  }
+
+  const handleCommentRevibe = (id) =>{
+    const formData = new FormData();
+    formData.append("actionType", "revibe");
+    formData.append("content", "");
+    formData.append("commentId", id);
+    submit(formData, { method: "POST" });
+  }
+  
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-black text-white pt-20 pb-28 px-4">
       <div className="max-w-2xl mx-auto space-y-8 relative">
@@ -173,7 +191,7 @@ const VibeDetails = () => {
                   </div>
 
                   {/* */}
-                  <div className="mt-6 space-y-4 max-h-[300px] overflow-y-auto pr-2">
+                  {/* <div className="mt-6 space-y-4 max-h-[300px] overflow-y-auto pr-2">
                     <h3 className="text-lg font-semibold mb-2">Comments</h3>
                     {vibe.commentCount > 0 ? (
                       details?.comment?.map((comment) => (
@@ -187,6 +205,89 @@ const VibeDetails = () => {
                             </span>{" "}
                             {comment.content}
                           </p>
+                        </div>
+                      ))
+                    ) : (
+                      <p className="text-gray-400 text-sm">
+                        No comments yet ...
+                      </p>
+                    )}
+                  </div> */}
+                  <div className="mt-6 space-y-4 max-h-[300px] overflow-y-auto pr-2">
+                    <h3 className="text-lg font-semibold mb-2">Comments</h3>
+                    {vibe.commentCount > 0 ? (
+                      details?.comment?.map((comment) => (
+                        <div
+                          key={comment._id}
+                          className="bg-white/5 p-3 rounded-lg backdrop-blur-sm space-y-2"
+                        >
+                          {/* User Info */}
+                          <div className="flex items-center gap-3">
+                            <img
+                              src={
+                                comment?.userId?.avatar || "/default-avatar.png"
+                              }
+                              alt="User Avatar"
+                              className="w-8 h-8 rounded-full border border-white/20"
+                            />
+                            <div>
+                              <p className="text-sm font-semibold text-purple-300">
+                                {comment?.userId?.displayName || "user"}
+                              </p>
+                              <p className="text-xs text-gray-400">
+                                @{comment?.userId?.username}
+                              </p>
+                            </div>
+                          </div>
+
+                          {/* Comment Text */}
+                          <p className="text-sm text-white leading-snug pl-11">
+                            {comment.content}
+                          </p>
+
+                          {/* Actions */}
+                          <div className="flex gap-6 text-xs text-white/70 mt-2 pl-11 justify-evenly">
+                            <SharedButton
+                              className="hover:text-blue-400 flex items-center gap-1"
+                              label={
+                                <>
+                                  <FaComment /> {comment.commentCount || 0}
+                                </>
+                              }
+                              whileTap={{ scale: 1.2 }}
+                            />
+
+                            <SharedButton
+                              className={`hover:text-green-400 flex items-center gap-1 ${
+                                comment?.reViberId?.includes(user?.user._id)
+                                  ? "text-green-400"
+                                  : "text-white/70"
+                              }`}
+                              label={
+                                <>
+                                  <FaRetweet />{" "}
+                                  {comment?.reViberId?.length || 0}
+                                </>
+                              }
+                              whileTap={{ scale: 1.2 }}
+                              // handleClick={() => handleCommentRevibe(comment._id)}
+                            />
+
+                            <SharedButton
+                              className={`hover:text-pink-400 flex items-center gap-1 ${
+                                comment?.likes?.includes(user?.user._id)
+                                  ? "text-pink-500"
+                                  : "text-white/70"
+                              }`}
+                              label={
+                                <>
+                                  <FaHeart /> {comment?.likes?.length || 0}
+                                </>
+                              }
+                              whileTap={{ scale: 1.2 }}
+                              handleClick={() => handleCommentLike(comment._id)}
+                            />
+                          </div>
                         </div>
                       ))
                     ) : (

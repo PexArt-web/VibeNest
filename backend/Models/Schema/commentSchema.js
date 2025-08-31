@@ -22,6 +22,23 @@ const commentSchema = new Schema(
       ref: "Vibe",
       required: true,
     },
+    likes: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+        default: [],
+      },
+    ],
+    commentReviberId: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Comment",
+      },
+    ],
+    isRevibe: {
+      type: Boolean,
+      default: false,
+    },
     createdAt: {
       type: Date,
       default: Date.now,
@@ -32,4 +49,4 @@ const commentSchema = new Schema(
   }
 );
 
-module.exports = commentSchema
+module.exports = commentSchema;

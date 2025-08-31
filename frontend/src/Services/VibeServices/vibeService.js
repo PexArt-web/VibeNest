@@ -103,7 +103,6 @@ export const getUserProfile = async (id) => {
     );
     const data = await response.json();
     await checkResponse(response, data);
-    console.log(data, "data from getUserProfile");
     return data;
   } catch (error) {
     throw new Error(error.message);
@@ -185,6 +184,27 @@ export const like = async (id) => {
       },
       body: JSON.stringify({ actionType: "like", id }),
     });
+    const data = await response.json();
+    await checkResponse(response, data);
+    return data;
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
+export const likeComment = async (commentId) => {
+  try {
+    const response = await fetch(
+      `http://localhost:4000/api/vibes/comment/${commentId}/like`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${await getAccessToken()}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ actionType: "likeComment", commentId }),
+      }
+    );
     const data = await response.json();
     await checkResponse(response, data);
     return data;
