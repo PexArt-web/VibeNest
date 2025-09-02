@@ -32,12 +32,16 @@ const commentSchema = new Schema(
     commentReviberId: [
       {
         type: Schema.Types.ObjectId,
-        ref: "Comment",
+        ref: "User",
       },
     ],
     isRevibe: {
       type: Boolean,
       default: false,
+    },
+    originalComment:{
+      type: Schema.Types.ObjectId,
+      ref: "Comment",
     },
     createdAt: {
       type: Date,

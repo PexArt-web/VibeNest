@@ -140,7 +140,7 @@ const getVibeById = async (req, res) => {
         $unwind: "$user",
       },
 
-      //  Getting the original vibe if it's a reVibe
+      //  Getting the original vibe if it's a reVibe and getting comments too 
       {
         $lookup: {
           from: "vibes",
@@ -238,19 +238,7 @@ const createComment = async (req, res) => {
     if (!id) {
       return res.status(404).json({ error: "Vibe not found" });
     }
-     const reVibeData = {
-      userId,
-      isRevibe: true,
-      originalVibe: id,
-      ...(content && { content }),
-    };
-    const reVibed = await Vibe.create(reVibeData);
-    if (!reVibed) {
-      return res.status(500).json({ error: `Failed to revibe, ${reVibed}` });
-    }
-    return res
-      .status(200)
-      .json({ message: "Post reVibed successfully", reVibed });
+
     const comment = await Comment.create({
       content,
       imageUrl,
@@ -482,7 +470,7 @@ const commentRevibe = async (req, res) => {
     const isAlreadyRevibed = original.commentReviberId.some(
       (id) => id.toString() === userId.toString()
     );
-    if(isAlreadyRevibed){
+    if (isAlreadyRevibed) {
       original.commentReviberId = original.commentReviberId.filter(
         (reviber) => reviber.toString() !== userId.toString()
       );
@@ -491,11 +479,29 @@ const commentRevibe = async (req, res) => {
         userId,
         originalComment: id,
       });
-      return res.status(200).json({ message: "Comment Revibe removed successfully" });
-    }else{
-       original.commentReviberId.push(userId);
+      return res
+        .status(200)
+        .json({ message: "Comment Revibe removed successfully" });
+    } else {
+      original.commentReviberId.push(userId);
+      original.isRevibe = true;
+      await original.save();
     }
-    await original.save()
+
+    const reVibeData = {
+      userId,
+      isRevibe: true,
+      originalComment: id,
+      ...(content && { content }),
+    };
+
+    const reVibed = await Comment.create(reVibeData);
+    if (!reVibed) {
+      return res.status(500).json({ error: `Failed to revibe, ${reVibed}` });
+    }
+    return res
+      .status(200)
+      .json({ message: "Post reVibed successfully", reVibed });
   } catch (error) {
     log(error);
     return res.status(500).json({ error: `Error revibg the vibe, ${error}` });
@@ -513,4 +519,5 @@ module.exports = {
   likeOrUnlikeVibe,
   vibeUserProfile,
   commentLikeOrUnlike,
+  commentRevibe,
 };
