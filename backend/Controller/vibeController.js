@@ -85,7 +85,13 @@ const getWholeVibes = async (req, res) => {
           preserveNullAndEmptyArrays: true,
         },
       },
-
+      // now getting comments that was revibed to a normal vibe
+      // {
+      //   $lookup: {
+      //     from: "comments",
+      //     localField:""
+      //   },
+      // },
       {
         $project: {
           comment: 0,
@@ -140,7 +146,7 @@ const getVibeById = async (req, res) => {
         $unwind: "$user",
       },
 
-      //  Getting the original vibe if it's a reVibe and getting comments too 
+      //  Getting the original vibe if it's a reVibe and getting comments too
       {
         $lookup: {
           from: "vibes",
@@ -479,6 +485,10 @@ const commentRevibe = async (req, res) => {
         userId,
         originalComment: id,
       });
+
+      log("done")
+      log("deletedRevibe", deletedRevibe);
+    
       return res
         .status(200)
         .json({ message: "Comment Revibe removed successfully" });
