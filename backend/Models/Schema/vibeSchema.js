@@ -40,6 +40,10 @@ const vibeSchema = new Schema(
         ref: "User",
       },
     ],
+    commentId:{
+      type: Schema.Types.ObjectId,
+      ref: "Comment",
+    },  
     sentAt: {
       type: Date,
       default: Date.now,

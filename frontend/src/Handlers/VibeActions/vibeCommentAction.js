@@ -3,6 +3,7 @@ import {
   like,
   likeComment,
   revibe,
+  revibeComment,
 } from "@/Services/VibeServices/vibeService";
 
 export const vibeComment = async ({ request, params }) => {
@@ -24,8 +25,11 @@ export const vibeComment = async ({ request, params }) => {
     }else if (actionType === "likeComment" && commentId) {
       const data = await likeComment(commentId);
       return { message: "Comment liked/un-liked successfully", data };
+    }else if (actionType === "revibeComment" && commentId) {
+      const data = await revibeComment({ commentId, content });
+      return { message: "Comment reVibed successfully", data };
     }
-
+      
     let imageUrl = null;
     if (!content) {
       return { error: "Content or Image is Required" };

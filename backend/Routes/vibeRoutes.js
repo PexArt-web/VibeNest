@@ -11,6 +11,7 @@ const {
   likeOrUnlikeVibe,
   vibeUserProfile,
   commentLikeOrUnlike,
+  commentRevibe,
 } = require("../Controller/vibeController");
 const { requireAuth } = require("../Middleware/requireAuth");
 
@@ -35,5 +36,7 @@ router.post("/:vibeId/like", likeOrUnlikeVibe);
 router.get("/user-profile", vibeUserProfile);
 
 router.post("/comment/:commentId/like", commentLikeOrUnlike);
+
+router.post("/comment/:commentId/reply", commentRevibe);
 
 module.exports = router;

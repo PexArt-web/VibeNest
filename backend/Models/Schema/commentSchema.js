@@ -4,7 +4,7 @@ const commentSchema = new Schema(
   {
     content: {
       type: String,
-      required: true,
+      required: false,
       trim: true,
     },
     imageUrl: {
@@ -20,7 +20,7 @@ const commentSchema = new Schema(
     vibeId: {
       type: Schema.Types.ObjectId,
       ref: "Vibe",
-      required: true,
+      required: false,
     },
     likes: [
       {

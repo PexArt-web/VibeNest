@@ -238,11 +238,11 @@ const createComment = async (req, res) => {
       return res.status(400).json({ error: "Content or image is required" });
     }
     const { id } = req.params;
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-      return res.status(400).json({ error: "Invalid vibe ID" });
-    }
     if (!id) {
       return res.status(404).json({ error: "Vibe not found" });
+    }
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ error: "Invalid vibe ID" });
     }
 
     const comment = await Comment.create({
@@ -454,24 +454,25 @@ const commentLikeOrUnlike = async (req, res) => {
 const commentRevibe = async (req, res) => {
   try {
     const userId = req.user._id;
-    const { id } = req.params;
+    const { commentId } = req.params;
     const content = req.body.content;
     if (!userId) {
       return res
         .status(401)
         .json({ error: "Unauthorized user, please login again" });
     }
-    if (!id) {
+    if (!commentId) {
       return res.status(400).json({ error: "Invalid or Missing CommentId" });
     }
-    if (!mongoose.Types.ObjectId.isValid(id)) {
+    if (!mongoose.Types.ObjectId.isValid(commentId)) {
       return res.status(400).json({ error: "Invalid Comment ID" });
     }
 
-    const original = await Comment.findById(id);
+    const original = await Comment.findById(commentId);
     if (!original) {
       return res.status(404).json({ error: "Original Comment not found" });
     }
+    log("original", original);
 
     const isAlreadyRevibed = original.commentReviberId.some(
       (id) => id.toString() === userId.toString()
@@ -483,35 +484,37 @@ const commentRevibe = async (req, res) => {
       await original.save();
       const deletedRevibe = await Comment.findOneAndDelete({
         userId,
-        originalComment: id,
+        originalComment: commentId,
       });
 
-      log("done")
+      log("done");
       log("deletedRevibe", deletedRevibe);
-    
+
       return res
         .status(200)
         .json({ message: "Comment Revibe removed successfully" });
     } else {
       original.commentReviberId.push(userId);
-      original.isRevibe = true;
       await original.save();
     }
 
-    const reVibeData = {
+    const commentRevibeData = {
       userId,
       isRevibe: true,
-      originalComment: id,
+      originalComment: commentId,
+      commentId,
+      // reviberId,
       ...(content && { content }),
     };
 
-    const reVibed = await Comment.create(reVibeData);
-    if (!reVibed) {
-      return res.status(500).json({ error: `Failed to revibe, ${reVibed}` });
+    const commentRevibe = await Vibe.create(commentRevibeData);
+    log("comment reVibed done", commentRevibe);
+    if (!commentRevibe) {
+      return res.status(500).json({ error: `Failed to revibe, ${commentRevibe}` });
     }
     return res
       .status(200)
-      .json({ message: "Post reVibed successfully", reVibed });
+      .json({ message: "Post reVibed successfully", commentRevibe });
   } catch (error) {
     log(error);
     return res.status(500).json({ error: `Error revibg the vibe, ${error}` });

@@ -49,21 +49,21 @@ const VibeDetails = () => {
 
   // comment reaction functions
 
-  const handleCommentLike = (id) =>{
-    const formData = new FormData()
-    formData.append("actionType", "likeComment")
-    formData.append("commentId", id)
-    submit(formData, { method: "POST" });
-  }
-
-  const handleCommentRevibe = (id) =>{
+  const handleCommentLike = (id) => {
     const formData = new FormData();
-    formData.append("actionType", "revibe");
+    formData.append("actionType", "likeComment");
+    formData.append("commentId", id);
+    submit(formData, { method: "POST" });
+  };
+
+  const handleCommentRevibe = (id) => {
+    const formData = new FormData();
+    formData.append("actionType", "revibeComment");
     formData.append("content", "");
     formData.append("commentId", id);
     submit(formData, { method: "POST" });
-  }
-  
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-black text-white pt-20 pb-28 px-4">
       <div className="max-w-2xl mx-auto space-y-8 relative">
@@ -270,7 +270,9 @@ const VibeDetails = () => {
                                 </>
                               }
                               whileTap={{ scale: 1.2 }}
-                              // handleClick={() => handleCommentRevibe(comment._id)}
+                              handleClick={() =>
+                                handleCommentRevibe(comment._id)
+                              }
                             />
 
                             <SharedButton
