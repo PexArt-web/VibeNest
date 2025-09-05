@@ -86,12 +86,20 @@ const getWholeVibes = async (req, res) => {
         },
       },
       // now getting comments that was revibed to a normal vibe
-      // {
-      //   $lookup: {
-      //     from: "comments",
-      //     localField:""
-      //   },
-      // },
+      {
+        $lookup: {
+          from: "comments",
+          localField:"commentId",
+          foreignField:"commentId",
+          as:"originalCommentData"
+        },
+      },
+      {
+        $unwind:{
+          path:"originalCommentData",
+          preserveNullAndEmptyArrays:true
+        }
+      },
       {
         $project: {
           comment: 0,
@@ -481,36 +489,43 @@ const commentRevibe = async (req, res) => {
       original.commentReviberId = original.commentReviberId.filter(
         (reviber) => reviber.toString() !== userId.toString()
       );
+      original.isRevibe = false;
       await original.save();
-      const deletedRevibe = await Comment.findOneAndDelete({
+      const deletedCommentRevibe = await Vibe.findById({
         userId,
         originalComment: commentId,
       });
 
       log("done");
-      log("deletedRevibe", deletedRevibe);
+      log("deletedRevibe", deletedCommentRevibe);
 
       return res
         .status(200)
         .json({ message: "Comment Revibe removed successfully" });
     } else {
       original.commentReviberId.push(userId);
+      original.isRevibe = true;
       await original.save();
+      log(original, "after saving comment reviber");
     }
+
+    // a comment as a reminder , i think the original comment you are passing down to revibedata for vibe to create  is not in vibe schema and you are not passing it in comment it self check it out 
 
     const commentRevibeData = {
       userId,
       isRevibe: true,
       originalComment: commentId,
       commentId,
-      // reviberId,
+      // reviberId: [userId],
       ...(content && { content }),
     };
 
     const commentRevibe = await Vibe.create(commentRevibeData);
-    log("comment reVibed done", commentRevibe);
+    log("vibe created from comment reVibed done", commentRevibe);
     if (!commentRevibe) {
-      return res.status(500).json({ error: `Failed to revibe, ${commentRevibe}` });
+      return res
+        .status(500)
+        .json({ error: `Failed to revibe, ${commentRevibe}` });
     }
     return res
       .status(200)
