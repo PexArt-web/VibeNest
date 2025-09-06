@@ -59,6 +59,10 @@ export const getVibes = async () => {
     await checkResponse(response, data);
     return data;
   } catch (error) {
+    console.error("Error fetching vibes:", error);
+    if (error.message === "Failed to fetch") {
+      error.message = "An unexpected error occurred. Please try again later.";
+    }
     throw new Error(error.message);
   }
 };

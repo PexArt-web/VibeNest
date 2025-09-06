@@ -39,10 +39,10 @@ const commentSchema = new Schema(
       type: Boolean,
       default: false,
     },
-    originalComment:{
-      type: Schema.Types.ObjectId,
-      ref: "Comment",
-    },
+    // originalComment:{
+    //   type: Schema.Types.ObjectId,
+    //   ref: "Comment",
+    // },
     createdAt: {
       type: Date,
       default: Date.now,

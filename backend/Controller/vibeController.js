@@ -90,15 +90,30 @@ const getWholeVibes = async (req, res) => {
         $lookup: {
           from: "comments",
           localField:"commentId",
-          foreignField:"commentId",
+          foreignField:"_id",
           as:"originalCommentData"
         },
       },
       {
         $unwind:{
-          path:"originalCommentData",
+          path:"$originalCommentData",
           preserveNullAndEmptyArrays:true
         }
+      },
+      {
+        $lookup:{
+          from:"users",
+          localField:"originalCommentData.userId",
+          foreignField:"_id",
+          as:"originalCommentData.user"
+        }
+      },
+      {
+        $unwind:{
+          path:"$originalCommentData.user",
+          preserveNullAndEmptyArrays:true
+        }
+
       },
       {
         $project: {
@@ -116,6 +131,7 @@ const getWholeVibes = async (req, res) => {
       .status(200)
       .json({ message: "vibe fetched successfully", vibes });
   } catch (error) {
+    log("error fetching vibes", error);
     return res.status(500).json({ message: "error fetching vibes", error });
   }
 };
@@ -509,12 +525,10 @@ const commentRevibe = async (req, res) => {
       log(original, "after saving comment reviber");
     }
 
-    // a comment as a reminder , i think the original comment you are passing down to revibedata for vibe to create  is not in vibe schema and you are not passing it in comment it self check it out 
-
     const commentRevibeData = {
       userId,
       isRevibe: true,
-      originalComment: commentId,
+      // originalComment: commentId,
       commentId,
       // reviberId: [userId],
       ...(content && { content }),
