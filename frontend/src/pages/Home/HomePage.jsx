@@ -166,6 +166,49 @@ const HomePage = () => {
                               </Link>
                             )}
 
+                            {/* for revibed comment  */}
+                            
+                                  {post.isRevibe && post.originalCommentData && (
+                              <Link
+                                to={post.originalCommentData._id}
+                                className="cursor-pointer"
+                              >
+                                <div className="mt-4 border-l-4 border-purple-500 pl-4 bg-white/5 rounded-lg p-3">
+                                  <div className="flex items-center gap-2 mb-2">
+                                    <img
+                                      src={post.originalCommentData.user?.avatar}
+                                      alt="Original Poster Avatar"
+                                      className="w-8 h-8 rounded-full border border-white/20"
+                                    />
+                                    <div>
+                                      <div className="text-sm font-medium text-white">
+                                        {
+                                          post.originalCommentData.user
+                                            ?.displayName
+                                        }
+                                      </div>
+                                      <div className="text-xs text-white/40">
+                                        {post.originalCommentData.user?.username}
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <p className="text-white/80 text-sm">
+                                    {post.originalCommentData.content}
+                                  </p>
+                                  {post.originalCommentData.imageUrl && (
+                                    <div className="mt-2">
+                                      <img
+                                        src={post.originalCommentData.imageUrl}
+                                        alt="Original Vibe"
+                                        className="rounded-lg w-full max-h-60 object-cover border border-white/20"
+                                      />
+                                    </div>
+                                  )}
+                                </div>
+                              </Link>
+                            )}
+                            {/*  */}
+
                             <div className="flex gap-6 justify-evenly mt-3 text-white/70 text-sm">
                               <Link to={post._id}>
                                 <SharedButton
