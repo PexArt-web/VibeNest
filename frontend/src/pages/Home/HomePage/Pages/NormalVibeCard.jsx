@@ -2,8 +2,8 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { FaComment, FaRetweet, FaHeart } from "react-icons/fa";
 import moment from "moment";
-import SharedButton from "../Shared/Component/SharedButton";
-import SharedDropDown from "../Shared/Component/SharedDropDown";
+import SharedButton from "../../../../Shared/Component/SharedButton";
+import SharedDropDown from "../../../../Shared/Component/SharedDropDown";
 import { FiMoreVertical, FiTrash2 } from "react-icons/fi";
 
 const NormalVibeCard = ({ post, user, handleDelete, handleReVibe, handleReactions }) => {

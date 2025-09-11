@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 
-const RevibedCommentCard = ({ post }) => {
+const RevibedCommentCard = ( post ) => {
+    console.log(post, "from comment post")
   return (
     <motion.div
       key={post._id}

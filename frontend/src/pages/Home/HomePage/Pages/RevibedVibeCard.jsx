@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 
 const RevibedVibeCard = ({ post }) => {
+  console.log(post, "from rvibed card")
   return (
     <motion.div
       key={post._id}

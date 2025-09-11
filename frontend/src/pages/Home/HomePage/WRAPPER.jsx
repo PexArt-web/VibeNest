@@ -1,17 +1,19 @@
 import { FaHeart, FaRetweet, FaComment, FaFeatherAlt } from "react-icons/fa";
-import { FiMoreVertical, FiTrash2 } from "react-icons/fi";
+// import { FiMoreVertical, FiTrash2 } from "react-icons/fi";
 import { motion } from "framer-motion";
-import SharedButton from "../../Shared/Component/SharedButton";
+// import SharedButton from "../../../Shared/Component/SharedButton";
 import { Await, Link, useLoaderData, useSubmit } from "react-router-dom";
 import { Suspense, useEffect, useState } from "react";
-import Fallback from "../../Suspense/Fallback";
-import SharedDropDown from "@/Shared/Component/SharedDropDown";
+import Fallback from "../../../Suspense/Fallback";
+// import SharedDropDown from "@/Shared/Component/SharedDropDown";
 import { deleteVibePost } from "@/Services/VibeServices/vibeService";
 import { useAuthContext } from "@/Hooks/useAuthContext";
-import moment from "moment";
+// import moment from "moment";
 import NormalVibeCard from "./Pages/NormalVibeCard";
 import RevibedVibeCard from "./Pages/RevibedVibeCard";
-import RevibedComment from "./Pages/RevibeComment";
+import RevibedCommentCard from "./Pages/RevibedCommentCard";
+// import RevibedComment from "./Pages/RevibeCommentCard";
+// import RevibedCommentCard from "./Pages/RevibeCommentCard";
 const WRAPPER = () => {
   const dataElements = useLoaderData();
   const submit = useSubmit();
@@ -70,14 +72,19 @@ const WRAPPER = () => {
             <Await resolve={dataElements?.vibe}>
               {() => {
                 return vibePosts?.vibes?.map((post) => {
+                  console.log(post, "post from wrapper.jsx"),
+                    console.log(
+                      post.originalCommentData.content,
+                      "comment content from wrapper"
+                    );
                   {
                     if (post.isRevibe && post.originalVibeData) {
                       return <RevibedVibeCard key={post._id} post={post} />;
-                      
                     }
 
                     if (post.isRevibe && post.originalCommentData) {
-                      return <RevibedComment key={post._id} post={post} />;
+                      console.log(post.originalCommentData, "from wrapper condition")
+                      return <RevibedCommentCard key={post._id} post={post} />;
                     }
 
                     return (
