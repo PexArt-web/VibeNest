@@ -54,6 +54,10 @@ const WRAPPER = () => {
     formData.append("id", id);
     submit(formData, { method: "POST" });
   };
+
+  const checkID = (id) =>{
+    alert(id)
+  }
   return (
     <>
       <div
@@ -78,14 +82,14 @@ const WRAPPER = () => {
                       "comment content from wrapper"
                     );
                   {
+                    if (post.isRevibe && post.originalCommentData) {
+                      
+                      return <RevibedCommentCard key={post._id} post={post} checkID = {checkID} />;
+                    }
                     if (post.isRevibe && post.originalVibeData) {
                       return <RevibedVibeCard key={post._id} post={post} />;
                     }
 
-                    if (post.isRevibe && post.originalCommentData) {
-                      console.log(post.originalCommentData, "from wrapper condition")
-                      return <RevibedCommentCard key={post._id} post={post} />;
-                    }
 
                     return (
                       <NormalVibeCard

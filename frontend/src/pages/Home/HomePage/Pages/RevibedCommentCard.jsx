@@ -1,13 +1,14 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 
-const RevibedCommentCard = ( post ) => {
+const RevibedCommentCard = ({ post , checkID }) => {
     console.log(post, "from comment post")
   return (
     <motion.div
       key={post._id}
       whileHover={{ scale: 1.02 }}
       className="bg-blue-900/20 rounded-2xl p-4 shadow-md border border-blue-500/30 hover:shadow-lg transition-shadow duration-300"
+      onClick={()=>checkID(post._id)}
     >
       <p className="text-green-400 text-xs mb-2">
         🔁 {post.user?.displayName} revibed a comment

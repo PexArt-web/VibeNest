@@ -89,31 +89,30 @@ const getWholeVibes = async (req, res) => {
       {
         $lookup: {
           from: "comments",
-          localField:"commentId",
-          foreignField:"_id",
-          as:"originalCommentData"
+          localField: "commentId",
+          foreignField: "_id",
+          as: "originalCommentData",
         },
       },
       {
-        $unwind:{
-          path:"$originalCommentData",
-          preserveNullAndEmptyArrays:true
-        }
+        $unwind: {
+          path: "$originalCommentData",
+          preserveNullAndEmptyArrays: true,
+        },
       },
       {
-        $lookup:{
-          from:"users",
-          localField:"originalCommentData.userId",
-          foreignField:"_id",
-          as:"originalCommentData.user"
-        }
+        $lookup: {
+          from: "users",
+          localField: "originalCommentData.userId",
+          foreignField: "_id",
+          as: "originalCommentData.user",
+        },
       },
       {
-        $unwind:{
-          path:"$originalCommentData.user",
-          preserveNullAndEmptyArrays:true
-        }
-
+        $unwind: {
+          path: "$originalCommentData.user",
+          preserveNullAndEmptyArrays: true,
+        },
       },
       {
         $project: {
@@ -507,23 +506,18 @@ const commentRevibe = async (req, res) => {
       );
       original.isRevibe = false;
       await original.save();
-      const deletedCommentRevibe = await Vibe.findById({
+      const deletedCommentRevibe = await Vibe.findOneAndDelete({
         userId,
         originalComment: commentId,
       });
-
-      log("done");
-      log("deletedRevibe", deletedCommentRevibe);
-
       return res
         .status(200)
         .json({ message: "Comment Revibe removed successfully" });
-    } else {
-      original.commentReviberId.push(userId);
-      original.isRevibe = true;
-      await original.save();
-      log(original, "after saving comment reviber");
     }
+
+    original.commentReviberId.push(userId);
+    await original.save();
+    log(original, "after saving comment reviber");
 
     const commentRevibeData = {
       userId,

@@ -69,7 +69,7 @@ const HomePage = () => {
               {() => {
                 return vibePosts?.vibes?.map(
                   (post) => (
-                    console.log("Rendering post:", post),
+                    console.log("Rendering post:", post.originalCommentData.content),
                     (
                       <motion.div
                         key={post._id}
