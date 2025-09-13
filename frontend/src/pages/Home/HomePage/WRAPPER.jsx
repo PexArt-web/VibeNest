@@ -55,9 +55,9 @@ const WRAPPER = () => {
     submit(formData, { method: "POST" });
   };
 
-  const checkID = (id) =>{
-    alert(id)
-  }
+  const checkID = (id) => {
+    alert(id);
+  };
   return (
     <>
       <div
@@ -74,36 +74,34 @@ const WRAPPER = () => {
             }
           >
             <Await resolve={dataElements?.vibe}>
-              {() => {
-                return vibePosts?.vibes?.map((post) => {
-                  console.log(post, "post from wrapper.jsx"),
-                    console.log(
-                      post.originalCommentData.content,
-                      "comment content from wrapper"
-                    );
-                  {
-                    if (post.isRevibe && post.originalCommentData) {
-                      
-                      return <RevibedCommentCard key={post._id} post={post} checkID = {checkID} />;
-                    }
-                    if (post.isRevibe && post.originalVibeData) {
-                      return <RevibedVibeCard key={post._id} post={post} />;
-                    }
+              {() =>
+                vibePosts?.vibes?.map((post) => (
+                  <>
+                    <div key={post._id}>
+                      {!post.isRevibe && (
+                        <NormalVibeCard
+                          post={post}
+                          user={user}
+                          handleDelete={handleDelete}
+                          handleReVibe={handleReVibe}
+                          handleReactions={handleReactions}
+                        />
+                      )}
+                    </div>
+                    {post.isRevibe && post.originalVibeData && (
+                      <RevibedVibeCard post={post} key={post._id} />
+                    )}
 
-
-                    return (
-                      <NormalVibeCard
-                        key={post._id}
+                    {post.isRevibe && post.originalCommentData && (
+                      <RevibedCommentCard
                         post={post}
-                        user={user}
-                        handleDelete={handleDelete}
-                        handleReVibe={handleReVibe}
-                        handleReactions={handleReactions}
+                        key={post._id}
+                        checkID={checkID}
                       />
-                    );
-                  }
-                });
-              }}
+                    )}
+                  </>
+                ))
+              }
             </Await>
           </Suspense>
         </div>

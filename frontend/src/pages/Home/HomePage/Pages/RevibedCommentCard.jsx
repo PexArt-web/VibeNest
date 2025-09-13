@@ -41,6 +41,39 @@ const RevibedCommentCard = ({ post , checkID }) => {
             />
           </div>
         )}
+
+        {/*  */}
+        <div className="flex gap-6 justify-evenly mt-3 text-white/70 text-sm">
+            <Link to={post._id}>
+              <SharedButton
+                className="hover:text-blue-400 transition-colors duration-200 flex items-center cursor-pointer gap-1"
+                label={<><FaComment /> {post.commentCount}</>}
+                whileTap={{ scale: 1.2 }}
+              />
+            </Link>
+
+            <SharedButton
+              className={`hover:text-green-400 transition-colors cursor-pointer duration-200 flex items-center gap-1 ${
+                post?.reViberId?.includes(user?.user._id)
+                  ? "text-green-400"
+                  : "text-white/70"
+              }`}
+              handleClick={() => handleReVibe(post._id)}
+              label={<><FaRetweet /> {post.reViberId?.length || 0}</>}
+              whileTap={{ scale: 1.2 }}
+            />
+
+            <SharedButton
+              className={`hover:text-pink-400 transition-colors duration-200 flex items-center gap-1 cursor-pointer ${
+                post.likes?.includes(user?.user._id)
+                  ? "text-pink-400"
+                  : "text-white/70"
+              }`}
+              handleClick={() => handleReactions(post._id)}
+              label={<><FaHeart /> {post.likes?.length || 0}</>}
+              whileTap={{ scale: 1.2 }}
+            />
+          </div>
       </Link>
     </motion.div>
   );
