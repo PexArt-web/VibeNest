@@ -1,19 +1,14 @@
 import { FaHeart, FaRetweet, FaComment, FaFeatherAlt } from "react-icons/fa";
-// import { FiMoreVertical, FiTrash2 } from "react-icons/fi";
 import { motion } from "framer-motion";
-// import SharedButton from "../../../Shared/Component/SharedButton";
 import { Await, Link, useLoaderData, useSubmit } from "react-router-dom";
 import { Suspense, useEffect, useState } from "react";
 import Fallback from "../../../Suspense/Fallback";
-// import SharedDropDown from "@/Shared/Component/SharedDropDown";
 import { deleteVibePost } from "@/Services/VibeServices/vibeService";
 import { useAuthContext } from "@/Hooks/useAuthContext";
-// import moment from "moment";
 import NormalVibeCard from "./Pages/NormalVibeCard";
 import RevibedVibeCard from "./Pages/RevibedVibeCard";
 import RevibedCommentCard from "./Pages/RevibedCommentCard";
-// import RevibedComment from "./Pages/RevibeCommentCard";
-// import RevibedCommentCard from "./Pages/RevibeCommentCard";
+
 const WRAPPER = () => {
   const dataElements = useLoaderData();
   const submit = useSubmit();
@@ -55,9 +50,7 @@ const WRAPPER = () => {
     submit(formData, { method: "POST" });
   };
 
-  const checkID = (id) => {
-    alert(id);
-  };
+ 
   return (
     <>
       <div
@@ -89,14 +82,22 @@ const WRAPPER = () => {
                       )}
                     </div>
                     {post.isRevibe && post.originalVibeData && (
-                      <RevibedVibeCard post={post} key={post._id} />
+                      <RevibedVibeCard
+                        post={post}
+                        key={post._id}
+                        user={user}
+                        handleDelete={handleDelete}
+                        handleReactions={handleReactions}
+                      />
                     )}
 
                     {post.isRevibe && post.originalCommentData && (
                       <RevibedCommentCard
                         post={post}
                         key={post._id}
-                        checkID={checkID}
+                        user={user}
+                        handleDelete={handleDelete}
+                        handleReactions={handleReactions}
                       />
                     )}
                   </>

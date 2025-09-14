@@ -60,7 +60,7 @@ const NormalVibeCard = ({ post, user, handleDelete, handleReVibe, handleReaction
             )}
           </Link>
 
-          <div className="flex gap-6 justify-evenly mt-3 text-white/70 text-sm">
+          <div className="flex gap-6 border-t border-white/10 justify-between mt-3 text-white/70 text-sm">
             <Link to={post._id}>
               <SharedButton
                 className="hover:text-blue-400 transition-colors duration-200 flex items-center cursor-pointer gap-1"
