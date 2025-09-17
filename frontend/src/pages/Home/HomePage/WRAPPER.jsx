@@ -1,4 +1,4 @@
-import { FaHeart, FaRetweet, FaComment, FaFeatherAlt } from "react-icons/fa";
+import { FaFeatherAlt } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { Await, Link, useLoaderData, useSubmit } from "react-router-dom";
 import { Suspense, useEffect, useState } from "react";
@@ -26,10 +26,10 @@ const WRAPPER = () => {
   const handleDelete = async (id) => {
     try {
       await deleteVibePost(id);
-      setVibePosts((prevPosts) => ({
-        ...prevPosts,
-        vibes: prevPosts.vibes?.filter((post) => post._id !== id),
-      }));
+      // setVibePosts((prevPosts) => ({
+      //   ...prevPosts,
+      //   vibes: prevPosts.vibes?.filter((post) => post._id !== id),
+      // }));
     } catch (error) {
       console.error("Error deleting post:", error);
     }
@@ -50,7 +50,6 @@ const WRAPPER = () => {
     submit(formData, { method: "POST" });
   };
 
- 
   return (
     <>
       <div
