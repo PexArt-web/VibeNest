@@ -12,12 +12,14 @@ const RevibedCommentCard = ({
   handleDelete,
   handleReVibe,
   handleReactions,
+  // checkId
 }) => {
   return (
     <motion.div
       key={post._id}
       whileHover={{ scale: 1.02 }}
       className="bg-blue-900/20 rounded-2xl p-4 shadow-md border border-blue-500/30 hover:shadow-lg transition-shadow duration-300"
+      // onClick={()=>checkId(post._id)}
     >
       <p className="text-green-400 text-xs mb-2">
         🔁 {post.user?.displayName} revibed a comment
@@ -77,7 +79,7 @@ const RevibedCommentCard = ({
 
           <SharedButton
             className={`hover:text-green-400 transition-colors cursor-pointer duration-200 flex items-center gap-1 ${
-              post?.reViberId?.includes(user?.user._id)
+              post?.commentReViberId?.includes(user?.user._id)
                 ? "text-green-400"
                 : "text-white/70"
             }`}

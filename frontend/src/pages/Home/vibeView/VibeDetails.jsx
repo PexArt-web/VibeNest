@@ -259,14 +259,14 @@ const VibeDetails = () => {
 
                             <SharedButton
                               className={`hover:text-green-400 flex items-center gap-1 ${
-                                comment?.reViberId?.includes(user?.user._id)
+                                comment?.commentReviberId?.includes(user?.user._id)
                                   ? "text-green-400"
                                   : "text-white/70"
                               }`}
                               label={
                                 <>
                                   <FaRetweet />{" "}
-                                  {comment?.reViberId?.length || 0}
+                                  {comment?.commentReviberId?.length || 0}
                                 </>
                               }
                               whileTap={{ scale: 1.2 }}

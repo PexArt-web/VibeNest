@@ -232,6 +232,7 @@ const deleteVibe = async (req, res) => {
   try {
     const vibeId = req.params.id;
     const userId = req.user._id;
+    log(vibeId, "from contoller")
     if (!userId) {
       return res
         .status(401)
@@ -241,7 +242,11 @@ const deleteVibe = async (req, res) => {
     if (!vibe) {
       return res.status(404).json({ error: "Vibe not found" });
     }
-    await Vibe.findByIdAndDelete(vibeId);
+    log(vibe, "vibe document to be deleted")
+   const deleteDoc =  await Vibe.findByIdAndDelete(vibeId);
+   if(deleteDoc){
+    log("deleted", deleteDoc)
+   }
     return res.status(200).json({ message: "Vibe deleted successfully" });
   } catch (error) {
     return res.status(500).json({ error: "Failed to delete vibe" });
@@ -504,7 +509,7 @@ const commentRevibe = async (req, res) => {
       original.commentReviberId = original.commentReviberId.filter(
         (reviber) => reviber.toString() !== userId.toString()
       );
-      original.isRevibe = false;
+      original.isCommentRevibe = false;
       await original.save();
       const deletedCommentRevibe = await Vibe.findOneAndDelete({
         userId,
@@ -521,7 +526,7 @@ const commentRevibe = async (req, res) => {
 
     const commentRevibeData = {
       userId,
-      isRevibe: true,
+      isCommentRevibe: true,
       // originalComment: commentId,
       commentId,
       // reviberId: [userId],

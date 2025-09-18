@@ -23,6 +23,10 @@ const vibeSchema = new Schema(
       type: Boolean,
       default: false,
     },
+    isCommentRevibe: {
+      type: Boolean,
+      default: false,
+    },
     reViberId: [
       {
         type: Schema.Types.ObjectId,
@@ -40,10 +44,10 @@ const vibeSchema = new Schema(
         ref: "User",
       },
     ],
-    commentId:{
+    commentId: {
       type: Schema.Types.ObjectId,
       ref: "Comment",
-    },  
+    },
     sentAt: {
       type: Date,
       default: Date.now,

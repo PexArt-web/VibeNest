@@ -25,11 +25,13 @@ const WRAPPER = () => {
 
   const handleDelete = async (id) => {
     try {
+      
+      console.log(id, "deleting ID")
       await deleteVibePost(id);
-      // setVibePosts((prevPosts) => ({
-      //   ...prevPosts,
-      //   vibes: prevPosts.vibes?.filter((post) => post._id !== id),
-      // }));
+      setVibePosts((prevPosts) => ({
+        ...prevPosts,
+        vibes: prevPosts.vibes?.filter((post) => post._id !== id),
+      }));
     } catch (error) {
       console.error("Error deleting post:", error);
     }
@@ -49,6 +51,10 @@ const WRAPPER = () => {
     formData.append("id", id);
     submit(formData, { method: "POST" });
   };
+
+  // const checkId =(id)=>{
+  //   alert(id)
+  // }
 
   return (
     <>
@@ -70,17 +76,18 @@ const WRAPPER = () => {
                 vibePosts?.vibes?.map((post) => (
                   <>
                     <div key={post._id}>
-                      {!post.isRevibe && (
+                      {!post.isRevibe && !post.isCommentRevibe &&(
                         <NormalVibeCard
                           post={post}
                           user={user}
                           handleDelete={handleDelete}
                           handleReVibe={handleReVibe}
                           handleReactions={handleReactions}
+                          // checkId={checkId}
                         />
                       )}
                     </div>
-                    {post.isRevibe && post.originalVibeData && (
+                    {post.isRevibe && (
                       <RevibedVibeCard
                         post={post}
                         key={post._id}
@@ -90,13 +97,14 @@ const WRAPPER = () => {
                       />
                     )}
 
-                    {post.isRevibe && post.originalCommentData && (
+                    {post.isCommentRevibe && (
                       <RevibedCommentCard
                         post={post}
                         key={post._id}
                         user={user}
                         handleDelete={handleDelete}
                         handleReactions={handleReactions}
+                        // checkId={checkId}
                       />
                     )}
                   </>

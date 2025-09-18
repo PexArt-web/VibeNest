@@ -6,12 +6,20 @@ import SharedButton from "../../../../Shared/Component/SharedButton";
 import SharedDropDown from "../../../../Shared/Component/SharedDropDown";
 import { FiMoreVertical, FiTrash2 } from "react-icons/fi";
 
-const NormalVibeCard = ({ post, user, handleDelete, handleReVibe, handleReactions }) => {
+const NormalVibeCard = ({
+  post,
+  user,
+  handleDelete,
+  handleReVibe,
+  handleReactions,
+  // checkId,
+}) => {
   return (
     <motion.div
       key={post._id}
       whileHover={{ scale: 1.02 }}
       className="bg-white/10 rounded-2xl p-4 shadow-md hover:shadow-lg transition-shadow duration-300"
+      // onClick={()=>checkId(post._id)}
     >
       <div className="flex items-start gap-4 flex-wrap">
         <img
@@ -26,9 +34,7 @@ const NormalVibeCard = ({ post, user, handleDelete, handleReVibe, handleReaction
               <div className="font-semibold text-lg text-white">
                 {post.user?.displayName}
               </div>
-              <div className="text-sm text-white/60">
-                {post.user?.username}
-              </div>
+              <div className="text-sm text-white/60">{post.user?.username}</div>
             </div>
 
             <div className="text-xs text-white/40 mt-1">
@@ -64,7 +70,11 @@ const NormalVibeCard = ({ post, user, handleDelete, handleReVibe, handleReaction
             <Link to={post._id}>
               <SharedButton
                 className="hover:text-blue-400 transition-colors duration-200 flex items-center cursor-pointer gap-1"
-                label={<><FaComment /> {post.commentCount}</>}
+                label={
+                  <>
+                    <FaComment /> {post.commentCount}
+                  </>
+                }
                 whileTap={{ scale: 1.2 }}
               />
             </Link>
@@ -76,7 +86,11 @@ const NormalVibeCard = ({ post, user, handleDelete, handleReVibe, handleReaction
                   : "text-white/70"
               }`}
               handleClick={() => handleReVibe(post._id)}
-              label={<><FaRetweet /> {post.reViberId?.length || 0}</>}
+              label={
+                <>
+                  <FaRetweet /> {post.reViberId?.length || 0}
+                </>
+              }
               whileTap={{ scale: 1.2 }}
             />
 
@@ -87,7 +101,11 @@ const NormalVibeCard = ({ post, user, handleDelete, handleReVibe, handleReaction
                   : "text-white/70"
               }`}
               handleClick={() => handleReactions(post._id)}
-              label={<><FaHeart /> {post.likes?.length || 0}</>}
+              label={
+                <>
+                  <FaHeart /> {post.likes?.length || 0}
+                </>
+              }
               whileTap={{ scale: 1.2 }}
             />
           </div>

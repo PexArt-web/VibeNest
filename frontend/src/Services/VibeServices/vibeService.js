@@ -71,6 +71,7 @@ export const deleteVibePost = async (id) => {
   if (!id) {
     throw new Error("Vibe ID is required to delete a vibe post");
   }
+  console.log(id, "deleting ID from service")
   try {
     const response = await fetch(
       `http://localhost:4000/api/vibes/delete-vibe/${id}`,
