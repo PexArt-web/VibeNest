@@ -71,7 +71,6 @@ export const deleteVibePost = async (id) => {
   if (!id) {
     throw new Error("Vibe ID is required to delete a vibe post");
   }
-  console.log(id, "deleting ID from service")
   try {
     const response = await fetch(
       `http://localhost:4000/api/vibes/delete-vibe/${id}`,
@@ -224,18 +223,21 @@ export const revibeComment = async ({ commentId, content }) => {
     if (!commentId) {
       throw new Error("Comment ID is required to revibe a comment");
     }
-    const response = await fetch(`http://localhost:4000/api/vibes/comment/${commentId}/reply`, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${await getAccessToken()}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ actionType: "revibeComment", commentId}),
-    });
+    const response = await fetch(
+      `http://localhost:4000/api/vibes/comment/${commentId}/reply`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${await getAccessToken()}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ actionType: "revibeComment", commentId }),
+      }
+    );
     const data = await response.json();
     await checkResponse(response, data);
     return data;
   } catch (error) {
     throw new Error(error);
   }
-}
+};

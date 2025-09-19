@@ -9,6 +9,7 @@ import {
   Form,
   Link,
   useLoaderData,
+  useLocation,
   useNavigation,
   useSubmit,
 } from "react-router-dom";
@@ -19,6 +20,7 @@ const VibeDetails = () => {
   const submit = useSubmit();
   const { user } = useAuthContext();
   const navigation = useNavigation();
+  const location = useLocation();
   const formRef = useRef();
   useEffect(() => {
     const vibeFetch = async () => {
@@ -31,6 +33,22 @@ const VibeDetails = () => {
       formRef.current?.reset();
     }
   }, [dataElements?.vibeWithId, navigation.state]);
+
+  useEffect(() => {
+    if (location.hash) {
+      const id = location.hash.replace("#", "");
+      setTimeout(() => {
+        const section = document.getElementById(id);
+        if (section) {
+          section.scrollIntoView({ behavior: "smooth" });
+        }
+      }, 3000);
+      // const section = document.getElementById(id);
+      // if (section) {
+      //   section.scrollIntoView({ behavior: "smooth" });
+      // }
+    }
+  }, [location, dataElements]);
 
   const handleReVibe = (id) => {
     const formData = new FormData();
@@ -62,6 +80,10 @@ const VibeDetails = () => {
     formData.append("content", "");
     formData.append("commentId", id);
     submit(formData, { method: "POST" });
+  };
+
+  const checkId = (id) => {
+    alert(id);
   };
 
   return (
@@ -220,6 +242,8 @@ const VibeDetails = () => {
                         <div
                           key={comment._id}
                           className="bg-white/5 p-3 rounded-lg backdrop-blur-sm space-y-2"
+                          onClick={() => checkId(comment.vibeId)}
+                          id={comment._id}
                         >
                           {/* User Info */}
                           <div className="flex items-center gap-3">
@@ -235,7 +259,7 @@ const VibeDetails = () => {
                                 {comment?.userId?.displayName || "user"}
                               </p>
                               <p className="text-xs text-gray-400">
-                                @{comment?.userId?.username}
+                                {comment?.userId?.username}
                               </p>
                             </div>
                           </div>
@@ -259,7 +283,9 @@ const VibeDetails = () => {
 
                             <SharedButton
                               className={`hover:text-green-400 flex items-center gap-1 ${
-                                comment?.commentReviberId?.includes(user?.user._id)
+                                comment?.commentReviberId?.includes(
+                                  user?.user._id
+                                )
                                   ? "text-green-400"
                                   : "text-white/70"
                               }`}

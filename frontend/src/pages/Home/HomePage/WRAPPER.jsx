@@ -52,9 +52,9 @@ const WRAPPER = () => {
     submit(formData, { method: "POST" });
   };
 
-  // const checkId =(id)=>{
-  //   alert(id)
-  // }
+  const checkId =(id)=>{
+    alert(id)
+  }
 
   return (
     <>
@@ -74,6 +74,7 @@ const WRAPPER = () => {
             <Await resolve={dataElements?.vibe}>
               {() =>
                 vibePosts?.vibes?.map((post) => (
+                  console.log(post ,  "from wrapper"),
                   <>
                     <div key={post._id}>
                       {!post.isRevibe && !post.isCommentRevibe &&(
@@ -104,7 +105,7 @@ const WRAPPER = () => {
                         user={user}
                         handleDelete={handleDelete}
                         handleReactions={handleReactions}
-                        // checkId={checkId}
+                        checkId={checkId}
                       />
                     )}
                   </>
