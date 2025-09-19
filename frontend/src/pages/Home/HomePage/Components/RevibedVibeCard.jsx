@@ -20,8 +20,7 @@ const RevibedVibeCard = ({
              hover:shadow-lg transition-shadow duration-300 space-y-3"
     >
       <p className="text-green-400 text-xs flex items-center gap-1">
-        🔁 {post.user?.displayName}{" "}
-        <span className="text-white/50">revibed</span>
+        {post.user?.displayName} <span className="text-white/50">revibed</span>
       </p>
 
       <Link to={post.originalVibeData._id} className="block cursor-pointer">

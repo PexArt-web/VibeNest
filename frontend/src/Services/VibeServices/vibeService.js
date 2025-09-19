@@ -136,7 +136,7 @@ export const getVibeById = async (id) => {
 export const createComment = async ({ id, content, imageUrl }) => {
   try {
     const response = await fetch(
-      `http://localhost:4000/api/vibes/create-comment/${id}`,
+      `http://localhost:4000/api/comments/create-comment/${id}`,
       {
         method: "POST",
         headers: {
@@ -199,7 +199,7 @@ export const like = async (id) => {
 export const likeComment = async (commentId) => {
   try {
     const response = await fetch(
-      `http://localhost:4000/api/vibes/comment/${commentId}/like`,
+      `http://localhost:4000/api/comments/${commentId}/like`,
       {
         method: "POST",
         headers: {
@@ -218,13 +218,12 @@ export const likeComment = async (commentId) => {
 };
 
 export const revibeComment = async ({ commentId, content }) => {
-  console.log("commentId in service:", commentId);
   try {
     if (!commentId) {
       throw new Error("Comment ID is required to revibe a comment");
     }
     const response = await fetch(
-      `http://localhost:4000/api/vibes/comment/${commentId}/reply`,
+      `http://localhost:4000/api/comments/${commentId}/reply`,
       {
         method: "POST",
         headers: {

@@ -43,10 +43,6 @@ const VibeDetails = () => {
           section.scrollIntoView({ behavior: "smooth" });
         }
       }, 3000);
-      // const section = document.getElementById(id);
-      // if (section) {
-      //   section.scrollIntoView({ behavior: "smooth" });
-      // }
     }
   }, [location, dataElements]);
 
@@ -80,10 +76,6 @@ const VibeDetails = () => {
     formData.append("content", "");
     formData.append("commentId", id);
     submit(formData, { method: "POST" });
-  };
-
-  const checkId = (id) => {
-    alert(id);
   };
 
   return (
@@ -213,28 +205,7 @@ const VibeDetails = () => {
                   </div>
 
                   {/* */}
-                  {/* <div className="mt-6 space-y-4 max-h-[300px] overflow-y-auto pr-2">
-                    <h3 className="text-lg font-semibold mb-2">Comments</h3>
-                    {vibe.commentCount > 0 ? (
-                      details?.comment?.map((comment) => (
-                        <div
-                          key={comment._id}
-                          className="bg-white/5 p-3 rounded-lg backdrop-blur-sm"
-                        >
-                          <p className="text-sm text-white leading-snug">
-                            <span className="font-bold text-purple-300">
-                              {comment?.userId?.username || "user"}
-                            </span>{" "}
-                            {comment.content}
-                          </p>
-                        </div>
-                      ))
-                    ) : (
-                      <p className="text-gray-400 text-sm">
-                        No comments yet ...
-                      </p>
-                    )}
-                  </div> */}
+
                   <div className="mt-6 space-y-4 max-h-[300px] overflow-y-auto pr-2">
                     <h3 className="text-lg font-semibold mb-2">Comments</h3>
                     {vibe.commentCount > 0 ? (
@@ -242,10 +213,9 @@ const VibeDetails = () => {
                         <div
                           key={comment._id}
                           className="bg-white/5 p-3 rounded-lg backdrop-blur-sm space-y-2"
-                          onClick={() => checkId(comment.vibeId)}
                           id={comment._id}
                         >
-                          {/* User Info */}
+                          {/*  */}
                           <div className="flex items-center gap-3">
                             <img
                               src={
@@ -264,12 +234,12 @@ const VibeDetails = () => {
                             </div>
                           </div>
 
-                          {/* Comment Text */}
+                          {/*  */}
                           <p className="text-sm text-white leading-snug pl-11">
                             {comment.content}
                           </p>
 
-                          {/* Actions */}
+                          {/*  */}
                           <div className="flex gap-6 text-xs text-white/70 mt-2 pl-11 justify-evenly">
                             <SharedButton
                               className="hover:text-blue-400 flex items-center gap-1"

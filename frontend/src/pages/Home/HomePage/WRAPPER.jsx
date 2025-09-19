@@ -5,9 +5,9 @@ import { Suspense, useEffect, useState } from "react";
 import Fallback from "../../../Suspense/Fallback";
 import { deleteVibePost } from "@/Services/VibeServices/vibeService";
 import { useAuthContext } from "@/Hooks/useAuthContext";
-import NormalVibeCard from "./Pages/NormalVibeCard";
-import RevibedVibeCard from "./Pages/RevibedVibeCard";
-import RevibedCommentCard from "./Pages/RevibedCommentCard";
+import NormalVibeCard from "./Components/NormalVibeCard";
+import RevibedVibeCard from "./Components/RevibedVibeCard";
+import RevibedCommentCard from "./Components/RevibedCommentCard";
 
 const WRAPPER = () => {
   const dataElements = useLoaderData();
@@ -51,11 +51,7 @@ const WRAPPER = () => {
     formData.append("id", id);
     submit(formData, { method: "POST" });
   };
-
-  const checkId =(id)=>{
-    alert(id)
-  }
-
+  
   return (
     <>
       <div
@@ -74,7 +70,6 @@ const WRAPPER = () => {
             <Await resolve={dataElements?.vibe}>
               {() =>
                 vibePosts?.vibes?.map((post) => (
-                  console.log(post ,  "from wrapper"),
                   <>
                     <div key={post._id}>
                       {!post.isRevibe && !post.isCommentRevibe &&(
@@ -84,7 +79,6 @@ const WRAPPER = () => {
                           handleDelete={handleDelete}
                           handleReVibe={handleReVibe}
                           handleReactions={handleReactions}
-                          // checkId={checkId}
                         />
                       )}
                     </div>
@@ -105,7 +99,6 @@ const WRAPPER = () => {
                         user={user}
                         handleDelete={handleDelete}
                         handleReactions={handleReactions}
-                        checkId={checkId}
                       />
                     )}
                   </>

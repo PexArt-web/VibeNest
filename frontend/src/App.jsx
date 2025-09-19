@@ -5,7 +5,6 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import SplashScreen from "./pages/SplashScreen/SplashScreen";
-import HomePage from "./pages/Home/HomePage";
 import Notification from "./pages/Notification";
 import Trending from "./pages/Trending";
 import Profile from "./pages/Profile";
