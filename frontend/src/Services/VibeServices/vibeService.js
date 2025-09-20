@@ -1,3 +1,5 @@
+import { assert } from "console";
+
 const getAccessToken = async () => {
   const user = await JSON.parse(localStorage.getItem("user"));
   if (!user) {
@@ -231,6 +233,29 @@ export const revibeComment = async ({ commentId, content }) => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ actionType: "revibeComment", commentId }),
+      }
+    );
+    const data = await response.json();
+    await checkResponse(response, data);
+    return data;
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
+export const deleteComment = async (id) => {
+  try {
+    if (!id) {
+      throw new Error("Doc Id to be deleted is required");
+    }
+    const response = await fetch(
+      `http://localhost:4000/api/comments/delete-comment/${id}`,
+      {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${await getAccessToken()}`,
+          "Content-Type": "application/json",
+        },
       }
     );
     const data = await response.json();

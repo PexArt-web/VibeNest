@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const Comment = require("../Models/BluePrint/commentModel");
-const Vibe = require("../Models/BluePrint/vibeModel")
+const Vibe = require("../Models/BluePrint/vibeModel");
 
 const createComment = async (req, res) => {
   try {
@@ -169,9 +169,33 @@ const commentRevibe = async (req, res) => {
   }
 };
 
+const deleteComment = async (req, res) => {
+  try {
+    const commentId = req.params.id;
+    const userId = req.user._id;
+    if (!userId) {
+      return res.status.json({
+        error: "Unauthorized user, please login again",
+      });
+    }
+    if (!mongoose.Types.ObjectId.isValid(commentId)) {
+      return res.status(400).json({ error: "Invalid Comment ID" });
+    }
+    const comment = await Comment.findById(commentId);
+    if (!comment) {
+      return res.status(404).json({ error: "Comment not found" });
+    }
+    await Comment.findByIdAndDelete(commentId);
+    return res.status(200).json({ message: "comment deleted successfully" });
+  } catch (error) {
+    return res.status(500).json({ error: "Failed to delete comment" });
+  }
+};
+
 module.exports = {
   createComment,
   getComments,
   commentLikeOrUnlike,
   commentRevibe,
+  deleteComment,
 };
