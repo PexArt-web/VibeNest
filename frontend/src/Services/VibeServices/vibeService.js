@@ -1,5 +1,3 @@
-import { assert } from "console";
-
 const getAccessToken = async () => {
   const user = await JSON.parse(localStorage.getItem("user"));
   if (!user) {

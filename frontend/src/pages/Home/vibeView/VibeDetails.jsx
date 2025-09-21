@@ -1,9 +1,11 @@
 import { useAuthContext } from "@/Hooks/useAuthContext";
 import SharedButton from "@/Shared/Component/SharedButton";
+import SharedDropDown from "@/Shared/Component/SharedDropDown";
 import SharedInput from "@/Shared/Component/SharedInput";
 import Fallback from "@/Suspense/Fallback";
 import { Suspense, useEffect, useRef, useState } from "react";
 import { FaComment, FaHeart, FaRetweet } from "react-icons/fa";
+import { FiMoreVertical, FiTrash2 } from "react-icons/fi";
 import {
   Await,
   Form,
@@ -232,6 +234,19 @@ const VibeDetails = () => {
                                 {comment?.userId?.username}
                               </p>
                             </div>
+
+                            {user?.user._id === comment?.userId && (
+                              <div className="self-end sm:self-start">
+                                <SharedDropDown
+                                  parentLabel={<FiMoreVertical size={10} />}
+                                  dropDownLabel={"Delete"}
+                                  dropDownIcon={
+                                    <FiTrash2 size={20} color="red" />
+                                  }
+                                  // handleDelete={() => handleDelete(post._id)}
+                                />
+                              </div>
+                            )}
                           </div>
 
                           {/*  */}
@@ -249,6 +264,7 @@ const VibeDetails = () => {
                                 </>
                               }
                               whileTap={{ scale: 1.2 }}
+                              disabled={true}
                             />
 
                             <SharedButton
@@ -269,6 +285,7 @@ const VibeDetails = () => {
                               handleClick={() =>
                                 handleCommentRevibe(comment._id)
                               }
+                              // disabled={true}
                             />
 
                             <SharedButton
@@ -284,6 +301,7 @@ const VibeDetails = () => {
                               }
                               whileTap={{ scale: 1.2 }}
                               handleClick={() => handleCommentLike(comment._id)}
+                              // disabled={true}
                             />
                           </div>
                         </div>

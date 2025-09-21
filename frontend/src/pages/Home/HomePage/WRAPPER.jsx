@@ -25,9 +25,7 @@ const WRAPPER = () => {
 
   const handleDelete = async (id) => {
     try {
-      
-      console.log(id, "deleting ID")
-      await deleteVibePost(id);
+            await deleteVibePost(id);
       setVibePosts((prevPosts) => ({
         ...prevPosts,
         vibes: prevPosts.vibes?.filter((post) => post._id !== id),
