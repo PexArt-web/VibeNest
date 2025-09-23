@@ -30,7 +30,7 @@ const notifications = [
 const Notification = () => {
   return (
     <div className="min-h-screen pt-16 bg-gray-800 px-4 sm:px-8">
-      <h2 className="text-2xl font-bold text-purple-600 mb-6">Notifications</h2>
+      <h2 className="text-2xl font-bold text-green-600 mb-6">Notifications</h2>
       <div className="space-y-4">
         {notifications.map((notify) => (
           <div
@@ -40,7 +40,7 @@ const Notification = () => {
             <div className="text-xl">{notify.icon}</div>
             <div>
               <p className="text-gray-800 font-medium">
-                <span className="text-purple-600">{notify.user}</span> {notify.action}
+                <span className="text-green-600">{notify.user}</span> {notify.action}
               </p>
               <span className="text-sm text-gray-500">{notify.time}</span>
             </div>

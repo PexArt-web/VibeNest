@@ -109,7 +109,7 @@ const WRAPPER = () => {
 
       <Link
         to="create-post"
-        className="fixed bottom-20 md:bottom-30 right-4 md:right-16 bg-purple-600 hover:bg-purple-700 text-white p-4 rounded-full shadow-lg transition-all duration-300 flex items-center justify-center"
+        className="fixed bottom-20 md:bottom-30 right-4 md:right-16 bg-green-600 hover:bg-green-700 text-white p-4 rounded-full shadow-lg transition-all duration-300 flex items-center justify-center"
       >
         <FaFeatherAlt className="text-xl" />
       </Link>

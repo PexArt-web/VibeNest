@@ -21,7 +21,7 @@ const Profile = () => {
   return (
     <div className="min-h-screen bg-gray-950 py-10 px-4 pt-14 mb-11 mt-5">
       <div className="max-w-2xl mx-auto bg-white rounded-xl shadow-xl overflow-hidden">
-        <div className="bg-gradient-to-r from-purple-500 to-blue-500 h-32 relative">
+        <div className="bg-gradient-to-r from-green-500 to-blue-500 h-32 relative">
           <h1 className="text-center">cover here</h1>
           <img
             src={user?.user.avatar}
@@ -41,7 +41,7 @@ const Profile = () => {
             </div>
             <SharedButton
               className={
-                "mt-4 sm:mt-0 bg-purple-600 text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-purple-700 transition"
+                "mt-4 sm:mt-0 bg-green-600 text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-green-700 transition"
               }
               label={"Edit Profile"}
             />

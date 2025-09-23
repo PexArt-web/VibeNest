@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const Comment = require("../Models/BluePrint/commentModel");
 const Vibe = require("../Models/BluePrint/vibeModel");
 
+const { log } = console;
 const createComment = async (req, res) => {
   try {
     const userId = req.user._id;

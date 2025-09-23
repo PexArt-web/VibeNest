@@ -1,4 +1,5 @@
 import { useAuthContext } from "@/Hooks/useAuthContext";
+import { deleteComment } from "@/Services/VibeServices/vibeService";
 import SharedButton from "@/Shared/Component/SharedButton";
 import SharedDropDown from "@/Shared/Component/SharedDropDown";
 import SharedInput from "@/Shared/Component/SharedInput";
@@ -80,8 +81,21 @@ const VibeDetails = () => {
     submit(formData, { method: "POST" });
   };
 
+  const handleDeleteComment = async (id) => {
+    try {
+      await deleteComment(id);
+      setDetails((prevPost) => ({
+        ...prevPost,
+        comment: prevPost.comment?.filter((post) => post._id !== id),
+      }));
+    } catch (error) {
+      console.error(error)
+      throw new Error(error);
+    }
+  };
+  // console.log(details, "details");
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-black text-white pt-20 pb-28 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-green-900 to-black text-white pt-20 pb-28 px-4">
       <div className="max-w-2xl mx-auto space-y-8 relative">
         <Suspense
           fallback={
@@ -132,7 +146,7 @@ const VibeDetails = () => {
                       to={`/home/${vibe.originalVibeData._id}`}
                       className="cursor-pointer"
                     >
-                      <div className="mt-4 border-l-4 border-purple-500 pl-4 bg-white/5 rounded-lg p-3">
+                      <div className="mt-4 border-l-4 border-green-500 pl-4 bg-white/5 rounded-lg p-3">
                         <div className="flex items-center gap-2 mb-2">
                           <img
                             src={vibe.originalVibeData.user?.avatar}
@@ -216,26 +230,30 @@ const VibeDetails = () => {
                           key={comment._id}
                           className="bg-white/5 p-3 rounded-lg backdrop-blur-sm space-y-2"
                           id={comment._id}
+                          // onClick={()=>confirmId(comment?.userId)}
                         >
                           {/*  */}
-                          <div className="flex items-center gap-3">
-                            <img
-                              src={
-                                comment?.userId?.avatar || "/default-avatar.png"
-                              }
-                              alt="User Avatar"
-                              className="w-8 h-8 rounded-full border border-white/20"
-                            />
+                          <div className="flex items-center gap-3 justify-between">
                             <div>
-                              <p className="text-sm font-semibold text-purple-300">
-                                {comment?.userId?.displayName || "user"}
-                              </p>
-                              <p className="text-xs text-gray-400">
-                                {comment?.userId?.username}
-                              </p>
+                              <img
+                                src={
+                                  comment?.userId?.avatar ||
+                                  "/default-avatar.png"
+                                }
+                                alt="User Avatar"
+                                className="w-8 h-8 rounded-full border border-white/20"
+                              />
+                              <div>
+                                <p className="text-sm font-semibold text-purple-300">
+                                  {comment?.userId?.displayName || "user"}
+                                </p>
+                                <p className="text-xs text-gray-400">
+                                  {comment?.userId?.username}
+                                </p>
+                              </div>
                             </div>
 
-                            {user?.user._id === comment?.userId && (
+                            {user?.user._id === comment?.userId._id && (
                               <div className="self-end sm:self-start">
                                 <SharedDropDown
                                   parentLabel={<FiMoreVertical size={10} />}
@@ -243,7 +261,9 @@ const VibeDetails = () => {
                                   dropDownIcon={
                                     <FiTrash2 size={20} color="red" />
                                   }
-                                  // handleDelete={() => handleDelete(post._id)}
+                                  handleDelete={() =>
+                                    handleDeleteComment(comment._id)
+                                  }
                                 />
                               </div>
                             )}
@@ -338,7 +358,7 @@ const VibeDetails = () => {
             </div>
             <SharedButton
               type="submit"
-              className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-1.5 rounded-full text-sm font-medium transition"
+              className="bg-green-600 hover:bg-green-700 text-white px-4 py-1.5 rounded-full text-sm font-medium transition"
               label={navigation.state === "submitting" ? "Posting..." : "Post"}
               disabled={navigation.state === "submitting"}
             />

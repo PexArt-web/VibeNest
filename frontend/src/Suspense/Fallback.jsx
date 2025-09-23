@@ -10,7 +10,7 @@ const Fallback = ({loadingTitle, titleFollowUp}) => {
         transition={{ duration: 0.5, ease: "easeInOut" }}
       >
         <motion.div
-          className="w-16 h-16 border-4 border-purple-500 border-dashed rounded-full animate-spin mx-auto mb-6"
+          className="w-16 h-16 border-4 border-green-500 border-dashed rounded-full animate-spin mx-auto mb-6"
         />
         <h1 className="text-xl font-semibold">{loadingTitle}</h1>
         <p className="text-sm text-white/70 mt-2">{titleFollowUp}</p>

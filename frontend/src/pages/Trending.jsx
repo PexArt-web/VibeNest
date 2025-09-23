@@ -11,7 +11,7 @@ const Trending = () => {
   return (
     <div className="min-h-screen pt-14 bg-gray-950 text-white mb-14 scroll-smooth">
       <div className="p-4 max-w-xl mx-auto bg-gray-800 rounded-xl shadow-xl">
-        <h2 className="text-xl font-bold mb-4 text-purple-600">
+        <h2 className="text-xl font-bold mb-4 text-green-600">
           Trending on VibeNest
         </h2>
 

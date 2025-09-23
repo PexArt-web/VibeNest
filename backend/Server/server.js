@@ -7,6 +7,7 @@ const userRoutes = require("../Routes/userRoutes");
 const vibeRoutes = require("../Routes/vibeRoutes");
 const commentRoutes = require("../Routes/commentRoutes");
 const { connectDB } = require("../Config/database");
+const { connectSocket } = require("../Services/weBSocket");
 app.use(express.json());
 app.use(cors());
 
@@ -23,11 +24,18 @@ const { log } = console;
 connectDB((error) => {
   if (!error) {
     const server = app.listen(port, () => {
-      log(`Server is running on port ${port}`);
-      log("app and database connected successfully");
+      log(`app and database connected successfully and the Server is running on port ${port}`);
     });
+    //weBSocket Connection
+    const io = require("socket.io")(server, {
+      cors: {
+        origin: ["http://localhost:5173"]
+      }
+    })
+    io.on("connection", (socket)=> connectSocket(socket, io))
+    //
     return;
   } else {
-    log(error);
+    log(`Error connecting to database:, ${error}`);
   }
 });
