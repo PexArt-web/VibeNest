@@ -24,7 +24,7 @@ const { log } = console;
 connectDB((error) => {
   if (!error) {
     const server = app.listen(port, () => {
-      log(`app and database connected successfully and the Server is running on port ${port}`);
+      log(`socket , app and database connected successfully and the Server is running on port ${port}`);
     });
     //weBSocket Connection
     const io = require("socket.io")(server, {

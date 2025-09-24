@@ -4,6 +4,8 @@ import { Await, useLoaderData } from "react-router-dom";
 import { Suspense, useEffect, useState } from "react";
 import Fallback from "@/Suspense/Fallback";
 import moment from "moment";
+import SharedDropDown from "@/Shared/Component/SharedDropDown";
+import { FiMessageSquare, FiMoreHorizontal } from "react-icons/fi";
 
 const Profile = () => {
   const { user } = useAuthContext();
@@ -16,7 +18,6 @@ const Profile = () => {
     };
     fetchProfilePost();
   }, [dataElements]);
-
 
   return (
     <div className="min-h-screen bg-gray-950 py-10 px-4 pt-14 mb-11 mt-5">
@@ -39,12 +40,33 @@ const Profile = () => {
               <p className="text-gray-500">{user?.user.username}</p>
               <p className="text-gray-600 mt-1 text-sm">{user?.user.email}</p>
             </div>
-            <SharedButton
-              className={
-                "mt-4 sm:mt-0 bg-green-600 text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-green-700 transition"
-              }
-              label={"Edit Profile"}
-            />
+
+            <div>
+              <SharedDropDown
+                parentLabel={<FiMoreHorizontal size={24} color="gray" />}
+                dropDownLabel={"comming soon ..."}
+              />
+
+              <SharedButton
+                className={
+                  "mt-4 sm:mt-0 bg-green-600 text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-green-700 transition"
+                }
+                label={<FiMessageSquare size={24} color="gray" />}
+              />
+
+              <SharedButton
+                className={
+                  "mt-4 sm:mt-0 bg-green-600 text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-green-700 transition"
+                }
+                label={"follow"}
+              />
+              <SharedButton
+                className={
+                  "mt-4 sm:mt-0 bg-green-600 text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-green-700 transition"
+                }
+                label={"Edit Profile"}
+              />
+            </div>
           </div>
         </div>
 
@@ -67,31 +89,29 @@ const Profile = () => {
             >
               <Await resolve={dataElements?.usersVibe}>
                 {() => {
-                  return profilePosts?.vibes?.map(
-                    (post) => (
-                      (
-                        <div
-                          key={post._id}
-                          className="bg-gray-100 p-4 rounded-lg shadow hover:shadow-lg transition"
-                        >
-                          <p className="text-gray-800">{post.content}</p>
-                          {post.imageUrl && (
-                            <div className="mt-4">
-                              <img
-                                src={post.imageUrl}
-                                alt="User post"
-                                className="rounded-lg w-full max-h-96 object-cover border border-white/20"
-                              />
-                            </div>
-                          )}
-
-                         {post.createdAt && <span className="text-sm text-gray-500">
-                            {moment(post.createdAt).fromNow()}
-                          </span>}
+                  return profilePosts?.vibes?.map((post) => (
+                    <div
+                      key={post._id}
+                      className="bg-gray-100 p-4 rounded-lg shadow hover:shadow-lg transition"
+                    >
+                      <p className="text-gray-800">{post.content}</p>
+                      {post.imageUrl && (
+                        <div className="mt-4">
+                          <img
+                            src={post.imageUrl}
+                            alt="User post"
+                            className="rounded-lg w-full max-h-96 object-cover border border-white/20"
+                          />
                         </div>
-                      )
-                    )
-                  );
+                      )}
+
+                      {post.createdAt && (
+                        <span className="text-sm text-gray-500">
+                          {moment(post.createdAt).fromNow()}
+                        </span>
+                      )}
+                    </div>
+                  ));
                 }}
               </Await>
             </Suspense>

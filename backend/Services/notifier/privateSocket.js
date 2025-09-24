@@ -1,4 +1,6 @@
 const {log} = console
+// for private notifications
+
 let userID = {}
 let users = {}
 const alertSocket = (socket, io) => {
