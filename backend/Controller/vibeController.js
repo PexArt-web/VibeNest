@@ -364,7 +364,7 @@ const vibeUserProfile = async (req, res) => {
       .sort({ createdAt: -1 });
     return res
       .status(200)
-      .json({ message: "User vibes fetched successfully", vibes });
+      .json({ message: "User vibes fetched successfully", vibes, userId });
   } catch (error) {
     return res
       .status(500)

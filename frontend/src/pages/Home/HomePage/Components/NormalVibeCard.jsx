@@ -48,6 +48,7 @@ const NormalVibeCard = ({
                   dropDownLabel={"Delete"}
                   dropDownIcon={<FiTrash2 size={20} color="red" />}
                   handleDelete={() => handleDelete(post._id)}
+                  className={"text-black hover:text-black bg-gray-100"}
                 />
               </div>
             )}

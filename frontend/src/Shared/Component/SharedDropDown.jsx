@@ -8,11 +8,11 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-const SharedDropDown = ({ parentLabel, dropDownLabel, handleDelete , dropDownIcon}) => {
+const SharedDropDown = ({ parentLabel, dropDownLabel, handleDelete , dropDownIcon, className}) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" className={"text-black hover:text-black bg-gray-100"} >
+        <Button variant="outline" className={className} >
           {parentLabel}
         </Button>
       </DropdownMenuTrigger>
