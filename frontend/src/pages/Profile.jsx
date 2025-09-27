@@ -19,14 +19,14 @@ const Profile = () => {
     fetchProfilePost();
   }, [dataElements]);
 
-  console.log(profilePosts, "post")
+  console.log(profilePosts, "post");
 
   // const mapped = profilePosts?.map((post)=>
   // console.log(post, "post")
   // )
 
   // console.log(mapped, "mapped")
-  console.log(profilePosts.userId, "user id")
+  console.log(profilePosts.userId, "user id");
 
   return (
     <div className="min-h-screen bg-gray-950 py-10 px-4 pt-14 mb-11 mt-5">
@@ -51,31 +51,37 @@ const Profile = () => {
             </div>
 
             <div className="flex justify-center items-center gap-1">
-            {/* {user?.user._id !==  <SharedDropDown
-                parentLabel={<FiMoreHorizontal size={24} color="#fff" />}
-                dropDownLabel={"comming soon ..."}
-                className={"bg-green-600 hover:bg-green-700"}
-              />
+              {user?.user._id !== profilePosts.userId && (
+                <>
+                  <SharedDropDown
+                    parentLabel={<FiMoreHorizontal size={24} color="#fff" />}
+                    dropDownLabel={"comming soon ..."}
+                    className={"bg-green-600 hover:bg-green-700"}
+                  />
 
-              <SharedButton
-                className={ 
-                  "mt-4 sm:mt-0 bg-green-600 text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-green-700 transition"
-                }
-                label={<FiMessageSquare size={24} color="gray" />}
-              />
+                  <SharedButton
+                    className={
+                      "mt-4 sm:mt-0 bg-green-600 text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-green-700 transition"
+                    }
+                    label={<FiMessageSquare size={24} color="gray" />}
+                  />
 
-              <SharedButton
-                className={
-                  "mt-4 sm:mt-0 bg-green-600 text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-green-700 transition"
-                }
-                label={"follow"}
-              />} */}
-              <SharedButton
-                className={
-                  "mt-4 sm:mt-0 bg-green-600 text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-green-700 transition"
-                }
-                label={"Edit Profile"}
-              />
+                  <SharedButton
+                    className={
+                      "mt-4 sm:mt-0 bg-green-600 text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-green-700 transition"
+                    }
+                    label={"follow"}
+                  />
+                </>
+              )}
+              {user?.user._id === profilePosts.userId && (
+                <SharedButton
+                  className={
+                    "mt-4 sm:mt-0 bg-green-600 text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-green-700 transition"
+                  }
+                  label={"Edit Profile"}
+                />
+              )}
             </div>
           </div>
         </div>

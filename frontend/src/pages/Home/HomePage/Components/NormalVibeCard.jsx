@@ -30,12 +30,12 @@ const NormalVibeCard = ({
 
         <div className="flex-1">
           <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start w-full gap-2 sm:gap-4">
-            <div>
+            <Link to={`/profile/${post.userId}`}>
               <div className="font-semibold text-lg text-white">
                 {post.user?.displayName}
               </div>
               <div className="text-sm text-white/60">{post.user?.username}</div>
-            </div>
+            </Link>
 
             <div className="text-xs text-white/40 mt-1">
               {moment(post.createdAt).fromNow()}

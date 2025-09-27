@@ -68,6 +68,7 @@ const WRAPPER = () => {
             <Await resolve={dataElements?.vibe}>
               {() =>
                 vibePosts?.vibes?.map((post) => (
+                  console.log(post.userId, "Post details"),
                   <>
                     <div key={post._id}>
                       {!post.isRevibe && !post.isCommentRevibe &&(

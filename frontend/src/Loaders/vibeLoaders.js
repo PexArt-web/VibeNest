@@ -37,13 +37,9 @@ export const trendingLoader = async ({ request }) => {
   return null;
 };
 
-export const profileLoader = async ({ request }) => {
+export const profileLoader = async ({ request, params }) => {
   await requireAuth(request);
-  const user = await JSON.parse(localStorage.getItem("user"));
-  if (!user) {
-    throw new Error("Unauthorized user, please login again");
-  }
-  const userId = user?.user?._id;
+  const { userId } = params;
   const usersVibe = getUserProfile(userId);
   return defer({ usersVibe });
   // return null
