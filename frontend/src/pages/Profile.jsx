@@ -34,7 +34,7 @@ const Profile = () => {
         <div className="bg-gradient-to-r from-green-500 to-blue-500 h-32 relative">
           <h1 className="text-center">cover here</h1>
           <img
-            src={user?.user.avatar}
+            src={profilePosts?.avatar}
             alt="avatar"
             className="w-24 h-24 rounded-full border-4 border-white absolute bottom-[-2rem] left-6"
           />
@@ -44,10 +44,10 @@ const Profile = () => {
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
             <div>
               <h2 className="text-2xl font-bold text-gray-900">
-                {user?.user.displayName}
+                {profilePosts?.displayName}
               </h2>
-              <p className="text-gray-500">{user?.user.username}</p>
-              <p className="text-gray-600 mt-1 text-sm">{user?.user.email}</p>
+              <p className="text-gray-500">{profilePosts?.username}</p>
+              <p className="text-gray-600 mt-1 text-sm">{profilePosts?.email}</p>
             </div>
 
             <div className="flex justify-center items-center gap-1">

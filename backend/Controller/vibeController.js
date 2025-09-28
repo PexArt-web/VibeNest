@@ -1,6 +1,7 @@
 const Vibe = require("../Models/BluePrint/vibeModel");
 const mongoose = require("mongoose");
 const Comment = require("../Models/BluePrint/commentModel");
+const User = require("../Models/BluePrint/userModel");
 
 const { log } = console;
 const createVibe = async (req, res) => {
@@ -351,27 +352,42 @@ const likeOrUnlikeVibe = async (req, res) => {
 const vibeUserProfile = async (req, res) => {
   try {
     const userId = req.user._id;
+    const { id } = req.params;
+    log(id, "userID");
     if (!userId) {
       return res
         .status(401)
         .json({ error: "Unauthorized user, please login again" });
     }
-    if (!mongoose.Types.ObjectId.isValid(userId)) {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
       return res.status(400).json({ error: "Invalid user ID" });
     }
-    const vibes = await Vibe.find({ userId })
+    if (!id) {
+      return res.status(400).json({ error: `Invalid user please try again` });
+    }
+
+    const vibes = await Vibe.find({ userId: id })
       .populate("userId")
       .sort({ createdAt: -1 });
+    const user = await User.findOne({ _id: id });
+    log(user, "user profile");
     return res
       .status(200)
-      .json({ message: "User vibes fetched successfully", vibes, userId });
+      .json({
+        message: "User vibes fetched successfully",
+        vibes,
+        userId,
+        displayName: user.displayName,
+        username: user.username,
+        email: user.email,
+        avatar: user.avatar
+      });
   } catch (error) {
     return res
       .status(500)
       .json({ message: "Error fetching user vibes", error });
   }
 };
-
 
 module.exports = {
   createVibe,

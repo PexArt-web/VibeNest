@@ -33,7 +33,7 @@ router.post("/:id/revibe", reVibe)
 
 router.post("/:vibeId/like", likeOrUnlikeVibe);
 
-router.get("/user-profile", vibeUserProfile);
+router.get("/user-profile/:id", vibeUserProfile);
 
 // router.post("/comment/:commentId/like", commentLikeOrUnlike);
 

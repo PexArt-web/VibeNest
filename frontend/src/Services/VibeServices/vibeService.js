@@ -94,9 +94,10 @@ export const getUserProfile = async (id) => {
   if (!id) {
     throw new Error("User ID is required to fetch user profile");
   }
+  console.log(id, "user-ID")
   try {
     const response = await fetch(
-      `http://localhost:4000/api/vibes/user-profile`,
+      `http://localhost:4000/api/vibes/user-profile/${id}`,
       {
         method: "GET",
         headers: {

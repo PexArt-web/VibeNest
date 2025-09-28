@@ -1,8 +1,11 @@
+import { useAuthContext } from "@/Hooks/useAuthContext";
 import { FaHome, FaBell, FaFire, FaUser, FaCommentDots } from "react-icons/fa";
 import { MdMessage } from "react-icons/md";
 import { NavLink } from "react-router-dom";
 
 const Footer = () => {
+  const { user } = useAuthContext();
+  console.log(user, "user deatiles")
   return (
     <footer className="fixed bottom-0 left-0 w-full bg-gray-800 border-t border-gray-800 shadow-lg z-50">
       <div className="flex justify-around items-center py-3 md:py-4">
@@ -61,7 +64,7 @@ const Footer = () => {
         </NavLink>
 
         <NavLink
-          to={"/profile"}
+          to={`/profile/${user?.user._id}`}
           className={({ isActive }) =>
             `flex flex-col items-center hover:text-blue-500 transition ${
               isActive
