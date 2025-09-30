@@ -1,8 +1,8 @@
-const { alertSocket } = require("./notifier/privateSocket");
+const { alertPrivateSocket } = require("./notifier/privateSocket");
 
 function connectSocket(socket, io) {
   //<-- notifications alert -->
-  alertSocket(socket, io);
+  alertPrivateSocket(socket, io);
 }
 
 module.exports = { connectSocket };
