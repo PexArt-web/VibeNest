@@ -46,6 +46,7 @@ const RevibedCommentCard = ({
               dropDownLabel="Delete"
               dropDownIcon={<FiTrash2 size={18} className="text-red-500" />}
               handleDelete={() => handleDelete(post._id)}
+              className={"text-black hover:text-black bg-gray-100"}
             />
           )}
         </div>

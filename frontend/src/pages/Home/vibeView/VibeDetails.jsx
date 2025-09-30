@@ -89,11 +89,10 @@ const VibeDetails = () => {
         comment: prevPost.comment?.filter((post) => post._id !== id),
       }));
     } catch (error) {
-      console.error(error)
+      console.error(error);
       throw new Error(error);
     }
   };
-  // console.log(details, "details");
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-green-900 to-black text-white pt-20 pb-28 px-4">
       <div className="max-w-2xl mx-auto space-y-8 relative">
@@ -230,7 +229,6 @@ const VibeDetails = () => {
                           key={comment._id}
                           className="bg-white/5 p-3 rounded-lg backdrop-blur-sm space-y-2"
                           id={comment._id}
-                          // onClick={()=>confirmId(comment?.userId)}
                         >
                           {/*  */}
                           <div className="flex items-center gap-3 justify-between">
@@ -263,6 +261,9 @@ const VibeDetails = () => {
                                   }
                                   handleDelete={() =>
                                     handleDeleteComment(comment._id)
+                                  }
+                                  className={
+                                    "text-black hover:text-black bg-gray-100"
                                   }
                                 />
                               </div>

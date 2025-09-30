@@ -5,7 +5,6 @@ import { NavLink } from "react-router-dom";
 
 const Footer = () => {
   const { user } = useAuthContext();
-  console.log(user, "user deatiles")
   return (
     <footer className="fixed bottom-0 left-0 w-full bg-gray-800 border-t border-gray-800 shadow-lg z-50">
       <div className="flex justify-around items-center py-3 md:py-4">

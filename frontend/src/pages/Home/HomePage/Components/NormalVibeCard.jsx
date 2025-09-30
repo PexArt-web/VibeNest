@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { FaComment, FaRetweet, FaHeart } from "react-icons/fa";
+import { FaComment, FaRetweet, FaHeart, FaShareAlt } from "react-icons/fa";
 import moment from "moment";
 import SharedButton from "../../../../Shared/Component/SharedButton";
 import SharedDropDown from "../../../../Shared/Component/SharedDropDown";
@@ -12,14 +12,12 @@ const NormalVibeCard = ({
   handleDelete,
   handleReVibe,
   handleReactions,
-  // checkId,
 }) => {
   return (
     <motion.div
       key={post._id}
       whileHover={{ scale: 1.02 }}
       className="bg-white/10 rounded-2xl p-4 shadow-md hover:shadow-lg transition-shadow duration-300"
-      // onClick={()=>checkId(post._id)}
     >
       <div className="flex items-start gap-4 flex-wrap">
         <img
@@ -105,6 +103,20 @@ const NormalVibeCard = ({
               label={
                 <>
                   <FaHeart /> {post.likes?.length || 0}
+                </>
+              }
+              whileTap={{ scale: 1.2 }}
+            />
+            <SharedButton
+              className={`hover:text-blue-500 transition-colors duration-200 flex items-center gap-1 cursor-pointer text-gray-700 ${
+                post.likes?.includes(user?.user._id)
+                  ? "text-pink-400"
+                  : "text-white/70"
+              }`}
+              // handleClick={() => handleReactions(post._id)}
+              label={
+                <>
+                  <FaShareAlt />
                 </>
               }
               whileTap={{ scale: 1.2 }}
