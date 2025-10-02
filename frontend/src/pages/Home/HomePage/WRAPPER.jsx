@@ -8,6 +8,7 @@ import { useAuthContext } from "@/Hooks/useAuthContext";
 import NormalVibeCard from "./Components/NormalVibeCard";
 import RevibedVibeCard from "./Components/RevibedVibeCard";
 import RevibedCommentCard from "./Components/RevibedCommentCard";
+import { socket } from "@/Services/weBSocket";
 
 const WRAPPER = () => {
   const dataElements = useLoaderData();
@@ -49,6 +50,11 @@ const WRAPPER = () => {
     formData.append("id", id);
     submit(formData, { method: "POST" });
   };
+
+  const handleReaction = async (id)=> {
+    alert("clicked")
+    socket.emit("likeOrUnlikeVibe", {vibeId: id, userId: user?.user._id})
+  }
   
   return (
     <>
@@ -76,7 +82,7 @@ const WRAPPER = () => {
                           user={user}
                           handleDelete={handleDelete}
                           handleReVibe={handleReVibe}
-                          handleReactions={handleReactions}
+                          handleReaction={handleReaction}
                         />
                       )}
                     </div>
