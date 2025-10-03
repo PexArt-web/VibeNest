@@ -35,7 +35,7 @@ const alertPrivateSocket = (socket, io) => {
       }
       log(vibe, "vibe document to be liked");
       const actorSocket = userID[userId];
-      const authorSocket = userID[vibe.userId];
+      const authorSocket = userID[vibe.userId.toString()];
       const liked = vibe.likes.some(
         (id) => id.toString() === userId.toString()
       );
@@ -47,8 +47,18 @@ const alertPrivateSocket = (socket, io) => {
         vibe.likes.push(userId);
         if (authorSocket) {
           //notify the actor
+          log(userId, "actor");
+          log(vibe.userId.toString(), "author");
           const actorName = users[userId];
-          io.to(authorSocket).emit("likedVibe", `${actorName} liked your post`);
+          if (userId === vibe.userId.toString()) {
+            log(true)
+            io.to(authorSocket).emit("likedVibe", `You liked your post`);
+          } else {
+            io.to(authorSocket).emit(
+              "likedVibe",
+              `${actorName} liked your post`
+            );
+          }
         }
       }
       await vibe.save();

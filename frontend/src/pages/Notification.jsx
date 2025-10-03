@@ -1,3 +1,5 @@
+import { clientSocket, socket } from "@/Services/weBSocket";
+import { useEffect, useState } from "react";
 import { FaBell, FaHeart, FaComment, FaRetweet } from "react-icons/fa";
 
 const notifications = [
@@ -28,6 +30,18 @@ const notifications = [
 ];
 
 const Notification = () => {
+  const [Notification, setNotification] = useState([]);
+
+  useEffect(() => {
+    clientSocket();
+    socket.on("likedVibe", (data) => {
+      console.log(data);
+    });
+
+    return () => {
+      socket.off("likedVibe");
+    };
+  }, []);
   return (
     <div className="min-h-screen pt-16 bg-gray-800 px-4 sm:px-8">
       <h2 className="text-2xl font-bold text-green-600 mb-6">Notifications</h2>
@@ -40,7 +54,8 @@ const Notification = () => {
             <div className="text-xl">{notify.icon}</div>
             <div>
               <p className="text-gray-800 font-medium">
-                <span className="text-green-600">{notify.user}</span> {notify.action}
+                <span className="text-green-600">{notify.user}</span>{" "}
+                {notify.action}
               </p>
               <span className="text-sm text-gray-500">{notify.time}</span>
             </div>

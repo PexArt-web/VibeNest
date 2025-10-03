@@ -15,6 +15,10 @@ const VibeLayOut = () => {
       socket.emit("userInfo", userInfo);
     });
 
+    // socket.on("likedVibe", (data)=>{
+    //   console.log(data, "liked data")
+    // })
+
     return () =>{
       socket.off("connect")
     }
