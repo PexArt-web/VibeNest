@@ -3,12 +3,12 @@ const Schema = mongoose.Schema;
 const notificationSchema = new Schema(
   {
     author: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "User",
       required: true,
     },
     actor: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "User",
       required: true,
     },
@@ -18,11 +18,11 @@ const notificationSchema = new Schema(
       required: true,
     },
     post: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "Vibe",
     },
     comment: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "Comment",
     },
     message: {
