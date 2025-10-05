@@ -263,3 +263,20 @@ export const deleteComment = async (id) => {
     throw new Error(error);
   }
 };
+
+export const fetchNotification = async () => {
+  try {
+    const response = await fetch(`http://localhost:4000/api/notifications`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${await getAccessToken()}`,
+        "Content-Type": "application/json",
+      },
+    });
+    const data = await response.json();
+    await checkResponse(response, data);
+    return data;
+  } catch (error) {
+    throw new Error(error);
+  }
+};

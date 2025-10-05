@@ -6,6 +6,7 @@ const cors = require("cors");
 const userRoutes = require("../Routes/userRoutes");
 const vibeRoutes = require("../Routes/vibeRoutes");
 const commentRoutes = require("../Routes/commentRoutes");
+const notificationRoutes = require("../Routes/notificationRoutes");
 const { connectDB } = require("../Config/database");
 const { connectSocket } = require("../Services/weBSocket");
 app.use(express.json());
@@ -14,6 +15,7 @@ app.use(cors());
 app.use("/api/user", userRoutes);
 app.use("/api/vibes", vibeRoutes);
 app.use("/api/comments", commentRoutes);
+app.use("/api", notificationRoutes);
 
 app.use((req, res, next) => {
   res.status(404).json({ error: "route not found" });
@@ -24,15 +26,17 @@ const { log } = console;
 connectDB((error) => {
   if (!error) {
     const server = app.listen(port, () => {
-      log(`socket , app and database connected successfully and the Server is running on port ${port}`);
+      log(
+        `socket , app and database connected successfully and the Server is running on port ${port}`
+      );
     });
     //weBSocket Connection
     const io = require("socket.io")(server, {
       cors: {
-        origin: ["http://localhost:5173", "http://localhost:5174"]
-      }
-    })
-    io.on("connection", (socket)=> connectSocket(socket, io))
+        origin: ["http://localhost:5173", "http://localhost:5174"],
+      },
+    });
+    io.on("connection", (socket) => connectSocket(socket, io));
     //
     return;
   } else {

@@ -1,4 +1,5 @@
 import {
+  fetchNotification,
   getUserProfile,
   getVibeById,
   getVibes,
@@ -27,8 +28,8 @@ export const createPostLoader = async ({ request }) => {
 
 export const notificationLoader = async ({ request }) => {
   await requireAuth(request);
-
-  return null;
+  const notification = fetchNotification();
+  return defer({ notification });
 };
 
 export const trendingLoader = async ({ request }) => {
@@ -42,5 +43,4 @@ export const profileLoader = async ({ request, params }) => {
   const { userId } = params;
   const usersVibe = getUserProfile(userId);
   return defer({ usersVibe });
-  // return null
 };

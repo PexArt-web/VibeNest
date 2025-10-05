@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
 const Vibe = require("../../Models/BluePrint/vibeModel");
+const Notification = require("../../Models/BluePrint/notificationModel");
+
 const { log } = console;
 // for private notifications
 
@@ -36,6 +38,8 @@ const alertPrivateSocket = (socket, io) => {
       log(vibe, "vibe document to be liked");
       const actorSocket = userID[userId];
       const authorSocket = userID[vibe.userId.toString()];
+      let message;
+
       const liked = vibe.likes.some(
         (id) => id.toString() === userId.toString()
       );
@@ -51,17 +55,23 @@ const alertPrivateSocket = (socket, io) => {
           log(vibe.userId.toString(), "author");
           const actorName = users[userId];
           if (userId === vibe.userId.toString()) {
-            log(true)
-            io.to(authorSocket).emit("likedVibe", `You liked your post`);
+            message = `You liked your post`;
+            io.to(authorSocket).emit("likedVibe", message);
           } else {
-            io.to(authorSocket).emit(
-              "likedVibe",
-              `${actorName} liked your post`
-            );
+            message = `${actorName} liked your post`;
+            io.to(authorSocket).emit("likedVibe", message);
           }
         }
       }
       await vibe.save();
+      const data = await Notification.create({
+        author: vibe.userId.toString(),
+        actor: userId,
+        type: "like",
+        post: vibeId,
+        message: message
+      });
+      log(message, "message")
       log({
         message: liked
           ? "Vibe Unliked successfully"
