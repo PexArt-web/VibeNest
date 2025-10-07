@@ -62,6 +62,7 @@ const Notification = () => {
       <h2 className="text-2xl font-bold text-green-600 mb-6">Notifications</h2>
       <div className="space-y-4">
         {notifications.map((notify) => (
+          console.log(notify),
           <div
             key={notify.id}
             className="flex items-center gap-4 p-4 bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow"
