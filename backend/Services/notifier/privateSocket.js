@@ -51,14 +51,12 @@ const alertPrivateSocket = (socket, io) => {
         vibe.likes.push(userId);
         if (authorSocket) {
           //notify the actor
-          log(userId, "actor");
-          log(vibe.userId.toString(), "author");
           const actorName = users[userId];
           if (userId === vibe.userId.toString()) {
-            message = `You liked your post`;
+            message = `liked your post`;
             io.to(authorSocket).emit("likedVibe", message);
           } else {
-            message = `${actorName} liked your post`;
+            message = ` liked your post`;
             io.to(authorSocket).emit("likedVibe", message);
           }
         }
@@ -69,9 +67,9 @@ const alertPrivateSocket = (socket, io) => {
         actor: userId,
         type: "like",
         post: vibeId,
-        message: message
+        message: message,
       });
-      log(message, "message")
+      log(message, "message");
       log({
         message: liked
           ? "Vibe Unliked successfully"

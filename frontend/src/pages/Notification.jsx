@@ -61,7 +61,7 @@ const Notification = () => {
                             {notify.message}
                           </p>
                           <span className="text-sm text-gray-500">
-                            {notify.createdAt}
+                            {notify.createdAt.toLocaleString()}
                           </span>
                         </div>
                       </div>
