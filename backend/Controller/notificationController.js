@@ -1,15 +1,18 @@
 const mongoose = require("mongoose");
 const Notification = require("../Models/BluePrint/notificationModel");
 
+const { log } = console;
+
 const fetchNotifications = async (req, res) => {
   try {
     const userId = req.user._id;
+    log(userId, "user Id")
     if (!userId) {
       return res
         .status(401)
         .json({ error: "Unauthorized user, please login again" });
     }
-    const notifications = await Notification.findById({ author: userId })
+    const notifications = await Notification.find({ author: userId})
       .populate("actor")
       .sort({ createdAt: -1 });
 
@@ -23,5 +26,5 @@ const fetchNotifications = async (req, res) => {
 };
 
 module.exports = {
-    fetchNotifications
-}
+  fetchNotifications,
+};
