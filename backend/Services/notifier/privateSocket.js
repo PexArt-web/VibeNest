@@ -11,8 +11,6 @@ const alertPrivateSocket = (socket, io) => {
   socket.on("userInfo", ({ id, username }) => {
     userID[id] = socket.id;
     users[id] = username;
-    // log(id, username , "from socket")
-    // log(userID[id], "user Socket")
   });
 
   socket.on("likeOrUnlikeVibe", async ({ vibeId, userId }) => {
@@ -69,7 +67,6 @@ const alertPrivateSocket = (socket, io) => {
         post: vibeId,
         message: message,
       });
-      log(message, "message");
       log({
         message: liked
           ? "Vibe Unliked successfully"
