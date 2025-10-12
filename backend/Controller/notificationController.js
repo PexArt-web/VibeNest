@@ -6,7 +6,6 @@ const { log } = console;
 const fetchNotifications = async (req, res) => {
   try {
     const userId = req.user._id;
-    log(userId, "user Id")
     if (!userId) {
       return res
         .status(401)

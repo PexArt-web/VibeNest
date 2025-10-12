@@ -31,8 +31,8 @@ const Notification = () => {
 
   return (
     <div className="min-h-screen pt-16 bg-gray-800 px-4 sm:px-8">
-      <h2 className="text-2xl font-bold text-green-600 mb-6">Notifications</h2>
-      <div className="space-y-4">
+      <h2 className="text-2xl font-bold text-green-600 mb-6 mt-2">Notifications</h2>
+      <div className="space-y-4 overflow-hidden pb-25">
         <Suspense
           fallback={
             <Fallback

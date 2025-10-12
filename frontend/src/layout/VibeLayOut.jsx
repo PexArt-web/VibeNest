@@ -7,7 +7,6 @@ import { useAuthContext } from "@/Hooks/useAuthContext";
 
 const VibeLayOut = () => {
   const { user } = useAuthContext();
-  console.log(user, "user")
   useEffect(() => {
     clientSocket();
     socket.on("connect", () => {
@@ -15,18 +14,14 @@ const VibeLayOut = () => {
       socket.emit("userInfo", userInfo);
     });
 
-    // socket.on("likedVibe", (data)=>{
-    //   console.log(data, "liked data")
-    // })
-
     return () =>{
       socket.off("connect")
     }
   }, [user]);
   return (
-    <div>
+    <div >
       <Header />
-      <main>
+      <main  >
         <Outlet />
       </main>
       <Footer />

@@ -44,16 +44,15 @@ const WRAPPER = () => {
     submit(formData, { method: "POST" });
   };
 
-  const handleReactions = async (id) => {
-    const formData = new FormData();
-    formData.append("actionType", "like");
-    formData.append("id", id);
-    submit(formData, { method: "POST" });
-  };
+  // const handleReactions = async (id) => {
+  //   const formData = new FormData();
+  //   formData.append("actionType", "like");
+  //   formData.append("id", id);
+  //   submit(formData, { method: "POST" });
+  // };
 
   const handleReaction = async (id)=> {
-    alert("clicked")
-    socket.emit("likeOrUnlikeVibe", {vibeId: id, userId: user?.user._id})
+    await socket.emit("likeOrUnlikeVibe", {vibeId: id, userId: user?.user._id})
   }
   
   return (
@@ -92,7 +91,7 @@ const WRAPPER = () => {
                         key={post._id}
                         user={user}
                         handleDelete={handleDelete}
-                        handleReactions={handleReactions}
+                        handleReaction={handleReaction}
                       />
                     )}
 
@@ -102,7 +101,7 @@ const WRAPPER = () => {
                         key={post._id}
                         user={user}
                         handleDelete={handleDelete}
-                        handleReactions={handleReactions}
+                        handleReaction={handleReaction}
                       />
                     )}
                   </>

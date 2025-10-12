@@ -11,7 +11,7 @@ const RevibedCommentCard = ({
   user,
   handleDelete,
   handleReVibe,
-  handleReactions,
+  handleReaction,
 }) => {
   return (
     <motion.div
@@ -98,7 +98,7 @@ const RevibedCommentCard = ({
               ? "text-pink-400"
               : "text-white/70"
           }`}
-          handleClick={() => handleReactions(post._id)}
+          handleClick={() => handleReaction(post._id)}
           label={
             <>
               <FaHeart /> {post.likes?.length || 0}

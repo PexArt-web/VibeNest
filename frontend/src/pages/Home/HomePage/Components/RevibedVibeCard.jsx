@@ -10,7 +10,7 @@ const RevibedVibeCard = ({
   user,
   handleDelete,
   handleReVibe,
-  handleReactions,
+  handleReaction,
 }) => {
   return (
     <motion.div
@@ -96,7 +96,7 @@ const RevibedVibeCard = ({
           className={`hover:text-pink-400 transition-colors duration-200 flex items-center gap-1 ${
             post.likes?.includes(user?.user._id) ? "text-pink-400" : ""
           }`}
-          handleClick={() => handleReactions(post._id)}
+          handleClick={() => handleReaction(post._id)}
           label={
             <>
               <FaHeart /> {post.likes?.length || 0}

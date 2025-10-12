@@ -15,8 +15,6 @@ const alertPrivateSocket = (socket, io) => {
 
   socket.on("likeOrUnlikeVibe", async ({ vibeId, userId }) => {
     try {
-      log(vibeId, userId, "user and document to be liked");
-      log(`${userId} liked your post with doc Id ${vibeId}`);
       if (!userId) {
         log("Action not authorized, please try again");
         throw new Error("Action not authorized, please try again");
@@ -67,13 +65,13 @@ const alertPrivateSocket = (socket, io) => {
         post: vibeId,
         message: message,
       });
-      log({
-        message: liked
-          ? "Vibe Unliked successfully"
-          : "Vibe liked Successfully",
-        likesCount: vibe.likes.length,
-        liked: !liked,
-      });
+      // log({
+      //   message: liked
+      //     ? "Vibe Unliked successfully"
+      //     : "Vibe liked Successfully",
+      //   likesCount: vibe.likes.length,
+      //   liked: !liked,
+      // });
     } catch (error) {
       log(error);
     }
