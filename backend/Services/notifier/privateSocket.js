@@ -45,16 +45,25 @@ const alertPrivateSocket = (socket, io) => {
         );
       } else {
         vibe.likes.push(userId);
-        if (authorSocket) {
-          //notify the actor
-          const actorName = users[userId];
-          if (userId === vibe.userId.toString()) {
-            message = `liked your post`;
-            io.to(authorSocket).emit("likedVibe", message);
-          } else {
-            message = ` liked your post`;
-            io.to(authorSocket).emit("likedVibe", message);
-          }
+
+        //notify the actor
+        const actorName = users[userId];
+        if (userId === vibe.userId.toString()) {
+          message = `liked your post`;
+          io.to(authorSocket).emit("likedVibe", {
+            type: "like",
+            message,
+            actor: users[userId],
+            postId: vibeId,
+          });
+        } else {
+          message = ` liked your post`;
+          io.to(authorSocket).emit("likedVibe", {
+            type: "like",
+            message,
+            actor: users[userId],
+            postId: vibeId,
+          });
         }
       }
       await vibe.save();
@@ -63,7 +72,7 @@ const alertPrivateSocket = (socket, io) => {
         actor: userId,
         type: "like",
         post: vibeId,
-        message: message,
+        ...(message && { message }),
       });
       // log({
       //   message: liked

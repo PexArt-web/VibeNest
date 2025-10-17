@@ -14,13 +14,14 @@ const fetchNotifications = async (req, res) => {
     const notifications = await Notification.find({ author: userId})
       .populate("actor")
       .sort({ createdAt: -1 });
+      log(notifications, "user notification")
 
     return res.status(200).json(notifications);
   } catch (error) {
     log(error);
     return res
       .status(500)
-      .json({ message: "Error fetching user notifications", error });
+      .json({ error: "Error fetching user notifications", error });
   }
 };
 
