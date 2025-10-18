@@ -45,7 +45,7 @@ const Notification = () => {
             {() =>
               notifications?.map(
                 (notify) => (
-                  notify.actor._id === notify.author ? console.log(true) : console.log(false),
+                  // notify.actor._id === notify.author ? console.log(true) : console.log(false),
                   (
                     <>
                       <div

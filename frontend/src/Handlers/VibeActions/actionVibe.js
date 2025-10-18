@@ -9,8 +9,7 @@ export const actionVibe = async ({ request }) => {
   if (!vibeId) {
     return { error: "Vibe ID is required" };
   }
-  console.log(actionType, "action type");
-  console.log(vibeId, "vibe id");
+
   try {
     if (actionType === "revibe") {
       // if (!content) {

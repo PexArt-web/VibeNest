@@ -1,9 +1,21 @@
+import { clientSocket, socket } from "../weBSocket";
+
+const { log } = console;
+
 const getAccessToken = async () => {
   const user = await JSON.parse(localStorage.getItem("user"));
   if (!user) {
     throw new Error("unauthorized user, please login again");
   }
   return user?.user?.token;
+};
+
+const getUserId = async () => {
+  const user = await JSON.parse(localStorage.getItem("user"));
+  if (!user) {
+    throw new Error("unauthorized user, please login again");
+  }
+  return user?.user?._id;
 };
 
 const checkResponse = (response, data) => {
@@ -148,6 +160,10 @@ export const createComment = async ({ id, content, imageUrl }) => {
     );
     const data = await response.json();
     await checkResponse(response, data);
+    if (data) {
+      clientSocket();
+      socket.emit("commentCreated", { userId: await getUserId(), docId: id });
+    }
     return data;
   } catch (error) {
     throw new Error(error);

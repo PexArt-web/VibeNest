@@ -67,6 +67,7 @@ const alertPrivateSocket = (socket, io) => {
         }
       }
       await vibe.save();
+      log(message, "message")
       const data = await Notification.create({
         author: vibe.userId.toString(),
         actor: userId,
@@ -85,6 +86,12 @@ const alertPrivateSocket = (socket, io) => {
       log(error);
     }
   });
+
+  socket.on("commentCreated", async ({userId, docId})=>{
+    log(userId, "userId from services to services")
+    log(docId, "document commented on")
+  })
 };
+
 
 module.exports = { alertPrivateSocket };
