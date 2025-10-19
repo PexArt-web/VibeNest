@@ -24,8 +24,13 @@ const Notification = () => {
       ]);
     });
 
+    socket.on("commentCreated", ({data})=>{
+      console.log(data, "comment data")
+    })
+
     return () => {
       socket.off("likedVibe");
+      socket.off("commentCreated")
     };
   }, [dataElement.notification]);
 

@@ -162,7 +162,7 @@ export const createComment = async ({ id, content, imageUrl }) => {
     await checkResponse(response, data);
     if (data) {
       clientSocket();
-      socket.emit("commentCreated", { userId: await getUserId(), docId: id });
+      socket.emit("createComment", { userId: await getUserId(), docId: id });
     }
     return data;
   } catch (error) {
@@ -206,6 +206,7 @@ export const like = async (id) => {
     });
     const data = await response.json();
     await checkResponse(response, data);
+    
     return data;
   } catch (error) {
     throw new Error(error);

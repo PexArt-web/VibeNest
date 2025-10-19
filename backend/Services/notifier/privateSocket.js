@@ -67,7 +67,7 @@ const alertPrivateSocket = (socket, io) => {
         }
       }
       await vibe.save();
-      log(message, "message")
+      log(message, "message");
       const data = await Notification.create({
         author: vibe.userId.toString(),
         actor: userId,
@@ -87,11 +87,44 @@ const alertPrivateSocket = (socket, io) => {
     }
   });
 
-  socket.on("commentCreated", async ({userId, docId})=>{
-    log(userId, "userId from services to services")
-    log(docId, "document commented on")
-  })
+  socket.on("createComment", async ({ userId, docId }) => {
+    try {
+      if (!userId) {
+        log("Action not authorized, please try again");
+        throw new Error("Action not authorized, please try again");
+      }
+      if (!docId) {
+        log("vibe not found");
+      }
+      if (!mongoose.Types.ObjectId.isValid(docId)) {
+        log("Invalid vibe ID");
+        throw new Error("Invalid Vibe ID");
+      }
+      const vibe = await Vibe.findById(docId);
+      if (!vibe) {
+        log("vibe not found");
+        throw new Error("Vibe not found");
+      }
+      // const actorSocket = userID[userId];
+      const authorSocket = userID[vibe.userId.toString()];
+      const actorName = users[userId];
+      let message = `commented on your post`
+      await Notification.create({
+        author: vibe.userId.toString(),
+        actor: userId,
+        type: "comment",
+        post: docId,
+        ...(message && { message }),
+      });
+      log(authorSocket, "author socket")
+      io.to(authorSocket).emit("commentCreated", {
+        message,
+        post: docId
+      })
+    } catch (error) {
+      log(error);
+    }
+  });
 };
-
 
 module.exports = { alertPrivateSocket };
