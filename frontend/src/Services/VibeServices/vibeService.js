@@ -71,7 +71,7 @@ export const getVibes = async () => {
     await checkResponse(response, data);
     return data;
   } catch (error) {
-    console.error("Error fetching vibes:", error);
+    log("Error fetching vibes:", error);
     if (error.message === "Failed to fetch") {
       error.message = "An unexpected error occurred. Please try again later.";
     }
@@ -185,6 +185,10 @@ export const revibe = async ({ id, content }) => {
     );
     const data = await response.json();
     await checkResponse(response, data);
+    if(data){
+      clientSocket()
+      socket.emit("postRevibe", {userId:await getUserId(), postId: id})
+    }
     return data;
   } catch (error) {
     if (error.message === "Failed to fetch") {
@@ -206,7 +210,10 @@ export const like = async (id) => {
     });
     const data = await response.json();
     await checkResponse(response, data);
-    
+    if(data){
+      clientSocket()
+      socket.emit("likeOrUnlikeVibe", {userId: await getUserId(), vibeId: id })
+    }
     return data;
   } catch (error) {
     throw new Error(error);

@@ -11,7 +11,7 @@ const NormalVibeCard = ({
   user,
   handleDelete,
   handleReVibe,
-  handleReaction,
+  handleReactions,
 }) => {
   return (
     <motion.div
@@ -99,7 +99,7 @@ const NormalVibeCard = ({
                   ? "text-pink-400"
                   : "text-white/70"
               }`}
-              handleClick={() => handleReaction(post._id)}
+              handleClick={() => handleReactions(post._id)}
               label={
                 <>
                   <FaHeart /> {post.likes?.length || 0}

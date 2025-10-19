@@ -8,7 +8,6 @@ import { useAuthContext } from "@/Hooks/useAuthContext";
 import NormalVibeCard from "./Components/NormalVibeCard";
 import RevibedVibeCard from "./Components/RevibedVibeCard";
 import RevibedCommentCard from "./Components/RevibedCommentCard";
-import { socket } from "@/Services/weBSocket";
 
 const WRAPPER = () => {
   const dataElements = useLoaderData();
@@ -26,7 +25,7 @@ const WRAPPER = () => {
 
   const handleDelete = async (id) => {
     try {
-            await deleteVibePost(id);
+      await deleteVibePost(id);
       setVibePosts((prevPosts) => ({
         ...prevPosts,
         vibes: prevPosts.vibes?.filter((post) => post._id !== id),
@@ -44,17 +43,13 @@ const WRAPPER = () => {
     submit(formData, { method: "POST" });
   };
 
-  // const handleReactions = async (id) => {
-  //   const formData = new FormData();
-  //   formData.append("actionType", "like");
-  //   formData.append("id", id);
-  //   submit(formData, { method: "POST" });
-  // };
+  const handleReactions = async (id) => {
+    const formData = new FormData();
+    formData.append("actionType", "like");
+    formData.append("id", id);
+    submit(formData, { method: "POST" });
+  };
 
-  const handleReaction = async (id)=> {
-    await socket.emit("likeOrUnlikeVibe", {vibeId: id, userId: user?.user._id})
-  }
-  
   return (
     <>
       <div
@@ -75,13 +70,13 @@ const WRAPPER = () => {
                 vibePosts?.vibes?.map((post) => (
                   <>
                     <div key={post._id}>
-                      {!post.isRevibe && !post.isCommentRevibe &&(
+                      {!post.isRevibe && !post.isCommentRevibe && (
                         <NormalVibeCard
                           post={post}
                           user={user}
                           handleDelete={handleDelete}
                           handleReVibe={handleReVibe}
-                          handleReaction={handleReaction}
+                          handleReactions={handleReactions}
                         />
                       )}
                     </div>
@@ -91,7 +86,7 @@ const WRAPPER = () => {
                         key={post._id}
                         user={user}
                         handleDelete={handleDelete}
-                        handleReaction={handleReaction}
+                        handleReactions={handleReactions}
                       />
                     )}
 
@@ -101,7 +96,7 @@ const WRAPPER = () => {
                         key={post._id}
                         user={user}
                         handleDelete={handleDelete}
-                        handleReaction={handleReaction}
+                        handleReactions={handleReactions}
                       />
                     )}
                   </>

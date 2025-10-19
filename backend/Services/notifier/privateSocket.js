@@ -32,56 +32,23 @@ const alertPrivateSocket = (socket, io) => {
         throw new Error("Vibe not found");
       }
       log(vibe, "vibe document to be liked");
-      const actorSocket = userID[userId];
+      // const actorSocket = userID[userId];
       const authorSocket = userID[vibe.userId.toString()];
-      let message;
-
-      const liked = vibe.likes.some(
-        (id) => id.toString() === userId.toString()
-      );
-      if (liked) {
-        vibe.likes = vibe.likes.filter(
-          (id) => id.toString() !== userId.toString()
-        );
-      } else {
-        vibe.likes.push(userId);
-
-        //notify the actor
-        const actorName = users[userId];
-        if (userId === vibe.userId.toString()) {
-          message = `liked your post`;
-          io.to(authorSocket).emit("likedVibe", {
-            type: "like",
-            message,
-            actor: users[userId],
-            postId: vibeId,
-          });
-        } else {
-          message = ` liked your post`;
-          io.to(authorSocket).emit("likedVibe", {
-            type: "like",
-            message,
-            actor: users[userId],
-            postId: vibeId,
-          });
-        }
-      }
-      await vibe.save();
-      log(message, "message");
-      const data = await Notification.create({
+      let message = `liked your post`;
+      await Notification.create({
         author: vibe.userId.toString(),
         actor: userId,
         type: "like",
         post: vibeId,
         ...(message && { message }),
       });
-      // log({
-      //   message: liked
-      //     ? "Vibe Unliked successfully"
-      //     : "Vibe liked Successfully",
-      //   likesCount: vibe.likes.length,
-      //   liked: !liked,
-      // });
+      log(authorSocket, "liked author socket");
+      io.to(authorSocket).emit("likedVibe", {
+        message: message,
+        post: vibeId,
+        actor: userId,
+        author: vibe.userId.toString(),
+      });
     } catch (error) {
       log(error);
     }
@@ -108,7 +75,7 @@ const alertPrivateSocket = (socket, io) => {
       // const actorSocket = userID[userId];
       const authorSocket = userID[vibe.userId.toString()];
       const actorName = users[userId];
-      let message = `commented on your post`
+      let message = `commented on your post`;
       await Notification.create({
         author: vibe.userId.toString(),
         actor: userId,
@@ -116,11 +83,52 @@ const alertPrivateSocket = (socket, io) => {
         post: docId,
         ...(message && { message }),
       });
-      log(authorSocket, "author socket")
       io.to(authorSocket).emit("commentCreated", {
         message,
-        post: docId
-      })
+        post: docId,
+        actor: userId,
+        author: vibe.userId.toString(),
+      });
+    } catch (error) {
+      log(error);
+    }
+  });
+
+  socket.on("postRevibe", async ({ userId, postId }) => {
+    try {
+      if (!userId) {
+        log("Action not authorized, please try again");
+        throw new Error("Action not authorized, please try again");
+      }
+      if (!postId) {
+        log("vibe not found");
+      }
+      if (!mongoose.Types.ObjectId.isValid(postId)) {
+        log("Invalid vibe ID");
+        throw new Error("Invalid Vibe ID");
+      }
+      const vibe = await Vibe.findById(postId);
+      if (!vibe) {
+        log("vibe not found");
+        throw new Error("Vibe not found");
+      }
+      // const actorSocket = userID[userId];
+      const authorSocket = userID[vibe.userId.toString()];
+      const actorName = users[userId];
+      let message = `revibed your post`;
+      await Notification.create({
+        author: vibe.userId.toString(),
+        actor: userId,
+        type: "revibe",
+        post: postId,
+        ...(message && { message }),
+      });
+      io.to(authorSocket).emit("postRevibed", {
+        message,
+        post: postId,
+        actor: userId,
+        author: vibe.userId.toString(),
+      });
     } catch (error) {
       log(error);
     }
