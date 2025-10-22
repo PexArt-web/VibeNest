@@ -12,7 +12,7 @@ const PageLoadError = () => {
       <FaBug className="text-5xl mb-4 animate-pulse" />
       <h1 className="text-4xl font-bold mb-2">Something went wrong</h1>
       <p className="text-lg mb-6">
-        {error?.message === "Failed to fetch"
+        {error?.message === "Failed to fetch" 
           ? "Error connecting , please check your connection and try again"
           : error?.message || "Page Load Error. Please try again later."}
       </p>
