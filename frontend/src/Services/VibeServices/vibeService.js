@@ -235,6 +235,10 @@ export const likeComment = async (commentId) => {
     );
     const data = await response.json();
     await checkResponse(response, data);
+    if(data){
+      clientSocket()
+      socket.emit("commentLiked", {userId: await getUserId(), commentId: commentId})
+    }
     return data;
   } catch (error) {
     throw new Error(error);
@@ -259,6 +263,10 @@ export const revibeComment = async ({ commentId, content }) => {
     );
     const data = await response.json();
     await checkResponse(response, data);
+    if(data){
+      clientSocket()
+      socket.emit("commentRevibe", {userId: await getUserId(), commentId: commentId})
+    }
     return data;
   } catch (error) {
     throw new Error(error);

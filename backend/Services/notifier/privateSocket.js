@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const Vibe = require("../../Models/BluePrint/vibeModel");
 const Notification = require("../../Models/BluePrint/notificationModel");
+const Comment = require("../../Models/BluePrint/commentModel");
 
 const { log } = console;
 // for private notifications
@@ -133,6 +134,83 @@ const alertPrivateSocket = (socket, io) => {
       log(error);
     }
   });
+
+  socket.on("commentLiked", async ({ userId, commentId }) => {
+    try {
+      if (!userId) {
+        log("Action not authorized, please try again");
+        throw new Error("Action not authorized, please try again");
+      }
+      if (!commentId) {
+        log("vibe not found");
+      }
+      if (!mongoose.Types.ObjectId.isValid(commentId)) {
+        log("Invalid vibe ID");
+        throw new Error("Invalid Vibe ID");
+      }
+      const comment =  await Comment.findById(commentId)
+      if(!comment){
+        log("comment doc not found")
+        throw new error("comment document not found")
+      }
+      const authorSocket = userID[comment.userId.toString()];
+      let message = `liked your comment`;
+      await Notification.create({
+        author: comment.userId.toString(),
+        actor: userId,
+        type: "comment-like",
+        comment: commentId,
+        ...(message && { message }),
+      });
+      io.to(authorSocket).emit("LikedComment", {
+        message,
+        comment: commentId,
+        actor: userId,
+        author: comment.userId.toString(),
+      });
+    } catch (error) {
+      log(error);
+    }
+  });
+
+  socket.on("commentRevibe", async ({ userId, commentId }) => {
+    try {
+      if(!userId){
+        log("Action not authorized, please try again")
+        throw new Error("Action not authorized, please try again")
+      }
+      if(!commentId){
+        log("comment not found")
+      }
+      if(!mongoose.Types.ObjectId.isValid(commentId)){
+        log("Invalid comment ID")
+        throw new Error("Invalid Comment ID, unable to revibe")
+      }
+     const comment = await Comment.findById(commentId)
+      if(!comment){
+        log("comment doc not found")
+        throw new error("comment document not found")
+      }
+      const authorSocket = userID[comment.userId.toString()];
+      let message = `revibed your comment`;
+      await Notification.create({
+        author: comment.userId.toString(),
+        actor: userId,
+        type: "comment-revibe",
+        comment: commentId,
+        ...(message && { message }),
+      });
+      io.to(authorSocket).emit("RevibedComment", {
+        message,
+        comment: commentId,
+        actor: userId,
+        author: comment.userId.toString(),
+      });
+    } catch (error) {
+      log(error)
+    }
+
+  })
 };
 
 module.exports = { alertPrivateSocket };

@@ -1,7 +1,7 @@
 import { clientSocket, socket } from "@/Services/weBSocket";
 import Fallback from "@/Suspense/Fallback";
 import { Suspense, useEffect, useState } from "react";
-import { FaBell, FaHeart, FaComment, FaRetweet } from "react-icons/fa";
+// import { FaBell, FaHeart, FaComment, FaRetweet } from "react-icons/fa";
 import { Await, useLoaderData } from "react-router-dom";
 
 const Notification = () => {
@@ -28,14 +28,25 @@ const Notification = () => {
       setNotifications((prevData) => [...prevData, data]);
     });
 
-    socket.on("postRevibed", (revibedData)=>{
-      setNotifications((prevData)=>[...prevData, revibedData])
+    socket.on("postRevibed", (revibedData) => {
+      setNotifications((prevData) => [...prevData, revibedData]);
+    });
+
+    socket.on("LikedComment", (data) => {
+      setNotifications((prevData) => [...prevData, data]);
+    });
+
+    socket.on("RevibedComment", (data) => {
+      console.log(data, "notification jsx")
+      setNotifications((prevData) => [...prevData, data]);
     })
 
     return () => {
       socket.off("likedVibe");
       socket.off("commentCreated");
-      socket.off("postRevibed")
+      socket.off("postRevibed");
+      socket.off("LikedComment");
+      socket.off("RevibedComment");
     };
   }, [dataElement.notification]);
 
@@ -55,30 +66,34 @@ const Notification = () => {
         >
           <Await resolve={dataElement?.notification}>
             {() =>
-              notifications?.map((notify) => (
-                console.log(notify?.actor, "actor in doing"),
-                <>
-                  <div
-                    key={notify._id}
-                    className="flex items-center gap-4 p-4 bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow"
-                  >
-                    <div className="text-xl">{notify.icon}</div>
-                    <div>
-                      <p className="text-gray-800 font-medium">
-                        <span className="text-green-600">
-                          {notify?.actor?._id === notify.author
-                            ? "You"
-                            : notify?.actor.displayName}
-                        </span>{" "}
-                        {notify.message}
-                      </p>
-                      <span className="text-sm text-gray-500">
-                        {notify.createdAt.toLocaleString()}
-                      </span>
-                    </div>
-                  </div>
-                </>
-              ))
+              notifications?.map(
+                (notify) => (
+                  console.log(notify?.actor, "actor in doing"),
+                  (
+                    <>
+                      <div
+                        key={notify._id}
+                        className="flex items-center gap-4 p-4 bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow"
+                      >
+                        <div className="text-xl">{notify.icon}</div>
+                        <div>
+                          <p className="text-gray-800 font-medium">
+                            <span className="text-green-600">
+                              {notify?.actor?._id === notify.author
+                                ? "You"
+                                : notify?.actor.displayName}
+                            </span>{" "}
+                            {notify.message}
+                          </p>
+                          <span className="text-sm text-gray-500">
+                            {notify.createdAt.toLocaleString()}
+                          </span>
+                        </div>
+                      </div>
+                    </>
+                  )
+                )
+              )
             }
           </Await>
         </Suspense>
