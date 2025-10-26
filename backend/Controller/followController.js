@@ -1,4 +1,7 @@
+const  mongoose  = require("mongoose");
 const User = require("../Models/BluePrint/userModel");
+
+const { log } = console;
 
 const followOrUnFollow = async (req, res) => {
   try {
@@ -23,8 +26,8 @@ const followOrUnFollow = async (req, res) => {
     if (!userToFollowId) {
       return res.status(404).json({ error: "User not found" });
     }
-    if(!user){
-        return res.status(404).json({ error: "User not found" });
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
     }
     const isFollowing = userToFollowId.followers.some(
       (follower) => follower.toString() === userId.toString()
@@ -52,6 +55,5 @@ const followOrUnFollow = async (req, res) => {
 };
 
 module.exports = {
-  followOrUnFollow
+  followOrUnFollow,
 };
-
