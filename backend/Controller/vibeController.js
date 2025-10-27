@@ -2,6 +2,7 @@ const Vibe = require("../Models/BluePrint/vibeModel");
 const mongoose = require("mongoose");
 const Comment = require("../Models/BluePrint/commentModel");
 const User = require("../Models/BluePrint/userModel");
+const Follow = require("../Models/BluePrint/followModel");
 
 const { log } = console;
 const createVibe = async (req, res) => {
@@ -369,6 +370,10 @@ const vibeUserProfile = async (req, res) => {
       .populate("userId")
       .sort({ createdAt: -1 });
     const user = await User.findOne({ _id: id });
+    const following = await Follow.find({follower: id}).populate('following')
+    const follower =  await Follow.find({following: id}).populate('follower')
+    log(following, "following")
+    log(follower, "followers")
     return res
       .status(200)
       .json({

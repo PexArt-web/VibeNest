@@ -1,4 +1,4 @@
-const  mongoose  = require("mongoose");
+const mongoose  = require("mongoose");
 const User = require("../Models/BluePrint/userModel");
 
 const { log } = console;

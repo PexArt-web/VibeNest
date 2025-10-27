@@ -312,3 +312,25 @@ export const fetchNotification = async () => {
     throw new Error(error);
   }
 };
+
+export const followAction = async (id) => {
+  try {
+    const response = await fetch(`http://localhost:4000/api/users/${id}/follow`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${await getAccessToken()}`,
+        "Content-Type" : "application/json",
+      },
+    });
+
+    const data = await response.json();
+    await checkResponse(response, data);
+    if(data){
+      clientSocket()
+      socket.emit("userFollowed", {userId: await getUserId(), followedId: id})
+    }
+    return data;
+  } catch (error) {
+    throw new Error(error);
+  }
+}

@@ -6,6 +6,7 @@ import Fallback from "@/Suspense/Fallback";
 import moment from "moment";
 import SharedDropDown from "@/Shared/Component/SharedDropDown";
 import { FiMessageSquare, FiMoreHorizontal } from "react-icons/fi";
+import { followAction } from "@/Services/VibeServices/vibeService";
 
 const Profile = () => {
   const { user } = useAuthContext();
@@ -18,6 +19,9 @@ const Profile = () => {
     };
     fetchProfilePost();
   }, [dataElements]);
+
+  console.log(profilePosts, "profilePosts");
+  console.log(profilePosts.userId, "profilePosts.userId");
 
   return (
     <div className="min-h-screen bg-gray-950 py-10 px-4 pt-14 mb-11 mt-5">
@@ -52,6 +56,21 @@ const Profile = () => {
                       <p className="text-gray-600 mt-1 text-sm">
                         {profilePosts?.email}
                       </p>
+
+                      <div className="flex gap-6 mt-4 text-sm text-gray-700">
+                        <div className="hover:underline cursor-pointer">
+                          <span className="font-bold text-gray-900">
+                            {profilePosts?.followersCount || 0}
+                          </span>{" "}
+                          Followers
+                        </div>
+                        <div className="hover:underline cursor-pointer">
+                          <span className="font-bold text-gray-900">
+                            {profilePosts?.followingCount || 0}
+                          </span>{" "}
+                          Following
+                        </div>
+                      </div>
                     </div>
 
                     <div className="flex justify-center items-center gap-1">
@@ -74,6 +93,9 @@ const Profile = () => {
                             <SharedButton
                               className="mt-4 sm:mt-0 bg-green-600 text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-green-700 transition"
                               label={"Follow"}
+                              handleClick={() =>
+                                followAction(profilePosts.userId)
+                              }
                             />
                           </>
                         )}
