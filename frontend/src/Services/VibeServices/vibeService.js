@@ -314,8 +314,9 @@ export const fetchNotification = async () => {
 };
 
 export const followAction = async (id) => {
+  alert("clicked")
   try {
-    const response = await fetch(`http://localhost:4000/api/users/${id}/follow`, {
+  const response = await fetch(`http://localhost:4000/api/users/follow/${id}`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${await getAccessToken()}`,

@@ -1,5 +1,6 @@
-const mongoose  = require("mongoose");
+const mongoose = require("mongoose");
 const User = require("../Models/BluePrint/userModel");
+const Follow = require("../Models/BluePrint/followModel");
 
 const { log } = console;
 
@@ -24,16 +25,21 @@ const followOrUnFollow = async (req, res) => {
     const userToFollowId = await User.findById(id);
     const user = await User.findById(userId);
     if (!userToFollowId) {
-      return res.status(404).json({ error: "User not found" });
+      return res.status(404).json({ error: "User to follow not found" });
     }
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
-    const isFollowing = userToFollowId.followers.some(
+    const toFollow = Follow.findById(id);
+    const followr = Follow.findById(userId);
+    log(toFollow, "to follow");
+    log(followr, "followee");
+    return;
+    const isFollowing = userToFollowId.follower.some(
       (follower) => follower.toString() === userId.toString()
     );
     if (isFollowing) {
-      userToFollowId.followers = userToFollowId.followers.filter(
+      userToFollowId.follower = userToFollowId.follower.filter(
         (follower) => follower.toString() !== userId.toString()
       );
       await userToFollowId.save();
@@ -43,14 +49,15 @@ const followOrUnFollow = async (req, res) => {
       await user.save();
       res.status(200).json({ message: "Unfollowed successfully" });
     } else {
-      userToFollowId.followers.push(userId);
+      userToFollowId.follower.push(userId);
       user.following.push(id);
       await userToFollowId.save();
+      log(user, "user details from follow controller");
       res.status(200).json({ message: "Followed successfully" });
     }
   } catch (error) {
     log(error);
-    throw error(error);
+    throw new Error(error);
   }
 };
 

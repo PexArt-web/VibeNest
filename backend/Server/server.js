@@ -7,6 +7,7 @@ const userRoutes = require("../Routes/userRoutes");
 const vibeRoutes = require("../Routes/vibeRoutes");
 const commentRoutes = require("../Routes/commentRoutes");
 const notificationRoutes = require("../Routes/notificationRoutes");
+const followRoutes = require("../Routes/followRoutes");
 const { connectDB } = require("../Config/database");
 const { connectSocket } = require("../Services/weBSocket");
 app.use(express.json());
@@ -16,6 +17,7 @@ app.use("/api/user", userRoutes);
 app.use("/api/vibes", vibeRoutes);
 app.use("/api/comments", commentRoutes);
 app.use("/api", notificationRoutes);
+app.use("/api/users", followRoutes);
 
 app.use((req, res, next) => {
   res.status(404).json({ error: "route not found" });
