@@ -317,7 +317,7 @@ export const followAction = async (id) => {
   alert("clicked")
   try {
   const response = await fetch(`http://localhost:4000/api/users/follow/${id}`, {
-      method: "GET",
+      method: "PUT",
       headers: {
         Authorization: `Bearer ${await getAccessToken()}`,
         "Content-Type" : "application/json",

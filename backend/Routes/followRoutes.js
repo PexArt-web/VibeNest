@@ -5,6 +5,6 @@ const { requireAuth } = require("../Middleware/requireAuth");
 
 router.use(requireAuth);
 
-router.get("/follow/:id", followOrUnFollow);
+router.put("/follow/:id", followOrUnFollow);
 
 module.exports = router;
