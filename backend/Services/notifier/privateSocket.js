@@ -73,7 +73,6 @@ const alertPrivateSocket = (socket, io) => {
         log("vibe not found");
         throw new Error("Vibe not found");
       }
-      // const actorSocket = userID[userId];
       const authorSocket = userID[vibe.userId.toString()];
       const actorName = users[userId];
       let message = `commented on your post`;
@@ -113,7 +112,6 @@ const alertPrivateSocket = (socket, io) => {
         log("vibe not found");
         throw new Error("Vibe not found");
       }
-      // const actorSocket = userID[userId];
       const authorSocket = userID[vibe.userId.toString()];
       const actorName = users[userId];
       let message = `revibed your post`;
@@ -210,6 +208,33 @@ const alertPrivateSocket = (socket, io) => {
       log(error)
     }
 
+  })
+
+  socket.on("userFollowed", async ({ followerID, followingId }) => {
+    try {
+      if(!followerID || !followingId){
+        throw new Error("follower and following are required")
+      }
+      const followingSocket = userID[followingId]
+      const followerSocket = userID[followerID]
+      // let message = `${users[followerID]} started following you`
+      let message = ` started following you`
+      await Notification.create({
+        author: followingId,
+        actor: followerID,
+        type: "follow",
+        ...(message && { message }),
+      })
+      io.to(followingSocket).emit("followedUser", {
+        message,
+        actor: followerID,
+        author: followingId
+      })
+
+      
+    } catch (error) {
+      log(error, "follow error")
+    }
   })
 };
 

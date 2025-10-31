@@ -328,7 +328,7 @@ export const followAction = async (id) => {
     await checkResponse(response, data);
     if(data){
       clientSocket()
-      socket.emit("userFollowed", {userId: await getUserId(), followedId: id})
+      socket.emit("userFollowed", {followerID: await getUserId(), followingId: id})
     }
     return data;
   } catch (error) {

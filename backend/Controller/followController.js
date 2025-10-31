@@ -37,17 +37,15 @@ const followOrUnFollow = async (req, res) => {
       follower: userId,
       following: id,
     });
-    if(existingFollow){
-     const deletedFollow = await Follow.deleteOne({ _id: existingFollow._id })
-     log(deletedFollow, "deleted follow")
-
-    }else{
-      const follow = await Follow.create({follower: userId, following: id})
-      log(follow, "follow")
+    if (existingFollow) {
+      const deletedFollow = await Follow.deleteOne({ _id: existingFollow._id });
+      log(deletedFollow, "deleted follow");
+      return res.status(200).json({ message: "User Unfollowed Successfully" });
+    } else {
+      const follow = await Follow.create({ follower: userId, following: id });
+      log(follow, "follow");
+      return res.status(200).json({ message: "User Followed Successfully" });
     }
-    // existingFollow
-    //   ? await Follow.deleteOne({ _id: existingFollow._id })
-    //   : await Follow.create({ follower: userId, following: id });
   } catch (error) {
     log(error);
     throw new Error(error);
