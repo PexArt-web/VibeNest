@@ -23,38 +23,29 @@ const followOrUnFollow = async (req, res) => {
       return res.status(400).json({ error: "You can't follow yourself" });
     }
     const userToFollowId = await User.findById(id);
+    log(userToFollowId, "user to follow");
     const user = await User.findById(userId);
+    log(user, "user");
     if (!userToFollowId) {
       return res.status(404).json({ error: "User to follow not found" });
     }
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
-    const toFollow = Follow.find({ following: id });
-    const followr = Follow.find({ follower: userId });
-    log(toFollow, "to follow");
-    log(followr, "followee");
-    return;
-    const isFollowing = userToFollowId.follower.some(
-      (follower) => follower.toString() === userId.toString()
-    );
-    if (isFollowing) {
-      userToFollowId.follower = userToFollowId.follower.filter(
-        (follower) => follower.toString() !== userId.toString()
-      );
-      await userToFollowId.save();
-      user.following = user.following.filter(
-        (following) => following.toString() !== id.toString()
-      );
-      await user.save();
-      res.status(200).json({ message: "Unfollowed successfully" });
-    } else {
-      userToFollowId.follower.push(userId);
-      user.following.push(id);
-      await userToFollowId.save();
-      log(user, "user details from follow controller");
-      res.status(200).json({ message: "Followed successfully" });
-    }
+
+    const existingFollow = await Follow.findOne({
+      follower: userId,
+      following: id,
+    });
+    // if(existingFollow){
+    //   await Follow.deleteOne({ _id: existingFollow._id })
+
+    // }else{
+    //   await Follow.create({follower: userId, following: id})
+    // }
+    existingFollow
+      ? await Follow.deleteOne({ _id: existingFollow._id })
+      : await Follow.create({ follower: userId, following: id });
   } catch (error) {
     log(error);
     throw new Error(error);
