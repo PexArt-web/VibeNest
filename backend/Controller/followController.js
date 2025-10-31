@@ -30,8 +30,8 @@ const followOrUnFollow = async (req, res) => {
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
-    const toFollow = Follow.findById(id);
-    const followr = Follow.findById(userId);
+    const toFollow = Follow.find({ following: id });
+    const followr = Follow.find({ follower: userId });
     log(toFollow, "to follow");
     log(followr, "followee");
     return;
